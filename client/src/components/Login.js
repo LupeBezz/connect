@@ -7,13 +7,11 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Registration component
 
-class Registration extends Component {
+class Login extends Component {
     constructor() {
         super(); //calls the constructor of the parent class. Used to access some variables in the parent
 
         this.state = {
-            firstName: "",
-            lastName: "",
             email: "",
             password: "",
             errorMessage: "",
@@ -34,12 +32,10 @@ class Registration extends Component {
         e.preventDefault();
 
         const userData = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
             email: this.state.email,
             password: this.state.password,
         };
-        fetch("/registration.json", {
+        fetch("/login.json", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -53,7 +49,7 @@ class Registration extends Component {
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
-                    location.reload();
+                    location.href = "/";
                 }
             })
             .catch((error) => {
@@ -63,34 +59,18 @@ class Registration extends Component {
     render() {
         return (
             <>
-                <h2>Registration</h2>
+                <h2>Login</h2>
 
                 {this.state.errorMessage && (
                     <p className="error">{this.state.errorMessage}</p>
                 )}
 
                 <form
-                    id="registrationForm"
+                    id="loginForm"
                     method="post"
-                    action="/registration.json"
+                    action="/login.json"
                     onSubmit={this.onFormSubmit}
                 >
-                    <input
-                        type="text"
-                        name="firstName"
-                        placeholder="First Name"
-                        value={this.state.firstName}
-                        onChange={this.onFormInputChange}
-                    ></input>
-
-                    <input
-                        type="text"
-                        name="lastName"
-                        placeholder="Last Name"
-                        value={this.state.lastName}
-                        onChange={this.onFormInputChange}
-                    ></input>
-
                     <input
                         type="email"
                         name="email"
@@ -107,13 +87,17 @@ class Registration extends Component {
                         onChange={this.onFormInputChange}
                     ></input>
 
-                    <input type="submit" value="register"></input>
+                    <input type="submit" value="login"></input>
                 </form>
 
                 <div>
-                    <p>Already a member?</p>
+                    <p>Did you forget your password?</p>
                     <p>
-                        <Link to="/login">Login</Link>
+                        <Link to="/resetpassword">Reset password</Link>
+                    </p>
+                    <p>Or you can register here</p>
+                    <p>
+                        <Link to="/">Register</Link>
                     </p>
                 </div>
             </>
@@ -123,4 +107,4 @@ class Registration extends Component {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
 
-export default Registration;
+export default Login;

@@ -32,7 +32,7 @@ if (process.env.NODE_ENV == "production") {
     sessionSecret = require("./secrets.json").SESSION_SECRET;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the login page
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the registration page
 
 function hashPassword(password) {
     return bcrypt
@@ -45,11 +45,41 @@ function hashPassword(password) {
         });
 }
 
-module.exports.addUser = (first, last, email, password, time) => {
+module.exports.addUser = (first, last, email, password) => {
     return hashPassword(password).then((hashedPassword) => {
         return db.query(
-            `INSERT INTO users(first, last, email, password, time) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-            [first, last, email, hashedPassword, time]
+            `INSERT INTO users(first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING *`,
+            [first, last, email, hashedPassword]
         );
+    });
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the login page
+
+module.exports.getUserInfo = (email) => {
+    return db.query(`SELECT * FROM users WHERE email = $1`, [email]);
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the reset password page
+
+module.exports.addSecretCode = (email, code) => {
+    return db.query(
+        `INSERT INTO reset_codes(email, code) VALUES ($1, $2) RETURNING *`,
+        [email, code]
+    );
+};
+
+module.exports.checkSecretCode = () => {
+    return db.query(
+        `SELECT code FROM reset_codes WHERE CURRENT_TIMESTAMP - timestamp < INTERVAL '10 minutes'`
+    );
+};
+
+module.exports.updatePassword = (password, email) => {
+    return hashPassword(password).then((hashedPassword) => {
+        return db.query(`UPDATE users SET password =$1 WHERE email = $2`, [
+            hashedPassword,
+            email,
+        ]);
     });
 };
