@@ -58,7 +58,7 @@ class Login extends Component {
     }
     render() {
         return (
-            <>
+            <div id="loginPage">
                 <h2>Login</h2>
 
                 {this.state.errorMessage && (
@@ -87,7 +87,7 @@ class Login extends Component {
                         onChange={this.onFormInputChange}
                     ></input>
 
-                    <input type="submit" value="login"></input>
+                    <input id="loginButton" type="submit" value="login"></input>
                 </form>
 
                 <div>
@@ -100,7 +100,7 @@ class Login extends Component {
                         <Link to="/">Register</Link>
                     </p>
                 </div>
-            </>
+            </div>
         );
     }
 }

@@ -18,8 +18,14 @@ class Welcome extends Component {
     render() {
         return (
             <>
-                <h1>Welcome to Social Network</h1>
-                <img src="./images/strawberry.jpg" height="200px" alt="logo" />
+                <div id="title">
+                    <h1>Welcome to Social Network</h1>
+                    <img
+                        src="./images/strawberry-logo.jpg"
+                        height="200px"
+                        alt="logo"
+                    />
+                </div>
                 <BrowserRouter>
                     <div>
                         <Route exact path="/">

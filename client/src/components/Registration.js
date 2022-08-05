@@ -62,7 +62,7 @@ class Registration extends Component {
     }
     render() {
         return (
-            <>
+            <div id="registrationPage">
                 <h2>Registration</h2>
 
                 {this.state.errorMessage && (
@@ -107,7 +107,11 @@ class Registration extends Component {
                         onChange={this.onFormInputChange}
                     ></input>
 
-                    <input type="submit" value="register"></input>
+                    <input
+                        id="registrationButton"
+                        type="submit"
+                        value="register"
+                    ></input>
                 </form>
 
                 <div>
@@ -116,7 +120,7 @@ class Registration extends Component {
                         <Link to="/login">Login</Link>
                     </p>
                 </div>
-            </>
+            </div>
         );
     }
 }

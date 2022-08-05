@@ -22,14 +22,17 @@ app.use(express.json()); // to unpack JSON in the request body
 const cryptoRandomString = require("crypto-random-string");
 
 const ses = require("./ses");
+const s3 = require("./s3");
+const uploader = require("./middleware").uploader;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - require database
 
 const db = require("./db");
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - serve public folder
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - serve public folder and uploads
 
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
+app.use(express.static(path.join(__dirname, "uploads")));
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - cookie session
 
@@ -187,37 +190,39 @@ app.post("/resetpassword/start.json", (req, res) => {
                 } else {
                     console.log("Success in getUserInfo: email found");
 
+                    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - generate and add secret code to db
                     const secretCode = cryptoRandomString({
                         length: 6,
                     });
                     db.addSecretCode(req.body.email, secretCode)
                         .then((results) => {
                             console.log("Success in addSecretCode");
-                            res.json({
-                                success: true,
-                                message:
-                                    "The code was sent successfully to your email",
-                            });
-                            // ses.sendCodeEmail(req.body.email)
-                            //     .then((result) => {
-                            //         console.log("Success in sendCodeEmail");
-                            //         res.json({
-                            //             success: true,
-                            //             message:
-                            //                 "The code was sent successfully to your email",
-                            //         });
-                            //     })
-                            //     .catch((err) => {
-                            //         "Error in sendCodeEmail", err;
-                            //         res.json({
-                            //             success: false,
-                            //             message:
-                            //                 "Something went wrong, please try again",
-                            //         });
-                            //     });
+                            //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - send email
+                            ses.sendCodeEmail(secretCode)
+                                .then((result) => {
+                                    console.log("Success in sendCodeEmail");
+                                    res.json({
+                                        success: true,
+                                        message:
+                                            "The code was sent successfully to your email",
+                                    });
+                                })
+                                .catch((err) => {
+                                    console.log("Error in sendCodeEmail", err);
+                                    res.json({
+                                        success: false,
+                                        message:
+                                            "Something went wrong, please try again",
+                                    });
+                                });
                         })
                         .catch((err) => {
                             "error in addSecretCode", err;
+                            res.json({
+                                success: false,
+                                message:
+                                    "Something went wrong, please try again",
+                            });
                         });
                 }
             })
@@ -240,20 +245,21 @@ app.post("/resetpassword/verify.json", (req, res) => {
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - check Code
         db.checkSecretCode()
             .then((results) => {
-                console.log("results from checkSecretCode: ", results);
+                //console.log("results from checkSecretCode: ", results);
                 let possibleCodes = results.rows;
 
                 if (
                     possibleCodes[possibleCodes.length - 1].code ===
                     req.body.code
                 ) {
-                    res.json({
-                        success: true,
-                        message: "Your code is correct!",
-                    });
-                    console.log("req.body.email :", req.body.email);
+                    // res.json({
+                    //     success: true,
+                    //     message: "Your code is correct!",
+                    // });
+                    //console.log("req.body.email :", req.body.email);
                     db.updatePassword(req.body.password, req.body.email)
                         .then((results) => {
+                            console.log("success in updatePassword");
                             res.json({
                                 success: true,
                                 message:
@@ -285,7 +291,46 @@ app.post("/resetpassword/verify.json", (req, res) => {
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request * > serve html - always at the end!!!
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > upload profile picture
+
+app.post(
+    "/uploadimage.json",
+    uploader.single("uploadPicture"),
+    s3.upload,
+    (req, res) => {
+        //console.log("inside post -upload.json");
+        //console.log("req.body inside post-upload: ", req.body);
+        //console.log("req.file inside post-upload:", req.file);
+
+        let fullUrl =
+            "https://s3.amazonaws.com/spicedling/" + req.file.filename;
+
+        db.insertImage(req.session.userId, fullUrl)
+            .then((results) => {
+                console.log("insertImage worked!");
+                console.log("results:", results);
+                res.json(fullUrl);
+            })
+            .catch((err) => {
+                console.log("error in insertImage", err);
+            });
+    }
+);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request /userinfo > get all info from logged in user
+
+app.get("/userinfo", function (req, res) {
+    db.getUserInfoFromId(req.session.userId)
+        .then((results) => {
+            console.log("results.rows[0] :", results.rows[0]);
+            res.json({
+                results,
+            });
+        })
+        .catch((error) => console.log("error in getUserInfoFromId: ", error));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request users/id.json > see if user is logged in
 
 app.get("/users/id.json", function (req, res) {
     res.json({ userId: req.session.userId });

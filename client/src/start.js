@@ -8,6 +8,7 @@ import ReactDOM from "react-dom";
 //if exported "default" import withouth {}
 
 import Welcome from "./components/Welcome";
+import App from "./components/App";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ReactDOM.render()
 
@@ -22,9 +23,6 @@ fetch("users/id.json")
             ReactDOM.render(<Welcome />, document.querySelector("main"));
         } else {
             //visitor is registered, he should be redirected
-            ReactDOM.render(
-                <img src="./images/strawberry.jpg" height="200px" alt="logo" />,
-                document.querySelector("main")
-            );
+            ReactDOM.render(<App />, document.querySelector("main"));
         }
     });

@@ -1,13 +1,95 @@
 body {
-    background-color: ghostwhite;
+    background-color: rgba(235, 235, 171, 255);
     box-sizing: border-box;
     margin: 0;
+    width: 100%;
+    height: auto;
+}
+
+#title {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 10vh;
+}
+
+#registrationPage {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-items: center;
+    text-align: center;
 }
 
 #registrationForm {
-    width: 20vw;
+    width: 15vw;
     color: blue;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    background-color: coral;
+    text-align: center;
+}
+
+#registrationButton {
+    background-color: red;
+}
+
+#loginPage {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+#loginForm {
+    width: 15vw;
+    color: blue;
+    display: flex;
+    flex-direction: column;
+    background-color: coral;
+    text-align: center;
+}
+
+#loginButton {
+    background-color: red;
+}
+
+#resetPage {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+#resetForm {
+    width: 15vw;
+    color: blue;
+    display: flex;
+    flex-direction: column;
+    background-color: coral;
+    text-align: center;
+}
+
+#resetButton {
+    background-color: red;
+}
+
+#verifyPasswordForm {
+    width: 15vw;
+    color: blue;
+    display: flex;
+    flex-direction: column;
+    background-color: coral;
+    text-align: center;
+}
+
+#verifyPasswordButton {
+    background-color: red;
 }

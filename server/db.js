@@ -83,3 +83,15 @@ module.exports.updatePassword = (password, email) => {
         ]);
     });
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the app page
+
+module.exports.getUserInfoFromId = (id) => {
+    return db.query(`SELECT * FROM users WHERE id = $1`, [id]);
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used to upload picture
+
+module.exports.insertImage = (id, url) => {
+    return db.query(`UPDATE users SET url=$1 WHERE id = $2`, [url, id]);
+};

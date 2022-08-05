@@ -15,7 +15,7 @@ class ResetPassword extends Component {
             password: "",
             code: "",
             errorMessage: "",
-            successMessage: "",
+            // successMessage: "",
             error: false,
             view: 1,
         };
@@ -51,10 +51,10 @@ class ResetPassword extends Component {
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
-                    this.setState({ successMessage: data.message });
+                    this.setState({ errorMessage: data.message });
                     this.setState({ view: 2 });
                     // location.href = "/";
-                    console.log("view: ", this.view);
+                    //console.log("view: ", this.view);
                 }
             })
             .catch((error) => {
@@ -84,30 +84,21 @@ class ResetPassword extends Component {
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
-                    this.setState({ successMessage: data.message });
-                    this.setState({ view: 2 });
+                    this.setState({ errorMessage: data.message });
+                    this.setState({ view: 3 });
                     // location.href = "/";
-                    console.log("view: ", this.view);
+                    //console.log("view: ", this.view);
                 }
             })
             .catch((error) => {
                 console.log("error on fetch after onFormSubmit: ", error);
             });
-        this.setState({ view: 2 });
     }
 
     currentView() {
         if (this.state.view === 1) {
             return (
                 <>
-                    {this.state.errorMessage && (
-                        <p className="error">{this.state.errorMessage}</p>
-                    )}
-
-                    {this.state.successMessage && (
-                        <p className="success">{this.state.successMessage}</p>
-                    )}
-
                     <form
                         id="resetForm"
                         method="post"
@@ -122,21 +113,27 @@ class ResetPassword extends Component {
                             onChange={this.onFormInputChange}
                         ></input>
 
-                        <input type="submit" value="login"></input>
+                        <input
+                            id="resetButton"
+                            type="submit"
+                            value="send"
+                        ></input>
                     </form>
+
+                    {this.state.errorMessage && (
+                        <p className="error">{this.state.errorMessage}</p>
+                    )}
+                    <div>
+                        <p>Go back to login</p>
+                        <p>
+                            <Link to="/login">Login</Link>
+                        </p>
+                    </div>
                 </>
             );
         } else if (this.state.view === 2) {
             return (
                 <>
-                    {this.state.errorMessage && (
-                        <p className="error">{this.state.errorMessage}</p>
-                    )}
-
-                    {this.state.successMessage && (
-                        <p className="success">{this.state.successMessage}</p>
-                    )}
-
                     <form
                         id="verifyPasswordForm"
                         method="post"
@@ -159,36 +156,37 @@ class ResetPassword extends Component {
                             onChange={this.onFormInputChange}
                         ></input>
 
-                        <input type="submit" value="login"></input>
+                        <input
+                            id="verifyPasswordButton"
+                            type="submit"
+                            value="send"
+                        ></input>
                     </form>
+
+                    {this.state.errorMessage && (
+                        <p className="error">{this.state.errorMessage}</p>
+                    )}
                 </>
             );
         } else if (this.state.view === 3) {
-            //just to congratulate it everything ok
-            //send user to login page
+            return (
+                <>
+                    <h2>Your password was successfully changed!</h2>
+                    <p>Go to the login page</p>
+                    <p>
+                        <Link to="/login">Login</Link>
+                    </p>
+                </>
+            );
         }
     }
     render() {
         return (
-            <>
+            <div id="resetPage">
                 <h2>Reset your password here</h2>
-                {/* 
-                {this.state.errorMessage && (
-                    <p className="error">{this.state.errorMessage}</p>
-                )} */}
-                <div>{this.currentView()}</div>
 
-                <div>
-                    <p>Already a member?</p>
-                    <p>
-                        <Link to="/login">Login</Link>
-                    </p>
-                    <p>Or you can register here</p>
-                    <p>
-                        <Link to="/">Register</Link>
-                    </p>
-                </div>
-            </>
+                <div>{this.currentView()}</div>
+            </div>
         );
     }
 }
