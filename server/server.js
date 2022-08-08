@@ -76,7 +76,7 @@ app.post("/registration.json", (req, res) => {
         )
             .then((results) => {
                 console.log("addUser worked!");
-                console.log("results.rows[0].id: ", results.rows[0].id); // the user id
+                //console.log("results.rows[0].id: ", results.rows[0].id); // the user id
 
                 // - - - - - - - - - - - - - - - - - - - - store id in cookie
                 var userId = results.rows[0].id;
@@ -127,13 +127,13 @@ app.post("/login.json", (req, res) => {
                     return bcrypt
                         .compare(inputPassword, databasePassword)
                         .then((result) => {
-                            console.log(result);
+                            //console.log(result);
                             if (result) {
                                 console.log("Success in Password Comparison");
 
                                 // - - - - - - - - - - - - - - - - - - - - store id in cookie
                                 var userId = results.rows[0].id;
-                                console.log(results.rows[0].id);
+                                //console.log(results.rows[0].id);
                                 req.session = { userId };
                                 //res.send(`loginId: ${req.session.loginId}`);
                                 res.json({
@@ -252,11 +252,6 @@ app.post("/resetpassword/verify.json", (req, res) => {
                     possibleCodes[possibleCodes.length - 1].code ===
                     req.body.code
                 ) {
-                    // res.json({
-                    //     success: true,
-                    //     message: "Your code is correct!",
-                    // });
-                    //console.log("req.body.email :", req.body.email);
                     db.updatePassword(req.body.password, req.body.email)
                         .then((results) => {
                             console.log("success in updatePassword");
@@ -317,12 +312,32 @@ app.post(
     }
 );
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > save bio
+
+app.post("/insertbio.json", (req, res) => {
+    console.log("arriving to server.js");
+    console.log("req.body.userBio: ", req.body.userBio);
+    db.insertBio(req.session.userId, req.body.userBio)
+        .then((results) => {
+            console.log("insertBio worked!");
+            console.log("results:", results);
+            var userBio = req.body.userBio;
+            res.json({
+                userBio,
+                success: true,
+            });
+        })
+        .catch((err) => {
+            console.log("error in insertBio", err);
+        });
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request /userinfo > get all info from logged in user
 
 app.get("/userinfo", function (req, res) {
     db.getUserInfoFromId(req.session.userId)
         .then((results) => {
-            console.log("results.rows[0] :", results.rows[0]);
+            //console.log("results.rows[0] :", results.rows[0]);
             res.json({
                 results,
             });

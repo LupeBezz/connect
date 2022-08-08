@@ -95,3 +95,12 @@ module.exports.getUserInfoFromId = (id) => {
 module.exports.insertImage = (id, url) => {
     return db.query(`UPDATE users SET url=$1 WHERE id = $2`, [url, id]);
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used to insert the bio
+
+module.exports.insertBio = (id, bio) => {
+    return db.query(`UPDATE users SET bio=$2 WHERE id = $1 RETURNING *`, [
+        id,
+        bio,
+    ]);
+};

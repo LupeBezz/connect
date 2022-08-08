@@ -93,3 +93,7 @@ body {
 #verifyPasswordButton {
     background-color: red;
 }
+
+#profilePic {
+    border: 10px red solid;
+}

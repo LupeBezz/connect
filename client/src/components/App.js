@@ -3,14 +3,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
 
 import { Component } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
 //if exported "default" import withouth {}
 
-import Logo from "./Logo";
+import Profile from "./Profile";
 import ProfilePic from "./Profilepic";
+import BioEditor from "./Bioeditor";
 import Uploader from "./Uploader";
+import Logo from "./Logo";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the App component
 
@@ -25,11 +26,14 @@ class App extends Component {
             email: "",
             isModalOpen: false,
             message: "",
+            bio: "",
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.uploadPicture = this.uploadPicture.bind(this);
+        this.saveDraftBio = this.saveDraftBio.bind(this);
     }
 
+    // TO DO: add the bio information here!!!
     //this runs after the render()!!
     componentDidMount() {
         console.log("App Mounted");
@@ -37,8 +41,8 @@ class App extends Component {
         fetch("/userinfo")
             .then((response) => response.json())
             .then((data) => {
-                console.log("success in fetch after getUserInfoFromId");
-                console.log("data.results.rows[0]: ", data.results.rows[0]);
+                //console.log("success in fetch after getUserInfoFromId");
+                //console.log("data.results.rows[0]: ", data.results.rows[0]);
                 let userInfo = data.results.rows[0];
                 this.setState({
                     firstName: userInfo.first,
@@ -46,6 +50,7 @@ class App extends Component {
                     userId: userInfo.id,
                     email: userInfo.email,
                     picture: userInfo.url || null,
+                    bio: userInfo.bio,
                 });
             })
             .catch((error) => {
@@ -98,18 +103,28 @@ class App extends Component {
                     "There has been a problem, please try again";
             });
     }
+    // TO DO: pass down to bio editor component
+    saveDraftBio(draftBio) {
+        this.setState({ bio: draftBio });
+        console.log("saveDraftBio function works");
+        console.log("draftBio: ", draftBio);
+        console.log("this.state.bio: ", this.state.bio);
+    }
 
     render() {
         return (
             <>
                 {/* //we pass props (info + functions) to the child components here. The first word is the name it will have there */}
                 <Logo />
-                <ProfilePic
+
+                <Profile
                     firstName={this.state.firstName}
                     lastName={this.state.lastName}
                     userId={this.state.userId}
                     picture={this.state.picture}
+                    bio={this.state.bio}
                     toggleModal={this.toggleModal}
+                    saveDraftBio={this.saveDraftBio}
                 />
                 {this.state.isModalOpen && (
                     <Uploader
@@ -118,8 +133,6 @@ class App extends Component {
                     />
                 )}
                 <h2>{this.state.message}</h2>
-
-                <h2>Hello </h2>
             </>
         );
     }

@@ -3,7 +3,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
 
 import { Component } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
 
 //we need to use formData in order to use the file
 //change table to receive an avatar
