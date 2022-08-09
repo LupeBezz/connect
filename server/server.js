@@ -345,6 +345,31 @@ app.get("/userinfo", function (req, res) {
         .catch((error) => console.log("error in getUserInfoFromId: ", error));
 });
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request /lastusers > get all info from last three users
+
+app.get("/lastusers", function (req, res) {
+    db.getLastUsers()
+        .then((results) => {
+            console.log("results :", results);
+            res.json({
+                results,
+            });
+        })
+        .catch((error) => console.log("error in getLastUsers: ", error));
+});
+
+app.post("/lastusersbyname", function (req, res) {
+    console.log("req.body.first: ", req.body.first);
+    db.getUsersByName(req.body.first)
+        .then((results) => {
+            console.log("results :", results);
+            res.json({
+                results,
+            });
+        })
+        .catch((error) => console.log("error in getUsersByName: ", error));
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request users/id.json > see if user is logged in
 
 app.get("/users/id.json", function (req, res) {

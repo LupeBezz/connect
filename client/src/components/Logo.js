@@ -9,11 +9,7 @@ import { Component } from "react";
 function Logo() {
     return (
         <>
-            <img
-                src="./images/strawberry-logo.jpg"
-                height="200px"
-                alt="logo"
-            ></img>
+            <div id="logo">Connect</div>
         </>
     );
 }

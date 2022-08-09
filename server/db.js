@@ -104,3 +104,16 @@ module.exports.insertBio = (id, bio) => {
         bio,
     ]);
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used in the findpeople page
+
+module.exports.getLastUsers = () => {
+    return db.query(`SELECT * FROM users ORDER BY id DESC LIMIT 3`);
+};
+
+module.exports.getUsersByName = (val) => {
+    return db.query(
+        `SELECT * FROM users WHERE first ILIKE $1 ORDER BY first ASC LIMIT 3`,
+        [val + "%"]
+    );
+};

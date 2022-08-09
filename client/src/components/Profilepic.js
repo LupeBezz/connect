@@ -9,13 +9,20 @@ import { Component } from "react";
 function ProfilePic({ firstName, lastName, userId, picture, toggleModal }) {
     return (
         <>
-            <img
-                id="profilePic"
-                onClick={toggleModal}
-                src={picture || "./images/strawberry-user.jpg"}
-                height="100px"
-                alt={firstName + " " + lastName}
-            ></img>
+            <div id="profile-pic">
+                <img
+                    onClick={toggleModal}
+                    src={picture || "./images/strawberry-user.jpg"}
+                    height="100px"
+                    alt={firstName + " " + lastName}
+                ></img>
+                <div>
+                    <p>Welcome</p>
+                    <p>
+                        {firstName} {lastName}
+                    </p>
+                </div>
+            </div>
         </>
     );
 }

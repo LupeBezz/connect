@@ -3,6 +3,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
 
 import { Component } from "react";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
 //if exported "default" import withouth {}
@@ -12,6 +13,7 @@ import ProfilePic from "./Profilepic";
 import BioEditor from "./Bioeditor";
 import Uploader from "./Uploader";
 import Logo from "./Logo";
+import FindPeople from "./Findpeople";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the App component
 
@@ -114,10 +116,8 @@ class App extends Component {
     render() {
         return (
             <>
-                {/* //we pass props (info + functions) to the child components here. The first word is the name it will have there */}
                 <Logo />
-
-                <Profile
+                <ProfilePic
                     firstName={this.state.firstName}
                     lastName={this.state.lastName}
                     userId={this.state.userId}
@@ -126,13 +126,51 @@ class App extends Component {
                     toggleModal={this.toggleModal}
                     saveDraftBio={this.saveDraftBio}
                 />
-                {this.state.isModalOpen && (
-                    <Uploader
-                        firstName={this.state.firstName}
-                        uploadPicture={this.uploadPicture}
-                    />
-                )}
-                <h2>{this.state.message}</h2>
+                <BrowserRouter>
+                    <div>
+                        <Route exact path="/">
+                            {/* <ProfilePic
+                                firstName={this.state.firstName}
+                                lastName={this.state.lastName}
+                                userId={this.state.userId}
+                                picture={this.state.picture}
+                                bio={this.state.bio}
+                                toggleModal={this.toggleModal}
+                                saveDraftBio={this.saveDraftBio}
+                            /> */}
+
+                            {this.state.isModalOpen && (
+                                <>
+                                    <Uploader
+                                        firstName={this.state.firstName}
+                                        uploadPicture={this.uploadPicture}
+                                    />
+                                    <Profile
+                                        firstName={this.state.firstName}
+                                        lastName={this.state.lastName}
+                                        userId={this.state.userId}
+                                        picture={this.state.picture}
+                                        bio={this.state.bio}
+                                        toggleModal={this.toggleModal}
+                                        saveDraftBio={this.saveDraftBio}
+                                    />
+                                </>
+                            )}
+
+                            <h2>{this.state.message}</h2>
+                        </Route>
+
+                        <Route exact path="/people">
+                            <FindPeople />
+                        </Route>
+                    </div>
+                    <div className="button-tab">
+                        <p>Find your friends here</p>
+                        <Link to="/people" id="link">
+                            Find friends
+                        </Link>
+                    </div>
+                </BrowserRouter>
             </>
         );
     }

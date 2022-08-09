@@ -1,62 +1,138 @@
 body {
-    background-color: rgba(235, 235, 171, 255);
     box-sizing: border-box;
     margin: 0;
     width: 100%;
     height: auto;
+    /* background-color: blanchedalmond; */
 }
 
-#title {
+#layout-top-line {
     width: 100vw;
+    border-bottom: 1px solid rgba(43, 70, 139, 255);
+    position: absolute;
+    top: 10vh;
+}
+
+#layout-bottom-line {
+    width: 100vw;
+    border-bottom: 1px solid rgba(43, 70, 139, 255);
+    position: absolute;
+    bottom: 5vh;
+}
+
+#welcome-page {
+    display: flex;
+    flex-direction: row;
+    justify-items: space-evenly;
+    align-items: center;
+}
+
+#welcome-title {
+    width: 50vw;
+    height: 85vh;
+    padding-left: 5vw;
+    top: 10vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding-top: 10vh;
+    text-align: center;
+    font-family: "Comfortaa";
+    font-size: 1vw;
 }
 
-#registrationPage {
-    width: 100vw;
+#welcome-title h1 {
+    font-size: 5vw;
+}
+
+#welcome-image {
+    width: 60vw;
+    height: auto;
+}
+
+#logo {
+    height: 10vh;
+    margin-left: 2vw;
+    display: flex;
+    align-items: center;
+    /* font-family: "Comfortaa"; */
+    font-family: "Fredoka One";
+    font-weight: 400;
+    font-size: 3vw;
+    color: rgba(43, 70, 139, 255);
+    /* color: rgba(116, 153, 241, 255); */
+}
+
+.reg-login-form {
+    width: 15vw;
     display: flex;
     flex-direction: column;
     justify-items: flex-start;
-    align-items: center;
     text-align: center;
+    padding-bottom: 2vh;
 }
 
-#registrationForm {
-    width: 15vw;
-    color: blue;
+.reg-login-form input {
+    margin-bottom: 1vh;
+    text-decoration: none;
+    border: solid 1.4px black;
+    height: 4vh;
+    font-family: "Comfortaa";
+    font-size: 1vw;
+    padding-left: 1vh;
     display: flex;
-    flex-direction: column;
-    background-color: coral;
-    text-align: center;
+    justify-content: center;
 }
 
-#registrationButton {
-    background-color: red;
+.reg-login-button {
+    height: 6vh;
+    /* background-color: rgba(43, 70, 139, 255); */
+    background-color: rgba(116, 153, 241, 255);
+    color: white;
+    display: flex;
+    justify-content: center;
+    box-shadow: 5px 5px black;
+    font-family: "Fredoka One";
+    font-weight: 700;
 }
 
-#loginPage {
-    width: 100vw;
+#link {
+    text-decoration: none;
+    color: rgba(198, 85, 71, 255);
+    font-family: "Comfortaa";
+    font-weight: 700;
+}
+
+#login-form {
+    width: 15vw;
     display: flex;
     flex-direction: column;
     justify-items: flex-start;
-    align-items: center;
     text-align: center;
 }
 
-#loginForm {
-    width: 15vw;
-    color: blue;
+#login-form input {
+    margin-bottom: 1vh;
+    text-decoration: none;
+    border: solid 1.4px black;
+    height: 4vh;
+    font-family: "Comfortaa";
+    font-size: 1vw;
+    padding-left: 1vh;
     display: flex;
-    flex-direction: column;
-    background-color: coral;
-    text-align: center;
+    justify-content: center;
 }
 
-#loginButton {
-    background-color: red;
+#login-button {
+    height: 6vh;
+    /* background-color: rgba(43, 70, 139, 255); */
+    background-color: rgba(116, 153, 241, 255);
+    color: white;
+    display: flex;
+    justify-content: center;
+    box-shadow: 5px 5px black;
+    font-family: "Fredoka One";
+    font-weight: 400;
 }
 
 #resetPage {
@@ -94,6 +170,59 @@ body {
     background-color: red;
 }
 
-#profilePic {
-    border: 10px red solid;
+#welcome-footer {
+    height: 1.5vh;
+    margin-right: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-family: "Comfortaa";
+    font-size: 1vw;
+    color: rgba(43, 70, 139, 255);
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
+.button-tab {
+    width: 20vw;
+    height: 10vw;
+    background-color: rgba(250, 151, 70, 255);
+    border: black solid 1.5px;
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    text-align: center;
+    margin-left: 2vw;
+    position: absolute;
+    bottom: -20px;
+    z-index: 1;
+}
+
+#profile-pic {
+    width: 15vw;
+    background-color: rgba(116, 153, 241, 255);
+    border: black solid 1.5px;
+    box-shadow: 5px 5px black;
+    position: absolute;
+    top: -20px;
+    right: 2vw;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#profile-pic img {
+    width: 10vw;
+    height: auto;
+    margin-top: 4vw;
+    border: black solid 1.5px;
+}
+
+#profile-pic div {
+    font-family: "Comfortaa";
+    font-weight: 700;
+    text-align: center;
 }

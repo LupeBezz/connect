@@ -59,14 +59,12 @@ class Login extends Component {
     render() {
         return (
             <div id="loginPage">
-                <h2>Login</h2>
-
                 {this.state.errorMessage && (
                     <p className="error">{this.state.errorMessage}</p>
                 )}
 
                 <form
-                    id="loginForm"
+                    className="reg-login-form"
                     method="post"
                     action="/login.json"
                     onSubmit={this.onFormSubmit}
@@ -87,17 +85,26 @@ class Login extends Component {
                         onChange={this.onFormInputChange}
                     ></input>
 
-                    <input id="loginButton" type="submit" value="login"></input>
+                    <input
+                        className="reg-login-button"
+                        type="submit"
+                        value="login"
+                    ></input>
                 </form>
 
                 <div>
-                    <p>Did you forget your password?</p>
                     <p>
-                        <Link to="/resetpassword">Reset password</Link>
+                        Forgot your password? {" > "}
+                        <Link to="/resetpassword" id="link">
+                            reset
+                        </Link>
                     </p>
-                    <p>Or you can register here</p>
+
                     <p>
-                        <Link to="/">Register</Link>
+                        No account yet?{" > "}
+                        <Link to="/" id="link">
+                            register
+                        </Link>
                     </p>
                 </div>
             </div>

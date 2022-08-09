@@ -63,14 +63,14 @@ class Registration extends Component {
     render() {
         return (
             <div id="registrationPage">
-                <h2>Registration</h2>
+                {/* <h2>Registration</h2> */}
 
                 {this.state.errorMessage && (
                     <p className="error">{this.state.errorMessage}</p>
                 )}
 
                 <form
-                    id="registrationForm"
+                    className="reg-login-form"
                     method="post"
                     action="/registration.json"
                     onSubmit={this.onFormSubmit}
@@ -108,18 +108,20 @@ class Registration extends Component {
                     ></input>
 
                     <input
-                        id="registrationButton"
+                        className="reg-login-button"
                         type="submit"
                         value="register"
                     ></input>
                 </form>
 
-                <div>
-                    <p>Already a member?</p>
-                    <p>
-                        <Link to="/login">Login</Link>
-                    </p>
-                </div>
+                {/* <p>Already a member?</p> */}
+                <p>
+                    Already a member?{" > "}
+                    <Link to="/login" id="link">
+                        {" "}
+                        login
+                    </Link>
+                </p>
             </div>
         );
     }

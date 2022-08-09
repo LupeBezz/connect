@@ -24,24 +24,22 @@ function Profile({
 }) {
     return (
         <>
-            <ProfilePic
+            {/* <ProfilePic
                 firstName={firstName}
                 lastName={lastName}
                 userId={userId}
                 picture={picture}
                 bio={bio}
                 toggleModal={toggleModal}
-            />
-            <h2>
-                Hello {firstName} {lastName}
-            </h2>
+            /> */}
+
             <img
                 onClick={toggleModal}
                 src={picture || "./images/strawberry-user.jpg"}
                 height="300px"
                 alt={firstName + " " + lastName}
             ></img>
-            {/* try with the "this" inside the {} if it does not work */}
+
             <BioEditor saveDraftBio={saveDraftBio} bio={bio} />
         </>
     );

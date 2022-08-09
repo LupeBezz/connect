@@ -100,7 +100,7 @@ class ResetPassword extends Component {
             return (
                 <>
                     <form
-                        id="resetForm"
+                        className="reg-login-form"
                         method="post"
                         action="/resetpassword/start.json"
                         onSubmit={this.onFormSubmit}
@@ -114,9 +114,9 @@ class ResetPassword extends Component {
                         ></input>
 
                         <input
-                            id="resetButton"
+                            className="reg-login-button"
                             type="submit"
-                            value="send"
+                            value="reset password"
                         ></input>
                     </form>
 
@@ -124,9 +124,11 @@ class ResetPassword extends Component {
                         <p className="error">{this.state.errorMessage}</p>
                     )}
                     <div>
-                        <p>Go back to login</p>
                         <p>
-                            <Link to="/login">Login</Link>
+                            Go back to login {" > "}
+                            <Link to="/login" id="link">
+                                login
+                            </Link>
                         </p>
                     </div>
                 </>
@@ -135,7 +137,7 @@ class ResetPassword extends Component {
             return (
                 <>
                     <form
-                        id="verifyPasswordForm"
+                        className="reg-login-form"
                         method="post"
                         action="/resetpassword/verify.json"
                         onSubmit={this.startResetPassword}
@@ -157,9 +159,9 @@ class ResetPassword extends Component {
                         ></input>
 
                         <input
-                            id="verifyPasswordButton"
+                            className="reg-login-button"
                             type="submit"
-                            value="send"
+                            value="reset password"
                         ></input>
                     </form>
 
@@ -171,10 +173,12 @@ class ResetPassword extends Component {
         } else if (this.state.view === 3) {
             return (
                 <>
-                    <h2>Your password was successfully changed!</h2>
-                    <p>Go to the login page</p>
+                    <h2>SUCCESS!</h2>
                     <p>
-                        <Link to="/login">Login</Link>
+                        Go back to login {" > "}
+                        <Link to="/login" id="link">
+                            login
+                        </Link>
                     </p>
                 </>
             );
@@ -182,9 +186,7 @@ class ResetPassword extends Component {
     }
     render() {
         return (
-            <div id="resetPage">
-                <h2>Reset your password here</h2>
-
+            <div className="reg-login-form">
                 <div>{this.currentView()}</div>
             </div>
         );

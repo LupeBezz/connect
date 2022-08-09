@@ -25,10 +25,8 @@ class Uploader extends Component {
     render() {
         return (
             <>
-                <p>
-                    Hello {this.props.firstName}! Do you want to upload a
-                    profile picture?
-                </p>
+                <h2>My profile picture:</h2>
+
                 <form
                     id="upload-form"
                     // action="/uploadimage.json"
