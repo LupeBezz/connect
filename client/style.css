@@ -1,3 +1,5 @@
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - General  */
+
 body {
     box-sizing: border-box;
     margin: 0;
@@ -19,6 +21,50 @@ body {
     position: absolute;
     bottom: 5vh;
 }
+
+#link {
+    text-decoration: none;
+    color: rgba(198, 85, 71, 255);
+    font-family: "Comfortaa";
+    font-weight: 700;
+}
+
+.error {
+    color: red;
+    padding-top: 1vw;
+}
+
+.button-tab-inactive {
+    width: 18vw;
+    height: 10vw;
+    background-color: rgba(250, 151, 70, 255);
+    border: black solid 1.5px;
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    text-align: center;
+    margin-left: 2vw;
+    position: absolute;
+    bottom: -20px;
+    z-index: 1;
+}
+
+.button-tab-active {
+    width: 18vw;
+    height: 10vw;
+    background-color: red;
+    border: black solid 1.5px;
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    text-align: center;
+    margin-left: 2vw;
+    position: absolute;
+    bottom: -20px;
+    z-index: 1;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Welcome page  */
 
 #welcome-page {
     display: flex;
@@ -93,13 +139,6 @@ body {
     justify-content: center;
     box-shadow: 5px 5px black;
     font-family: "Fredoka One";
-    font-weight: 700;
-}
-
-#link {
-    text-decoration: none;
-    color: rgba(198, 85, 71, 255);
-    font-family: "Comfortaa";
     font-weight: 700;
 }
 
@@ -184,21 +223,6 @@ body {
     right: 0px;
 }
 
-.button-tab {
-    width: 20vw;
-    height: 10vw;
-    background-color: rgba(250, 151, 70, 255);
-    border: black solid 1.5px;
-    box-shadow: 5px 5px black;
-    font-family: "Comfortaa";
-    font-weight: 700;
-    text-align: center;
-    margin-left: 2vw;
-    position: absolute;
-    bottom: -20px;
-    z-index: 1;
-}
-
 #profile-pic {
     width: 15vw;
     background-color: rgba(116, 153, 241, 255);
@@ -217,12 +241,23 @@ body {
 #profile-pic img {
     width: 10vw;
     height: auto;
-    margin-top: 4vw;
+    margin-top: 3.5vw;
     border: black solid 1.5px;
 }
 
 #profile-pic div {
     font-family: "Comfortaa";
     font-weight: 700;
+    padding-top: 1vw;
     text-align: center;
+    line-height: 0.75vw;
+    padding-bottom: 1vw;
+}
+
+#main-image {
+    width: 35vw;
+    height: auto;
+    position: absolute;
+    right: 2vw;
+    bottom: 4vw;
 }

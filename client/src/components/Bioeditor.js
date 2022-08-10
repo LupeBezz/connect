@@ -8,8 +8,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the BioEditor component
 class BioEditor extends Component {
     constructor(props) {
-        super(props); //calls the constructor of the parent class. Used to access some variables in the parent
-        // bio is comming from app, it will be something like props.bio
+        super(props);
         this.state = { draftBio: "", isEditorOpen: false, bio: "" };
         this.toggleEditor = this.toggleEditor.bind(this);
         this.onBioInputChange = this.onBioInputChange.bind(this);

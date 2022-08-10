@@ -13,7 +13,7 @@ import App from "./components/App";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ReactDOM.render()
 
 // this check if the visitor is registered or not, by checking the cookie:
-fetch("users/id.json")
+fetch("/users/id.json")
     .then((response) => response.json())
     .then((data) => {
         if (!data.userId) {

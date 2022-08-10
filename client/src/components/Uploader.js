@@ -4,14 +4,11 @@
 
 import { Component } from "react";
 
-//we need to use formData in order to use the file
-//change table to receive an avatar
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Uploader component
 class Uploader extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { errorMessage: "" };
         this.onFormInputChange = this.onFormInputChange.bind(this);
     }
     componentDidMount() {
@@ -29,7 +26,6 @@ class Uploader extends Component {
 
                 <form
                     id="upload-form"
-                    // action="/uploadimage.json"
                     method="post"
                     onSubmit={this.props.uploadPicture}
                 >
@@ -41,6 +37,9 @@ class Uploader extends Component {
                     />
                     <input type="submit" value="upload" id="uploadSubmit" />
                 </form>
+                {this.state.errorMessage && (
+                    <p className="error">{this.state.errorMessage}</p>
+                )}
             </>
         );
     }

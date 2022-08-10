@@ -1,9 +1,5 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
-
-import { Component } from "react";
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Profile Pic component
 
 function ProfilePic({ firstName, lastName, userId, picture, toggleModal }) {
@@ -18,11 +14,15 @@ function ProfilePic({ firstName, lastName, userId, picture, toggleModal }) {
                 ></img>
                 <div>
                     <p>Welcome</p>
-                    <p>
-                        {firstName} {lastName}
-                    </p>
+                    <h2>{firstName}</h2>
                 </div>
             </div>
+            <img
+                id="main-image"
+                src="./images/44030.jpg"
+                height="400px"
+                alt="seniors"
+            />
         </>
     );
 }

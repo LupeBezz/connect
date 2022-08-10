@@ -59,10 +59,6 @@ class Login extends Component {
     render() {
         return (
             <div id="loginPage">
-                {this.state.errorMessage && (
-                    <p className="error">{this.state.errorMessage}</p>
-                )}
-
                 <form
                     className="reg-login-form"
                     method="post"
@@ -107,6 +103,10 @@ class Login extends Component {
                         </Link>
                     </p>
                 </div>
+
+                {this.state.errorMessage && (
+                    <p className="error">{this.state.errorMessage}</p>
+                )}
             </div>
         );
     }

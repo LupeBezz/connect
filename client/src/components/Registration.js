@@ -63,12 +63,6 @@ class Registration extends Component {
     render() {
         return (
             <div id="registrationPage">
-                {/* <h2>Registration</h2> */}
-
-                {this.state.errorMessage && (
-                    <p className="error">{this.state.errorMessage}</p>
-                )}
-
                 <form
                     className="reg-login-form"
                     method="post"
@@ -114,7 +108,6 @@ class Registration extends Component {
                     ></input>
                 </form>
 
-                {/* <p>Already a member?</p> */}
                 <p>
                     Already a member?{" > "}
                     <Link to="/login" id="link">
@@ -122,6 +115,9 @@ class Registration extends Component {
                         login
                     </Link>
                 </p>
+                {this.state.errorMessage && (
+                    <p className="error">{this.state.errorMessage}</p>
+                )}
             </div>
         );
     }

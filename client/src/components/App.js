@@ -14,6 +14,7 @@ import BioEditor from "./Bioeditor";
 import Uploader from "./Uploader";
 import Logo from "./Logo";
 import FindPeople from "./Findpeople";
+import ProfileOthers from "./Profileothers";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the App component
 
@@ -27,19 +28,20 @@ class App extends Component {
             picture: "",
             email: "",
             isModalOpen: false,
+            isFindFriendsOpen: false,
             message: "",
             bio: "",
+            errorMessage: "",
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.uploadPicture = this.uploadPicture.bind(this);
         this.saveDraftBio = this.saveDraftBio.bind(this);
+        this.toggleFindFriends = this.toggleFindFriends(this);
     }
 
-    // TO DO: add the bio information here!!!
-    //this runs after the render()!!
+    //this runs after the render()!
     componentDidMount() {
         console.log("App Mounted");
-        //TO DO: here we fetch info from the server and store it into our states
         fetch("/userinfo")
             .then((response) => response.json())
             .then((data) => {
@@ -65,8 +67,14 @@ class App extends Component {
         this.setState({ isModalOpen: !this.state.isModalOpen });
     }
 
+    toggleFindFriends() {
+        //if open it closes it, if closed it opens it
+        this.setState({ isFindFriendsOpen: !this.state.isFindFriendsOpen });
+        console.log("changing!");
+    }
+
     uploadPicture(e) {
-        //we want to prevent the automatic upload, because we want to check first whether there is file or not
+        //we want to prevent the automatic upload, because we want to do dome checks
         e.preventDefault();
 
         console.log("form trying to submit");
@@ -76,7 +84,7 @@ class App extends Component {
         const fileInput = form.querySelector("input[type=file]");
 
         if (fileInput.files.length < 1) {
-            this.setState.message = "please select a file!";
+            this.setState.errorMessage = "please select a file!";
             return;
         }
 
@@ -95,8 +103,11 @@ class App extends Component {
             .then((res) => res.json())
 
             .then((serverData) => {
-                // console.log("serverData: ", serverData);
-                this.setState({ picture: serverData });
+                console.log("serverData: ", serverData);
+                this.setState({
+                    picture: serverData.fullUrl,
+                    errorMessage: serverData.message,
+                });
                 this.toggleModal();
                 //console.log(this.state.picture);
             })
@@ -105,7 +116,6 @@ class App extends Component {
                     "There has been a problem, please try again";
             });
     }
-    // TO DO: pass down to bio editor component
     saveDraftBio(draftBio) {
         this.setState({ bio: draftBio });
         console.log("saveDraftBio function works");
@@ -117,6 +127,7 @@ class App extends Component {
         return (
             <>
                 <Logo />
+
                 <ProfilePic
                     firstName={this.state.firstName}
                     lastName={this.state.lastName}
@@ -125,25 +136,23 @@ class App extends Component {
                     bio={this.state.bio}
                     toggleModal={this.toggleModal}
                     saveDraftBio={this.saveDraftBio}
+                    onClick={this.state.toggleModal}
                 />
+
                 <BrowserRouter>
                     <div>
                         <Route exact path="/">
-                            {/* <ProfilePic
-                                firstName={this.state.firstName}
-                                lastName={this.state.lastName}
-                                userId={this.state.userId}
-                                picture={this.state.picture}
-                                bio={this.state.bio}
-                                toggleModal={this.toggleModal}
-                                saveDraftBio={this.saveDraftBio}
-                            /> */}
-
+                            {this.state.errorMessage && (
+                                <p className="error">
+                                    {this.state.errorMessage}
+                                </p>
+                            )}
                             {this.state.isModalOpen && (
                                 <>
                                     <Uploader
                                         firstName={this.state.firstName}
                                         uploadPicture={this.uploadPicture}
+                                        errorMessage={this.errorMessage}
                                     />
                                     <Profile
                                         firstName={this.state.firstName}
@@ -156,17 +165,29 @@ class App extends Component {
                                     />
                                 </>
                             )}
-
-                            <h2>{this.state.message}</h2>
                         </Route>
 
                         <Route exact path="/people">
                             <FindPeople />
                         </Route>
+                        <Route path="/username/:id">
+                            <ProfileOthers />
+                        </Route>
                     </div>
-                    <div className="button-tab">
+
+                    <div
+                        className={
+                            this.state.isFindFriendsOpen === true
+                                ? "button-tab-active"
+                                : "button-tab-inactive"
+                        }
+                    >
                         <p>Find your friends here</p>
-                        <Link to="/people" id="link">
+                        <Link
+                            to="/people"
+                            id="link"
+                            onClick={this.state.toggleFindFriends}
+                        >
                             Find friends
                         </Link>
                     </div>

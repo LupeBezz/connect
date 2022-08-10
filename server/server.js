@@ -55,7 +55,7 @@ app.post("/registration.json", (req, res) => {
         !req.body.email ||
         !req.body.password
     ) {
-        res.json({ success: false, message: "All fields are necessary" });
+        res.json({ success: false, message: "All fields are necessary!" });
     } else {
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - sanitize email
         req.body.email = req.body.email.toLowerCase();
@@ -90,7 +90,7 @@ app.post("/registration.json", (req, res) => {
                 console.log("error in addUser", err);
                 res.json({
                     success: false,
-                    message: "Something went wrong, please try again!",
+                    message: "oops, something went wrong!",
                 });
             });
         console.log("post request to /register works");
@@ -101,7 +101,7 @@ app.post("/registration.json", (req, res) => {
 
 app.post("/login.json", (req, res) => {
     if (!req.body.email || !req.body.password) {
-        res.json({ success: false, message: "All fields are necessary" });
+        res.json({ success: false, message: "All fields are necessary!" });
     } else {
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - sanitize email
         req.body.email = req.body.email.toLowerCase();
@@ -113,8 +113,7 @@ app.post("/login.json", (req, res) => {
                     console.log("Error in getUserInfo: email not found");
                     res.json({
                         success: false,
-                        message:
-                            "It looks like you don't have an account with us",
+                        message: "oops, something went wrong!",
                     });
                 } else {
                     console.log("Success in getUserInfo: email found");
@@ -143,8 +142,7 @@ app.post("/login.json", (req, res) => {
                                 console.log("Error in Password Comparison");
                                 res.json({
                                     success: false,
-                                    message:
-                                        "Something went wrong, please try again",
+                                    message: "oops, something went wrong!",
                                 });
                             }
                         })
@@ -184,8 +182,7 @@ app.post("/resetpassword/start.json", (req, res) => {
                     console.log("Error in getUserInfo: email not found");
                     res.json({
                         success: false,
-                        message:
-                            "It looks like you don't have an account with us",
+                        message: "oops, something went wrong!",
                     });
                 } else {
                     console.log("Success in getUserInfo: email found");
@@ -204,15 +201,14 @@ app.post("/resetpassword/start.json", (req, res) => {
                                     res.json({
                                         success: true,
                                         message:
-                                            "The code was sent successfully to your email",
+                                            "The code was sent successfully!",
                                     });
                                 })
                                 .catch((err) => {
                                     console.log("Error in sendCodeEmail", err);
                                     res.json({
                                         success: false,
-                                        message:
-                                            "Something went wrong, please try again",
+                                        message: "oops, something went wrong!",
                                     });
                                 });
                         })
@@ -220,8 +216,7 @@ app.post("/resetpassword/start.json", (req, res) => {
                             "error in addSecretCode", err;
                             res.json({
                                 success: false,
-                                message:
-                                    "Something went wrong, please try again",
+                                message: "oops, something went wrong!",
                             });
                         });
                 }
@@ -230,7 +225,7 @@ app.post("/resetpassword/start.json", (req, res) => {
                 console.log("error in getUserInfo", err);
                 res.json({
                     success: false,
-                    message: "Something went wrong, please try again",
+                    message: "oops, something went wrong!",
                 });
             });
     }
@@ -240,7 +235,7 @@ app.post("/resetpassword/start.json", (req, res) => {
 
 app.post("/resetpassword/verify.json", (req, res) => {
     if (!req.body.code || !req.body.password) {
-        res.json({ success: false, message: "Please insert a valid email" });
+        res.json({ success: false, message: "oops, something went wrong!" });
     } else {
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - check Code
         db.checkSecretCode()
@@ -265,14 +260,13 @@ app.post("/resetpassword/verify.json", (req, res) => {
                             console.log("error in upatePassword", err);
                             res.json({
                                 success: false,
-                                message:
-                                    "Something went wrong, please try again",
+                                message: "oops, something went wrong!",
                             });
                         });
                 } else {
                     res.json({
                         success: false,
-                        message: "Your code is not correct, please try again!",
+                        message: "The code is not correct!",
                     });
                 }
             })
@@ -280,7 +274,7 @@ app.post("/resetpassword/verify.json", (req, res) => {
                 console.log("error in checkSecretCode", err);
                 res.json({
                     success: false,
-                    message: "Something went wrong, please try again",
+                    message: "oops, something went wrong!",
                 });
             });
     }
@@ -296,7 +290,9 @@ app.post(
         //console.log("inside post -upload.json");
         //console.log("req.body inside post-upload: ", req.body);
         //console.log("req.file inside post-upload:", req.file);
-
+        if (!req.file) {
+            res.json({ message: "please select a file!" });
+        }
         let fullUrl =
             "https://s3.amazonaws.com/spicedling/" + req.file.filename;
 
@@ -304,7 +300,7 @@ app.post(
             .then((results) => {
                 console.log("insertImage worked!");
                 console.log("results:", results);
-                res.json(fullUrl);
+                res.json({ fullUrl, message: "oops, something went wrong!" });
             })
             .catch((err) => {
                 console.log("error in insertImage", err);
@@ -343,6 +339,31 @@ app.get("/userinfo", function (req, res) {
             });
         })
         .catch((error) => console.log("error in getUserInfoFromId: ", error));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request /userinfo > get all info from logged in user
+
+app.get("/otherusersinfo/:id", function (req, res) {
+    console.log("req.params.id: ", req.params.id);
+    console.log("req.session.userId: ", req.session.userId);
+    if (req.params.id == req.session.userId) {
+        console.log("same user as profile");
+        res.json({
+            self: true,
+        });
+    } else {
+        db.getUserInfoFromId(req.params.id)
+            .then((results) => {
+                //console.log("results.rows[0] :", results.rows[0]);
+                console.log("not same user as profile");
+                res.json({
+                    results,
+                });
+            })
+            .catch((error) =>
+                console.log("error in getUserInfoFromId (other users): ", error)
+            );
+    }
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request /lastusers > get all info from last three users

@@ -15,7 +15,6 @@ class ResetPassword extends Component {
             password: "",
             code: "",
             errorMessage: "",
-            // successMessage: "",
             error: false,
             view: 1,
         };
@@ -120,15 +119,17 @@ class ResetPassword extends Component {
                         ></input>
                     </form>
 
-                    {this.state.errorMessage && (
-                        <p className="error">{this.state.errorMessage}</p>
-                    )}
                     <div>
                         <p>
                             Go back to login {" > "}
                             <Link to="/login" id="link">
                                 login
                             </Link>
+                            {this.state.errorMessage && (
+                                <p className="error">
+                                    {this.state.errorMessage}
+                                </p>
+                            )}
                         </p>
                     </div>
                 </>

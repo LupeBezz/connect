@@ -4,9 +4,6 @@
 
 import { Component, useState, useEffect } from "react";
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
-//if exported "default" import withouth {}
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the FindPeople component
 
 function FindPeople() {
@@ -60,11 +57,13 @@ function FindPeople() {
             <ul>
                 {users.map((item, idx) => (
                     <li key={idx}>
-                        {item.first} {item.last}{" "}
-                        <img
-                            height="100px"
-                            src={item.url || "./images/strawberry-user.jpg"}
-                        />
+                        {item.first} {item.last}
+                        <a href={"/username/" + item.id}>
+                            <img
+                                height="100px"
+                                src={item.url || "./images/strawberry-user.jpg"}
+                            />
+                        </a>
                     </li>
                 ))}
             </ul>
