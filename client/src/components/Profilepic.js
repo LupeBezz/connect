@@ -13,16 +13,9 @@ function ProfilePic({ firstName, lastName, userId, picture, toggleModal }) {
                     alt={firstName + " " + lastName}
                 ></img>
                 <div>
-                    <p>Welcome</p>
-                    <h2>{firstName}</h2>
+                    <h2>Hi, {firstName}!</h2>
                 </div>
             </div>
-            <img
-                id="main-image"
-                src="./images/44030.jpg"
-                height="400px"
-                alt="seniors"
-            />
         </>
     );
 }

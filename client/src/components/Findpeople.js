@@ -11,7 +11,7 @@ function FindPeople() {
     const [first, setFirst] = useState([]);
 
     useEffect(() => {
-        console.log("useEffect -fetch for last users- is running once");
+        //console.log("useEffect -fetch for last users- is running once");
         fetch("/lastusers")
             .then((response) => response.json())
             .then((data) => {

@@ -328,7 +328,7 @@ app.post("/insertbio.json", (req, res) => {
         });
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request /userinfo > get all info from logged in user
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > get info from logged-in user
 
 app.get("/userinfo", function (req, res) {
     db.getUserInfoFromId(req.session.userId)
@@ -341,13 +341,13 @@ app.get("/userinfo", function (req, res) {
         .catch((error) => console.log("error in getUserInfoFromId: ", error));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request /userinfo > get all info from logged in user
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > get info from other user
 
 app.get("/otherusersinfo/:id", function (req, res) {
-    console.log("req.params.id: ", req.params.id);
-    console.log("req.session.userId: ", req.session.userId);
+    //console.log("req.params.id: ", req.params.id);
+    //console.log("req.session.userId: ", req.session.userId);
     if (req.params.id == req.session.userId) {
-        console.log("same user as profile");
+        //console.log("same user as profile");
         res.json({
             self: true,
         });
@@ -355,7 +355,7 @@ app.get("/otherusersinfo/:id", function (req, res) {
         db.getUserInfoFromId(req.params.id)
             .then((results) => {
                 //console.log("results.rows[0] :", results.rows[0]);
-                console.log("not same user as profile");
+                //console.log("not same user as profile");
                 res.json({
                     results,
                 });
@@ -366,7 +366,7 @@ app.get("/otherusersinfo/:id", function (req, res) {
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request /lastusers > get all info from last three users
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > get info from last three users
 
 app.get("/lastusers", function (req, res) {
     db.getLastUsers()
@@ -391,10 +391,78 @@ app.post("/lastusersbyname", function (req, res) {
         .catch((error) => console.log("error in getUsersByName: ", error));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request users/id.json > see if user is logged in
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > request friendship
+
+app.post("/friendship/request/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    console.log("req.session.userId: ", req.session.userId);
+    db.requestFriendship(req.session.userId, req.params.id)
+        .then((results) => {
+            console.log("results :", results);
+            res.json({
+                results,
+            });
+        })
+        .catch((error) => console.log("error in requestFriendship: ", error));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > accept friendship
+
+app.post("/friendship/accept/:id", function (req, res) {
+    console.log("req.params.id: ", req.params.id);
+    console.log("req.session.userId: ", req.session.userId);
+    db.acceptFriendship(req.session.userId, req.params.id)
+        .then((results) => {
+            console.log("results :", results);
+            // res.json({
+            //     results,
+            // });
+        })
+        .catch((error) => console.log("error in acceptFriendship: ", error));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > delete friendship
+
+app.post("/friendship/delete/:id", function (req, res) {
+    console.log("req.params.id: ", req.params.id);
+    console.log("req.session.userId: ", req.session.userId);
+    db.deleteFriendship(req.session.userId, req.params.id)
+        .then((results) => {
+            console.log("results :", results);
+            res.json({
+                results,
+            });
+        })
+        .catch((error) => console.log("error in deleteFriendship: ", error));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET request > check friendship
+
+app.get("/friendship/check/:id", function (req, res) {
+    console.log("req.params.id: ", req.params.id);
+    console.log("req.session.userId: ", req.session.userId);
+    db.checkFriendship(req.session.userId, req.params.id)
+        .then((results) => {
+            console.log("results check friendship :", results);
+            res.json({
+                results,
+            });
+        })
+        .catch((error) => console.log("error in checkFriendship: ", error));
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > check if user is logged in
 
 app.get("/users/id.json", function (req, res) {
     res.json({ userId: req.session.userId });
+});
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > logout button
+
+app.get("/logout", (req, res) => {
+    req.session.userId = null;
+    // res.json({});
+    res.redirect("/");
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request * > serve html - always at the end!!!

@@ -117,3 +117,34 @@ module.exports.getUsersByName = (val) => {
         [val + "%"]
     );
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used in the friendships table
+
+//
+module.exports.requestFriendship = (idSender, idReceiver) => {
+    return db.query(
+        `INSERT INTO friendships (sender_id, receiver_id) VALUES ($1, $2) RETURNING *`,
+        [idSender, idReceiver]
+    );
+};
+
+module.exports.acceptFriendship = (idSender, idReceiver) => {
+    return db.query(
+        `UPDATE friendships SET accepted='true' WHERE (sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1)`,
+        [idSender, idReceiver]
+    );
+};
+
+module.exports.deleteFriendship = (idSender, idReceiver) => {
+    return db.query(
+        `DELETE FROM friendships WHERE (sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1)`,
+        [idSender, idReceiver]
+    );
+};
+
+module.exports.checkFriendship = (idSender, idReceiver) => {
+    return db.query(
+        `SELECT * FROM friendships WHERE (sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1)`,
+        [idSender, idReceiver]
+    );
+};

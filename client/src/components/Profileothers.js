@@ -3,13 +3,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
 
 import { Component, useState, useEffect } from "react";
-import {
-    BrowserRouter,
-    Route,
-    Link,
-    useParams,
-    useHistory,
-} from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+import FriendshipButton from "./Friendshipbutton";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the ProfileOthers component
 
@@ -22,15 +17,15 @@ function ProfileOthers() {
     //console.log("id: ", id);
 
     useEffect(() => {
-        console.log("useEffect -profile others- is running once");
+        //console.log("useEffect -profile others- is running once");
         setError([]);
         fetch(`/otherusersinfo/${id}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log("success in fetch after getUserInfoFromId");
-                console.log("data: ", data);
+                //console.log("success in fetch after getUserInfoFromId");
+                //console.log("data: ", data);
                 //console.log("data.results.rows: ", data.results.rows);
-                console.log("data.self: ", data.self);
+                //console.log("data.self: ", data.self);
                 if (data.self === true) {
                     setError("No results");
                     history.push("/");
@@ -65,6 +60,7 @@ function ProfileOthers() {
                 </div>
             )}
             {error && <p className="error">{error}</p>}
+            <FriendshipButton />
         </>
     );
 }

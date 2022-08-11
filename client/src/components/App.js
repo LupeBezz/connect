@@ -15,6 +15,7 @@ import Uploader from "./Uploader";
 import Logo from "./Logo";
 import FindPeople from "./Findpeople";
 import ProfileOthers from "./Profileothers";
+import Logout from "./Logout";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the App component
 
@@ -28,7 +29,9 @@ class App extends Component {
             picture: "",
             email: "",
             isModalOpen: false,
-            isFindFriendsOpen: false,
+            isFindPeopleOpen: false,
+            isMyFriendsOpen: false,
+            isChatOpen: false,
             message: "",
             bio: "",
             errorMessage: "",
@@ -36,7 +39,9 @@ class App extends Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.uploadPicture = this.uploadPicture.bind(this);
         this.saveDraftBio = this.saveDraftBio.bind(this);
-        this.toggleFindFriends = this.toggleFindFriends(this);
+        this.toggleTabsPeople = this.toggleTabsPeople.bind(this);
+        this.toggleTabsFriends = this.toggleTabsFriends.bind(this);
+        this.toggleTabsChat = this.toggleTabsChat.bind(this);
     }
 
     //this runs after the render()!
@@ -67,10 +72,34 @@ class App extends Component {
         this.setState({ isModalOpen: !this.state.isModalOpen });
     }
 
-    toggleFindFriends() {
+    toggleTabsPeople() {
         //if open it closes it, if closed it opens it
-        this.setState({ isFindFriendsOpen: !this.state.isFindFriendsOpen });
-        console.log("changing!");
+        this.setState({
+            isFindPeopleOpen: true,
+            isMyFriendsOpen: false,
+            isChatOpen: false,
+        });
+        //console.log("changing!");
+    }
+
+    toggleTabsFriends() {
+        //if open it closes it, if closed it opens it
+        this.setState({
+            isFindPeopleOpen: false,
+            isMyFriendsOpen: true,
+            isChatOpen: false,
+        });
+        //console.log("changing!");
+    }
+
+    toggleTabsChat() {
+        //if open it closes it, if closed it opens it
+        this.setState({
+            isFindPeopleOpen: false,
+            isMyFriendsOpen: false,
+            isChatOpen: true,
+        });
+        //console.log("changing!");
     }
 
     uploadPicture(e) {
@@ -139,7 +168,14 @@ class App extends Component {
                     onClick={this.state.toggleModal}
                 />
 
+                <h2 id="link-profile" onClick={this.toggleModal}>
+                    Update profile
+                </h2>
+
                 <BrowserRouter>
+                    <Link id="link-logout" to="/logoutuser">
+                        Logout
+                    </Link>
                     <div>
                         <Route exact path="/">
                             {this.state.errorMessage && (
@@ -166,7 +202,9 @@ class App extends Component {
                                 </>
                             )}
                         </Route>
-
+                        <Route exact path="/logoutuser">
+                            <Logout />
+                        </Route>
                         <Route exact path="/people">
                             <FindPeople />
                         </Route>
@@ -176,22 +214,63 @@ class App extends Component {
                     </div>
 
                     <div
+                        id="tab-people"
                         className={
-                            this.state.isFindFriendsOpen === true
-                                ? "button-tab-active"
-                                : "button-tab-inactive"
+                            this.state.isFindPeopleOpen === true
+                                ? "tab-active"
+                                : "tab-inactive"
                         }
                     >
-                        <p>Find your friends here</p>
                         <Link
                             to="/people"
-                            id="link"
-                            onClick={this.state.toggleFindFriends}
+                            className="tab-text"
+                            onClick={this.toggleTabsPeople}
                         >
-                            Find friends
+                            Find people
+                        </Link>
+                    </div>
+
+                    <div
+                        id="tab-friends"
+                        className={
+                            this.state.isMyFriendsOpen === true
+                                ? "tab-active"
+                                : "tab-inactive"
+                        }
+                    >
+                        <Link
+                            to="/people"
+                            className="tab-text"
+                            onClick={this.toggleTabsFriends}
+                        >
+                            My friends
+                        </Link>
+                    </div>
+
+                    <div
+                        id="tab-chat"
+                        className={
+                            this.state.isChatOpen === true
+                                ? "tab-active"
+                                : "tab-inactive"
+                        }
+                    >
+                        <Link
+                            to="/"
+                            className="tab-text"
+                            onClick={this.toggleTabsChat}
+                        >
+                            Chat
                         </Link>
                     </div>
                 </BrowserRouter>
+
+                <img
+                    id="main-image"
+                    src="/images/44030.jpg"
+                    height="400px"
+                    alt="seniors"
+                />
             </>
         );
     }

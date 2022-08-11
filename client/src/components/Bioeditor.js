@@ -91,6 +91,12 @@ class BioEditor extends Component {
                         )}
                     </>
                 )}
+                <img
+                    id="main-image-kids"
+                    src="/images/440300.jpg"
+                    height="400px"
+                    alt="kids"
+                />
             </>
         );
     }
