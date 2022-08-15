@@ -47,8 +47,8 @@ function ProfileOthers() {
     return (
         <>
             {error.length === 0 && (
-                <div>
-                    <h1>profile others</h1>
+                <div id="others">
+                    {/* <h1>profile others</h1> */}
                     <h2>
                         {users.first} {users.last}{" "}
                     </h2>
@@ -56,7 +56,7 @@ function ProfileOthers() {
                         height="100px"
                         src={users.url || "./images/strawberry-user.jpg"}
                     />
-                    <p>{users.bio}</p>
+                    <p className="others-bio">{users.bio}</p>
                 </div>
             )}
             {error && <p className="error">{error}</p>}

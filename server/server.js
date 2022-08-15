@@ -451,6 +451,22 @@ app.get("/friendship/check/:id", function (req, res) {
         .catch((error) => console.log("error in checkFriendship: ", error));
 });
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET request > get friends and wannabes
+
+app.get("/friends-and-wannabes", function (req, res) {
+    console.log("req.session.userId: ", req.session.userId);
+    db.getFriendsAndWannabes(req.session.userId)
+        .then((results) => {
+            console.log("results getFriendsAndWannabes :", results);
+            res.json({
+                results,
+            });
+        })
+        .catch((error) =>
+            console.log("error in getFriendsAndWannabes: ", error)
+        );
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > check if user is logged in
 
 app.get("/users/id.json", function (req, res) {

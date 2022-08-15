@@ -21,6 +21,7 @@ function Profile({
         <>
             <img
                 // onClick={toggleModal}
+                className="editor-image"
                 src={picture || "./images/strawberry-user.jpg"}
                 height="300px"
                 alt={firstName + " " + lastName}

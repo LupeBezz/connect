@@ -21,26 +21,26 @@ class Uploader extends Component {
     }
     render() {
         return (
-            <>
-                <h2>My profile picture:</h2>
+            <div id="editor-upload">
+                <h2>Change picture</h2>
 
-                <form
-                    id="upload-form"
-                    method="post"
-                    onSubmit={this.props.uploadPicture}
-                >
+                <form method="post" onSubmit={this.props.uploadPicture}>
                     <input
                         type="file"
                         name="uploadPicture"
-                        id="uploadPicture"
+                        id="editor-upload-picture"
                         accept="image/*"
                     />
-                    <input type="submit" value="upload" id="uploadSubmit" />
+                    <input
+                        type="submit"
+                        value="upload"
+                        id="editor-upload-submit"
+                    />
                 </form>
                 {this.state.errorMessage && (
                     <p className="error">{this.state.errorMessage}</p>
                 )}
-            </>
+            </div>
         );
     }
 }

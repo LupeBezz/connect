@@ -58,45 +58,42 @@ class BioEditor extends Component {
     render() {
         return (
             <>
-                <h2>About me:</h2>
-                {this.state.isEditorOpen ? (
-                    <>
-                        <textarea
-                            name="bio"
-                            cols="30"
-                            rows="10"
-                            onChange={this.onBioInputChange}
-                        >
-                            {this.props.bio}
-                        </textarea>
-                        <button
-                            onClick={
-                                (this.toggleEditor, this.fetchNewBioToServer)
-                            }
-                        >
-                            Save
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        {this.props.bio ? (
-                            <>
-                                <p>{this.props.bio}</p>
-                                <button onClick={this.toggleEditor}>
-                                    Edit
-                                </button>
-                            </>
-                        ) : (
-                            <button onClick={this.toggleEditor}>Add</button>
-                        )}
-                    </>
-                )}
-                <img
-                    id="main-image-kids"
-                    src="/images/440300.jpg"
-                    height="400px"
-                    alt="kids"
-                />
+                <div id="editor-bio">
+                    {/* <h2>My bio</h2> */}
+                    {this.state.isEditorOpen ? (
+                        <>
+                            <textarea
+                                name="bio"
+                                cols="30"
+                                rows="10"
+                                onChange={this.onBioInputChange}
+                            >
+                                {this.props.bio}
+                            </textarea>
+                            <button
+                                onClick={
+                                    (this.toggleEditor,
+                                    this.fetchNewBioToServer)
+                                }
+                            >
+                                Save
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            {this.props.bio ? (
+                                <>
+                                    <p>{this.props.bio}</p>
+                                    <button onClick={this.toggleEditor}>
+                                        Edit
+                                    </button>
+                                </>
+                            ) : (
+                                <button onClick={this.toggleEditor}>Add</button>
+                            )}
+                        </>
+                    )}
+                </div>
             </>
         );
     }

@@ -118,7 +118,7 @@ module.exports.getUsersByName = (val) => {
     );
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used in the friendships table
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the friendships table
 
 //
 module.exports.requestFriendship = (idSender, idReceiver) => {
@@ -146,5 +146,15 @@ module.exports.checkFriendship = (idSender, idReceiver) => {
     return db.query(
         `SELECT * FROM friendships WHERE (sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1)`,
         [idSender, idReceiver]
+    );
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used to get friends and wannabes
+
+//
+module.exports.getFriendsAndWannabes = (id) => {
+    return db.query(
+        `SELECT users.id, first, last, url, accepted FROM users JOIN friendships ON (accepted = true AND receiver_id = $1 AND users.id = friendships.sender_id) OR (accepted = true AND sender_id = $1 AND users.id = friendships.receiver_id) OR (accepted = false AND receiver_id = $1 AND users.id = friendships.sender_id)`,
+        [id]
     );
 };

@@ -16,6 +16,7 @@ import Logo from "./Logo";
 import FindPeople from "./Findpeople";
 import ProfileOthers from "./Profileothers";
 import Logout from "./Logout";
+import FriendsAndWannabes from "./Friendsandwannabes";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the App component
 
@@ -42,6 +43,7 @@ class App extends Component {
         this.toggleTabsPeople = this.toggleTabsPeople.bind(this);
         this.toggleTabsFriends = this.toggleTabsFriends.bind(this);
         this.toggleTabsChat = this.toggleTabsChat.bind(this);
+        this.closeTabs = this.closeTabs.bind(this);
     }
 
     //this runs after the render()!
@@ -79,7 +81,6 @@ class App extends Component {
             isMyFriendsOpen: false,
             isChatOpen: false,
         });
-        //console.log("changing!");
     }
 
     toggleTabsFriends() {
@@ -89,7 +90,6 @@ class App extends Component {
             isMyFriendsOpen: true,
             isChatOpen: false,
         });
-        //console.log("changing!");
     }
 
     toggleTabsChat() {
@@ -99,7 +99,14 @@ class App extends Component {
             isMyFriendsOpen: false,
             isChatOpen: true,
         });
-        //console.log("changing!");
+    }
+
+    closeTabs() {
+        this.setState({
+            isFindPeopleOpen: false,
+            isMyFriendsOpen: false,
+            isChatOpen: false,
+        });
     }
 
     uploadPicture(e) {
@@ -157,50 +164,77 @@ class App extends Component {
             <>
                 <Logo />
 
-                <ProfilePic
-                    firstName={this.state.firstName}
-                    lastName={this.state.lastName}
-                    userId={this.state.userId}
-                    picture={this.state.picture}
-                    bio={this.state.bio}
-                    toggleModal={this.toggleModal}
-                    saveDraftBio={this.saveDraftBio}
-                    onClick={this.state.toggleModal}
-                />
-
-                <h2 id="link-profile" onClick={this.toggleModal}>
-                    Update profile
-                </h2>
-
                 <BrowserRouter>
+                    <Link to="/profile" onClick={this.closeTabs}>
+                        <ProfilePic
+                            firstName={this.state.firstName}
+                            lastName={this.state.lastName}
+                            userId={this.state.userId}
+                            picture={this.state.picture}
+                            bio={this.state.bio}
+                            toggleModal={this.toggleModal}
+                            saveDraftBio={this.saveDraftBio}
+                            onClick={this.state.toggleModal}
+                        />
+                    </Link>
+                    <Link to="/" id="link-main" onClick={this.closeTabs}>
+                        Main page
+                    </Link>
+                    <Link
+                        to="/profile"
+                        id="link-profile"
+                        onClick={this.closeTabs}
+                    >
+                        Profile
+                    </Link>
                     <Link id="link-logout" to="/logoutuser">
                         Logout
                     </Link>
                     <div>
                         <Route exact path="/">
+                            <div className="greeting">
+                                <p>Welcome</p>
+                            </div>
+                            <div id="how-it-works">
+                                <p>
+                                    {" "}
+                                    Connect allows you to stay in touch with
+                                    your loved ones! You can update you
+                                    information on the right corner or connect
+                                    with other people by clicking the orange
+                                    tabs!
+                                </p>
+                            </div>
+                            <img
+                                id="main-image-kids"
+                                src="/images/440300.jpg"
+                                height="400px"
+                                alt="kids"
+                            />
+                        </Route>
+                        <Route exact path="/profile">
                             {this.state.errorMessage && (
                                 <p className="error">
                                     {this.state.errorMessage}
                                 </p>
                             )}
-                            {this.state.isModalOpen && (
-                                <>
-                                    <Uploader
-                                        firstName={this.state.firstName}
-                                        uploadPicture={this.uploadPicture}
-                                        errorMessage={this.errorMessage}
-                                    />
-                                    <Profile
-                                        firstName={this.state.firstName}
-                                        lastName={this.state.lastName}
-                                        userId={this.state.userId}
-                                        picture={this.state.picture}
-                                        bio={this.state.bio}
-                                        toggleModal={this.toggleModal}
-                                        saveDraftBio={this.saveDraftBio}
-                                    />
-                                </>
-                            )}
+                            {/* {this.state.isModalOpen && ( )} */}
+                            <>
+                                <Profile
+                                    firstName={this.state.firstName}
+                                    lastName={this.state.lastName}
+                                    userId={this.state.userId}
+                                    picture={this.state.picture}
+                                    bio={this.state.bio}
+                                    toggleModal={this.toggleModal}
+                                    saveDraftBio={this.saveDraftBio}
+                                />
+                                <Uploader
+                                    firstName={this.state.firstName}
+                                    uploadPicture={this.uploadPicture}
+                                    errorMessage={this.errorMessage}
+                                />
+                            </>
                         </Route>
                         <Route exact path="/logoutuser">
                             <Logout />
@@ -210,6 +244,9 @@ class App extends Component {
                         </Route>
                         <Route path="/username/:id">
                             <ProfileOthers />
+                        </Route>
+                        <Route path="/friends">
+                            <FriendsAndWannabes />
                         </Route>
                     </div>
 
@@ -239,7 +276,7 @@ class App extends Component {
                         }
                     >
                         <Link
-                            to="/people"
+                            to="/friends"
                             className="tab-text"
                             onClick={this.toggleTabsFriends}
                         >

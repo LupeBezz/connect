@@ -156,6 +156,7 @@ function FriendshipButton() {
     return (
         <>
             <button
+                id="others-button"
                 type="button"
                 name="friendship"
                 onClick={buttonState.buttonCallback}

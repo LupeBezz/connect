@@ -260,8 +260,9 @@ body {
     width: 35vw;
     height: auto;
     position: absolute;
-    right: 2vw;
+    right: 1vw;
     bottom: 4vw;
+    z-index: -5;
 }
 
 #main-image-kids {
@@ -270,12 +271,29 @@ body {
     position: absolute;
     left: 1vw;
     bottom: 4.5vw;
+    z-index: -5;
+}
+
+#link-main {
+    cursor: pointer;
+    text-decoration: none;
+    height: 4vh;
+    margin-right: 5vw;
+    display: flex;
+    align-items: center;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.4vw;
+    color: rgba(43, 70, 139, 255);
+    position: absolute;
+    top: 7vw;
+    right: 15vw;
 }
 
 #link-profile {
     cursor: pointer;
     text-decoration: none;
-    height: 12vh;
+    height: 4vh;
     margin-right: 5vw;
     display: flex;
     align-items: center;
@@ -284,13 +302,13 @@ body {
     font-size: 1.4vw;
     color: rgba(43, 70, 139, 255);
     position: absolute;
-    top: 4vw;
+    top: 10vw;
     right: 15vw;
 }
 
 #link-logout {
     text-decoration: none;
-    height: 12vh;
+    height: 4vh;
     margin-right: 5vw;
     display: flex;
     align-items: center;
@@ -299,8 +317,34 @@ body {
     font-size: 1.4vw;
     color: rgba(43, 70, 139, 255);
     position: absolute;
-    top: 8vw;
+    top: 13vw;
     right: 15vw;
+}
+
+.greeting {
+    width: 30vw;
+    margin-left: 32vw;
+    margin-top: 9vw;
+    line-height: 0.2vw;
+    text-align: center;
+    font-family: "Fredoka One";
+    font-weight: 400;
+    font-size: 6vw;
+    color: rgba(43, 70, 139, 255);
+}
+
+#how-it-works {
+    height: 15vw;
+    width: 33vw;
+    margin-left: 31vw;
+    margin-top: 4vw;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.4vw;
+    color: rgba(43, 70, 139, 255);
+    line-height: 2.5vw;
+    z-index: 50;
+    text-align: center;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Profile  */
@@ -313,9 +357,26 @@ body {
     position: absolute;
     top: 1.5vw;
     right: 2vw;
+    border: 10px solid rgba(221, 229, 232, 255);
 }
 
 #profile-pic h2 {
+    text-decoration: none;
+    height: 10vh;
+    margin-right: 5vw;
+    margin-top: 3vw;
+    display: flex;
+    align-items: center;
+    font-family: "Fredoka One";
+    font-weight: 400;
+    font-size: 3vw;
+    color: rgba(43, 70, 139, 255);
+    position: absolute;
+    top: -3vw;
+    right: 15vw;
+}
+
+/* #profile-pic h2 {
     text-decoration: none;
     height: 15vh;
     margin-right: 5vw;
@@ -328,4 +389,198 @@ body {
     position: absolute;
     top: -3vw;
     right: 15vw;
+} */
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Editor  */
+
+.editor-image {
+    position: absolute;
+    top: 8vw;
+    left: 2vw;
+    width: 35vw;
+    height: auto;
+}
+
+#editor-bio {
+    width: 25vw;
+    position: absolute;
+    top: 7vw;
+    left: 39vw;
+    top: 32vw;
+    left: 2vw;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.2vw;
+    line-height: 2vw;
+}
+
+#editor-bio button {
+    height: 4vh;
+    width: 8vw;
+    background-color: rgba(116, 153, 241, 255);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    border: black solid 1.5px;
+}
+
+#editor-upload {
+    width: 20vw;
+    position: absolute;
+    top: 7vw;
+    left: 39vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: left;
+}
+
+#editor-upload h2 {
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.4vw;
+    color: rgba(43, 70, 139, 255);
+}
+
+#editor-upload-picture {
+    height: 7vh;
+    width: 16vw;
+}
+
+#editor-upload-submit {
+    height: 4vh;
+    width: 8vw;
+    background-color: rgba(116, 153, 241, 255);
+    color: white;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    border: black solid 1.5px;
+}
+
+#editor-bio h2 {
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.4vw;
+    color: rgba(43, 70, 139, 255);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Other people  */
+
+#others img {
+    position: absolute;
+    top: 8vw;
+    left: 2vw;
+    width: 25vw;
+    height: auto;
+    border: black solid 1.5px;
+}
+
+#others h2 {
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.4vw;
+    color: rgba(43, 70, 139, 255);
+    position: absolute;
+    top: 12vw;
+    left: 30vw;
+}
+
+#others p {
+    width: 25vw;
+    position: absolute;
+    top: 15vw;
+    left: 30vw;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.2vw;
+    line-height: 2vw;
+}
+
+#others-button {
+    height: 5vh;
+    width: 14vw;
+    background-color: rgba(116, 153, 241, 255);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    border: black solid 1.5px;
+    position: absolute;
+    left: 30vw;
+    top: 8vw;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - People search  */
+
+#people-info {
+    width: 51vw;
+    height: 18vw;
+    list-style-type: none;
+    position: absolute;
+    bottom: 10vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.2vw;
+    color: rgba(43, 70, 139, 255);
+}
+
+#people-info li {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#people-info img {
+    width: 15vw;
+    height: 15vw;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 10px solid rgba(221, 229, 232, 255);
+}
+
+#people-search {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 12vw;
+    left: 19vw;
+}
+
+#people-search p {
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.4vw;
+    color: rgba(43, 70, 139, 255);
+}
+
+#people-search input {
+    text-decoration: none;
+    height: 5vh;
+    width: 12vw;
+    font-family: "Comfortaa";
+    font-size: 1vw;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    border: black solid 1.5px;
 }

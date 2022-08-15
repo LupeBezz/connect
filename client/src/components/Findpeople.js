@@ -6,11 +6,12 @@ import { Component, useState, useEffect } from "react";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the FindPeople component
 
-function FindPeople() {
+function FindPeople(isFindPeopleOpen) {
     const [users, setUsers] = useState([]);
     const [first, setFirst] = useState([]);
 
     useEffect(() => {
+        isFindPeopleOpen = true;
         //console.log("useEffect -fetch for last users- is running once");
         fetch("/lastusers")
             .then((response) => response.json())
@@ -53,26 +54,29 @@ function FindPeople() {
 
     return (
         <>
-            <h1>Find your friends here:</h1>
-            <ul>
+            {/* <h1>Find your friends here:</h1> */}
+            <ul id="people-info">
                 {users.map((item, idx) => (
                     <li key={idx}>
-                        {item.first} {item.last}
                         <a href={"/username/" + item.id}>
                             <img
                                 height="100px"
                                 src={item.url || "./images/strawberry-user.jpg"}
                             />
                         </a>
+                        {item.first} {item.last}
                     </li>
                 ))}
             </ul>
-            <input
-                type="text"
-                name="firstName"
-                placeholder="First Name"
-                onChange={(e) => setFirst(e.target.value)}
-            ></input>
+            <div id="people-search">
+                <p>Who are you looking for?</p>
+                <input
+                    type="text"
+                    name="firstName"
+                    placeholder="type here name"
+                    onChange={(e) => setFirst(e.target.value)}
+                ></input>
+            </div>
         </>
     );
 }
