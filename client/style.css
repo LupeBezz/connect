@@ -487,7 +487,8 @@ body {
     font-family: "Comfortaa";
     font-weight: 200;
     font-size: 1.4vw;
-    color: rgba(43, 70, 139, 255);
+    color: black;
+    font-weight: 700;
     position: absolute;
     top: 12vw;
     left: 30vw;
@@ -528,14 +529,14 @@ body {
     height: 18vw;
     list-style-type: none;
     position: absolute;
-    bottom: 10vw;
+    bottom: 12vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-family: "Comfortaa";
     font-weight: 200;
     font-size: 1.2vw;
-    color: rgba(43, 70, 139, 255);
+    color: black;
 }
 
 #people-info li {
@@ -546,11 +547,11 @@ body {
 }
 
 #people-info img {
-    width: 15vw;
-    height: 15vw;
+    width: 14vw;
+    height: 14vw;
     border-radius: 50%;
     object-fit: cover;
-    border: 10px solid rgba(221, 229, 232, 255);
+    /* border: 10px solid rgba(221, 229, 232, 255); */
 }
 
 #people-search {
@@ -565,9 +566,9 @@ body {
 
 #people-search p {
     font-family: "Comfortaa";
-    font-weight: 200;
-    font-size: 1.4vw;
-    color: rgba(43, 70, 139, 255);
+    font-weight: 700;
+    font-size: 1.5vw;
+    color: black;
 }
 
 #people-search input {
@@ -583,4 +584,142 @@ body {
     font-family: "Comfortaa";
     font-weight: 700;
     border: black solid 1.5px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Friends  */
+
+#list-friends {
+    width: 51vw;
+    height: 18vw;
+    list-style-type: none;
+    position: absolute;
+    bottom: 13vw;
+    left: 2vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.2vw;
+    color: black;
+}
+
+#list-friends div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#list-friends img {
+    width: 14vw;
+    height: 14vw;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#list-friends button {
+    height: 2vw;
+    width: 5.5vw;
+    background-color: rgba(116, 153, 241, 255);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    border: black solid 1.5px;
+}
+
+#list-wannabes {
+    width: 51vw;
+    height: 18vw;
+    list-style-type: none;
+    position: absolute;
+    bottom: 13vw;
+    left: 2vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.2vw;
+    color: black;
+}
+
+#list-wannabes div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#list-wannabes img {
+    width: 14vw;
+    height: 14vw;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#list-wannabes button {
+    height: 2vw;
+    width: 5.5vw;
+    background-color: rgba(116, 153, 241, 255);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    border: black solid 1.5px;
+}
+
+#button-friends {
+    border: black solid 1.5px;
+    box-shadow: 5px 5px black;
+    width: 7vw;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    text-align: center;
+    margin-left: 2vw;
+    position: absolute;
+    top: 8vw;
+    z-index: 1;
+}
+
+#button-requests {
+    border: black solid 1.5px;
+    box-shadow: 5px 5px black;
+    width: 7vw;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    text-align: center;
+    margin-left: 10vw;
+    position: absolute;
+    top: 8vw;
+    z-index: 1;
+}
+
+.button-active {
+    height: 5vw;
+    background-color: rgba(230, 110, 40, 255);
+}
+
+.button-inactive {
+    height: 3vw;
+    background-color: rgba(260, 160, 50, 255);
+}
+
+.list-title {
+    display: flex;
+    align-items: center;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    font-size: 1.4vw;
+    color: black;
+    position: absolute;
+    top: 7.5vw;
+    right: 46vw;
 }

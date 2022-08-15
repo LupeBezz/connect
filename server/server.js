@@ -414,9 +414,9 @@ app.post("/friendship/accept/:id", function (req, res) {
     db.acceptFriendship(req.session.userId, req.params.id)
         .then((results) => {
             console.log("results :", results);
-            // res.json({
-            //     results,
-            // });
+            res.json({
+                results,
+            });
         })
         .catch((error) => console.log("error in acceptFriendship: ", error));
 });
@@ -454,13 +454,14 @@ app.get("/friendship/check/:id", function (req, res) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET request > get friends and wannabes
 
 app.get("/friends-and-wannabes", function (req, res) {
-    console.log("req.session.userId: ", req.session.userId);
+    console.log(
+        "inside /friends-and-wannabes req.session.userId: ",
+        req.session.userId
+    );
     db.getFriendsAndWannabes(req.session.userId)
         .then((results) => {
             console.log("results getFriendsAndWannabes :", results);
-            res.json({
-                results,
-            });
+            res.json(results.rows);
         })
         .catch((error) =>
             console.log("error in getFriendsAndWannabes: ", error)

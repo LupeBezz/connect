@@ -3,6 +3,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
 
 import { Component, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the FindPeople component
 
@@ -58,12 +59,12 @@ function FindPeople(isFindPeopleOpen) {
             <ul id="people-info">
                 {users.map((item, idx) => (
                     <li key={idx}>
-                        <a href={"/username/" + item.id}>
+                        <Link to={"/username/" + item.id}>
                             <img
                                 height="100px"
-                                src={item.url || "./images/strawberry-user.jpg"}
+                                src={item.url || "./images/her.jpg"}
                             />
-                        </a>
+                        </Link>
                         {item.first} {item.last}
                     </li>
                 ))}
