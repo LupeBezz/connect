@@ -22,7 +22,7 @@ class Uploader extends Component {
     render() {
         return (
             <div id="editor-upload">
-                <h2>Change picture</h2>
+                <h2>Your picture</h2>
 
                 <form method="post" onSubmit={this.props.uploadPicture}>
                     <input
@@ -37,8 +37,10 @@ class Uploader extends Component {
                         id="editor-upload-submit"
                     />
                 </form>
-                {this.state.errorMessage && (
-                    <p className="error">{this.state.errorMessage}</p>
+                {this.props.errorMessageUploader && (
+                    <p className="uploader-error">
+                        {this.props.errorMessageUploader}
+                    </p>
                 )}
             </div>
         );

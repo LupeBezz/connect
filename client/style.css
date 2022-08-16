@@ -5,7 +5,6 @@ body {
     margin: 0;
     width: 100%;
     height: auto;
-    /* background-color: blanchedalmond; */
 }
 
 #layout-top-line {
@@ -376,21 +375,6 @@ body {
     right: 15vw;
 }
 
-/* #profile-pic h2 {
-    text-decoration: none;
-    height: 15vh;
-    margin-right: 5vw;
-    display: flex;
-    align-items: center;
-    font-family: "Comfortaa";
-    font-weight: 400;
-    font-size: 2.5vw;
-    color: rgba(43, 70, 139, 255);
-    position: absolute;
-    top: -3vw;
-    right: 15vw;
-} */
-
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Editor  */
 
 .editor-image {
@@ -404,10 +388,8 @@ body {
 #editor-bio {
     width: 25vw;
     position: absolute;
-    top: 7vw;
+    top: 22vw;
     left: 39vw;
-    top: 32vw;
-    left: 2vw;
     font-family: "Comfortaa";
     font-weight: 200;
     font-size: 1.2vw;
@@ -428,6 +410,13 @@ body {
     border: black solid 1.5px;
 }
 
+#editor-bio h2 {
+    font-family: "Comfortaa";
+    font-weight: 700;
+    font-size: 1.4vw;
+    color: black;
+}
+
 #editor-upload {
     width: 20vw;
     position: absolute;
@@ -441,9 +430,9 @@ body {
 
 #editor-upload h2 {
     font-family: "Comfortaa";
-    font-weight: 200;
+    font-weight: 700;
     font-size: 1.4vw;
-    color: rgba(43, 70, 139, 255);
+    color: black;
 }
 
 #editor-upload-picture {
@@ -456,20 +445,17 @@ body {
     width: 8vw;
     background-color: rgba(116, 153, 241, 255);
     color: white;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
     box-shadow: 5px 5px black;
     font-family: "Comfortaa";
     font-weight: 700;
     border: black solid 1.5px;
 }
 
-#editor-bio h2 {
+.uploader-error {
+    color: red;
     font-family: "Comfortaa";
-    font-weight: 200;
-    font-size: 1.4vw;
-    color: rgba(43, 70, 139, 255);
+    font-weight: 700;
+    padding-top: 1vw;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Other people  */
@@ -529,7 +515,7 @@ body {
     height: 18vw;
     list-style-type: none;
     position: absolute;
-    bottom: 12vw;
+    top: 21vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -551,7 +537,6 @@ body {
     height: 14vw;
     border-radius: 50%;
     object-fit: cover;
-    /* border: 10px solid rgba(221, 229, 232, 255); */
 }
 
 #people-search {
@@ -560,8 +545,8 @@ body {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 12vw;
-    left: 19vw;
+    top: 7vw;
+    left: 14.5vw;
 }
 
 #people-search p {
@@ -590,14 +575,16 @@ body {
 
 #list-friends {
     width: 51vw;
-    height: 18vw;
+    height: 22vw;
     list-style-type: none;
     position: absolute;
-    bottom: 13vw;
+    top: 22vw;
     left: 2vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
+    overflow: scroll;
     font-family: "Comfortaa";
     font-weight: 200;
     font-size: 1.2vw;
@@ -605,10 +592,13 @@ body {
 }
 
 #list-friends div {
+    height: 18vw;
+    width: 15vw;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    padding-bottom: 5vw;
 }
 
 #list-friends img {
@@ -620,7 +610,7 @@ body {
 
 #list-friends button {
     height: 2vw;
-    width: 5.5vw;
+    width: 6vw;
     background-color: rgba(116, 153, 241, 255);
     color: white;
     display: flex;
@@ -634,14 +624,16 @@ body {
 
 #list-wannabes {
     width: 51vw;
-    height: 18vw;
+    height: 24vw;
     list-style-type: none;
     position: absolute;
-    bottom: 13vw;
+    top: 22vw;
     left: 2vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
+    overflow: scroll;
     font-family: "Comfortaa";
     font-weight: 200;
     font-size: 1.2vw;
@@ -649,10 +641,13 @@ body {
 }
 
 #list-wannabes div {
+    height: 20vw;
+    width: 15vw;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    padding-bottom: 5vw;
 }
 
 #list-wannabes img {
@@ -674,6 +669,7 @@ body {
     font-family: "Comfortaa";
     font-weight: 700;
     border: black solid 1.5px;
+    margin-bottom: 1vw;
 }
 
 #button-friends {
@@ -721,5 +717,17 @@ body {
     color: black;
     position: absolute;
     top: 7.5vw;
+    right: 46vw;
+}
+
+#scroll {
+    display: flex;
+    align-items: center;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    font-size: 1.4vw;
+    color: rgba(230, 110, 40, 255);
+    position: absolute;
+    top: 10vw;
     right: 46vw;
 }

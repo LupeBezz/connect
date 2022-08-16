@@ -8,7 +8,7 @@ function ProfilePic({ firstName, lastName, userId, picture, toggleModal }) {
             <div id="profile-pic">
                 <img
                     // onClick={toggleModal}
-                    src={picture || "./images/strawberry-user.jpg"}
+                    src={picture || "./images/her.jpg"}
                     height="100px"
                     alt={firstName + " " + lastName}
                 ></img>

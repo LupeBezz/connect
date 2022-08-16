@@ -369,7 +369,7 @@ app.get("/otherusersinfo/:id", function (req, res) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > get info from last three users
 
 app.get("/lastusers", function (req, res) {
-    db.getLastUsers()
+    db.getLastUsers(req.session.userId)
         .then((results) => {
             console.log("results :", results);
             res.json({

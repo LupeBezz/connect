@@ -3,7 +3,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Imports
 
 import { combineReducers } from "redux";
-import friendsAndWannabesReducer from "./friends/slice.js";
+import friendsAndWannabesReducer from "./friends/slice";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - combine Reducers
 

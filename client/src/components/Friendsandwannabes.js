@@ -11,9 +11,10 @@ import { useParams, useHistory, Link } from "react-router-dom";
 
 import {
     acceptFriend,
+    rejectFriend,
     unfriend,
     receiveFriendsAndWannabes,
-} from "../redux/friends/slice";
+} from "../redux/friends/slice.js";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the FriendsAndWannabes component
 
@@ -28,11 +29,12 @@ function FriendsAndWannabes() {
         (state) =>
             state.friends && state.friends.filter((friend) => friend.accepted)
     );
-
+    console.log("friends in state 01, friends", friends);
     const wannabes = useSelector(
         (state) =>
             state.friends && state.friends.filter((friend) => !friend.accepted)
     );
+    console.log("wannabes in state 01, friends", wannabes);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - USE EFFECT RUNS ONCE TO GET ALL FRIENDS AND WANNABES //
 
@@ -53,13 +55,14 @@ function FriendsAndWannabes() {
         // }
     }, []);
 
+    // while we wait for the fetch above...
     if (!friends) {
         return null;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function ACCEPT FRIEND //
 
-    const acceptFriend = async (id) => {
+    const handleAcceptFriend = async (id) => {
         console.log("acceptFriend, id: ", id);
         const res = await fetch(`/friendship/accept/${id}`, {
             method: "POST",
@@ -73,9 +76,29 @@ function FriendsAndWannabes() {
         }
     };
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function REJECT FRIEND //
+
+    const handleRejectFriend = async (id) => {
+        try {
+            console.log("rejectFriend, id: ", id);
+            const res = await fetch(`/friendship/delete/${id}`, {
+                method: "POST",
+            });
+            const data = await res.json();
+            console.log(`data from /friendship/delete/${id}`, data);
+
+            if (data) {
+                //now we want to update this info to the global state: dispatch > action creator
+                dispatch(rejectFriend(id));
+            }
+        } catch (err) {
+            console.log("error after rejectFriend: ", err);
+        }
+    };
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function UNFRIEND //
 
-    const unfriend = async (id) => {
+    const handleUnfriend = async (id) => {
         console.log("unfriend, id: ", id);
         const res = await fetch(`/friendship/delete/${id}`, {
             method: "POST",
@@ -127,6 +150,7 @@ function FriendsAndWannabes() {
             >
                 Requests
             </button>
+            <p id="scroll">↓ Scroll for more ↓</p>
 
             {displayFriends && (
                 <div>
@@ -140,14 +164,14 @@ function FriendsAndWannabes() {
                                     <Link to={"/username/" + friend.id}>
                                         <img height="100px" src={friend.url} />
                                     </Link>
-                                    <div id="list-friends-info">
+                                    <div>
                                         <p>
                                             {friend.first} {friend.last}
                                         </p>
                                         <button
-                                            onClick={() => {
-                                                unfriend(friend.id);
-                                            }}
+                                            onClick={() =>
+                                                handleUnfriend(friend.id)
+                                            }
                                         >
                                             Unfriend
                                         </button>
@@ -176,17 +200,30 @@ function FriendsAndWannabes() {
                                             }
                                         />
                                     </Link>
-                                    <div id="list-wannabes-info">
+                                    <div>
                                         <p>
                                             {wannabe.first} {wannabe.last}
                                         </p>
-                                        <button
-                                            onClick={() => {
-                                                acceptFriend(wannabe.id);
-                                            }}
-                                        >
-                                            Accept
-                                        </button>
+                                        <div id="list-wannabes-buttons">
+                                            <button
+                                                onClick={() =>
+                                                    handleAcceptFriend(
+                                                        wannabe.id
+                                                    )
+                                                }
+                                            >
+                                                Accept
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handleRejectFriend(
+                                                        wannabe.id
+                                                    )
+                                                }
+                                            >
+                                                Reject
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             );

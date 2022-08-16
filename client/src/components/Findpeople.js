@@ -8,8 +8,9 @@ import { Link } from "react-router-dom";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the FindPeople component
 
 function FindPeople(isFindPeopleOpen) {
-    const [users, setUsers] = useState([]);
-    const [first, setFirst] = useState([]);
+    const [lastUsers, setLastUsers] = useState([]);
+    const [usersByName, setUsersByName] = useState([]);
+    const [first, setFirst] = useState("");
 
     useEffect(() => {
         isFindPeopleOpen = true;
@@ -19,7 +20,7 @@ function FindPeople(isFindPeopleOpen) {
             .then((data) => {
                 // console.log("success in fetch after getLastUSers");
                 // console.log("data.results.rows: ", data.results.rows);
-                setUsers(data.results.rows);
+                setLastUsers(data.results.rows);
             })
             .catch((error) => {
                 console.log("error on fetch after getLastUsers: ", error);
@@ -28,9 +29,10 @@ function FindPeople(isFindPeopleOpen) {
 
     useEffect(() => {
         let abort;
-        console.log(
-            "useEffect -search people by first name- is running everytime the user does a search"
-        );
+        // console.log(
+        //     "useEffect -search people by first name- is running everytime the user does a search"
+        // );
+
         (async () => {
             try {
                 const data = await fetch("/lastusersbyname", {
@@ -42,7 +44,7 @@ function FindPeople(isFindPeopleOpen) {
                 }).then((response) => response.json());
 
                 if (!abort) {
-                    setUsers(data.results.rows);
+                    setUsersByName(data.results.rows);
                 }
             } catch (error) {
                 console.log(error);
@@ -55,22 +57,38 @@ function FindPeople(isFindPeopleOpen) {
 
     return (
         <>
-            {/* <h1>Find your friends here:</h1> */}
-            <ul id="people-info">
-                {users.map((item, idx) => (
-                    <li key={idx}>
-                        <Link to={"/username/" + item.id}>
-                            <img
-                                height="100px"
-                                src={item.url || "./images/her.jpg"}
-                            />
-                        </Link>
-                        {item.first} {item.last}
-                    </li>
-                ))}
-            </ul>
+            {!first && (
+                <ul id="people-info">
+                    {lastUsers.map((item, idx) => (
+                        <li key={idx}>
+                            <Link to={"/username/" + item.id}>
+                                <img
+                                    height="100px"
+                                    src={item.url || "./images/her.jpg"}
+                                />
+                            </Link>
+                            {item.first} {item.last}
+                        </li>
+                    ))}
+                </ul>
+            )}
+            {first && (
+                <ul id="people-info">
+                    {usersByName.map((item, idx) => (
+                        <li key={idx}>
+                            <Link to={"/username/" + item.id}>
+                                <img
+                                    height="100px"
+                                    src={item.url || "./images/her.jpg"}
+                                />
+                            </Link>
+                            {item.first} {item.last}
+                        </li>
+                    ))}
+                </ul>
+            )}
             <div id="people-search">
-                <p>Who are you looking for?</p>
+                <p>Looking for someone in particular?</p>
                 <input
                     type="text"
                     name="firstName"

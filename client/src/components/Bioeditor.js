@@ -59,7 +59,7 @@ class BioEditor extends Component {
         return (
             <>
                 <div id="editor-bio">
-                    {/* <h2>My bio</h2> */}
+                    <h2>Your bio</h2>
                     {this.state.isEditorOpen ? (
                         <>
                             <textarea
@@ -85,7 +85,7 @@ class BioEditor extends Component {
                                 <>
                                     <p>{this.props.bio}</p>
                                     <button onClick={this.toggleEditor}>
-                                        Edit
+                                        edit
                                     </button>
                                 </>
                             ) : (

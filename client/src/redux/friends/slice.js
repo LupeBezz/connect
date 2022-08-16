@@ -11,6 +11,7 @@ function friendsAndWannabesReducer(friends = [], action) {
     // TO DO: split up the data depending if friendship is accepted or not
     if (action.type == "friends-and-wannabes/receive") {
         friends = action.payload.friends;
+        console.log("friends in receive:", friends);
     }
 
     //Reducer for ACCEPT
@@ -18,14 +19,23 @@ function friendsAndWannabesReducer(friends = [], action) {
     // we want to loop through it, find the one with the same id, then accept friendship (set accepted to true)
     // we need to do all of this INMUTABLY - no direct mutation! - use MAP
 
-    if (action.type == "friends-and-wannabes/accept") {
+    if (action.type === "friends-and-wannabes/accept") {
         friends = friends.map((friend) => {
-            if (friend.id === action.payload.id) {
+            if (friend.id == action.payload.id) {
                 return { ...friend, accepted: true };
             } else {
                 return friend;
             }
         });
+    }
+
+    //Reducer for REJECT
+    // we have an array of friends in global state
+    // we want to loop through it, find the one with the same id, then reject friendship (erase line)
+    // we need to do all of this INMUTABLY - no direct mutation! - use MAP
+
+    if (action.type === "friends-and-wannabes/reject") {
+        friends = friends.filter((friend) => friend.id !== action.payload.id);
     }
 
     //Reducer for UNFRIEND
@@ -35,7 +45,7 @@ function friendsAndWannabesReducer(friends = [], action) {
 
     if (action.type === "friends-and-wannabes/unfriend") {
         friends = friends.map((friend) => {
-            if (friend.id === action.payload.id) {
+            if (friend.id == action.payload.id) {
                 return { ...friend, accepted: false };
             } else {
                 return friend;
@@ -68,6 +78,11 @@ export function receiveFriendsAndWannabes(friends) {
 // Action Creator for ACCEPT
 export function acceptFriend(id) {
     return { type: "friends-and-wannabes/accept", payload: { id } };
+}
+
+// Action Creator for REJECT
+export function rejectFriend(id) {
+    return { type: "friends-and-wannabes/reject", payload: { id } };
 }
 
 // Action Creator for UNFRIEND

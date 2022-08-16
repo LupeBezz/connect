@@ -36,6 +36,7 @@ class App extends Component {
             message: "",
             bio: "",
             errorMessage: "",
+            errorMessageUploader: "",
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.uploadPicture = this.uploadPicture.bind(this);
@@ -113,26 +114,31 @@ class App extends Component {
         //we want to prevent the automatic upload, because we want to do dome checks
         e.preventDefault();
 
-        console.log("form trying to submit");
+        //console.log("form trying to submit");
 
         // check if there is a file or not - fileInput.files returns an array with (or without!) files
         const form = e.currentTarget;
         const fileInput = form.querySelector("input[type=file]");
 
         if (fileInput.files.length < 1) {
-            this.setState.errorMessage = "please select a file!";
+            this.setState({ errorMessageUploader: "please select a file!" });
+            console.log("error in uploader: no file");
             return;
         }
 
         //is the file too big? (max 10MB = 10.000.000)
 
         if (fileInput.files[0].size > 2000000) {
-            this.setState.message = "your picture cannot be bigger than 2MB";
+            this.setState({
+                errorMessageUploader: "your picture cannot be bigger than 2MB",
+            });
             return;
         }
 
-        //now that we know that everything is ok, we submit the form
-        this.setState.message = "your file is being uploaded";
+        // now that we know that everything is ok, we submit the form
+        this.setState({
+            errorMessageUploader: "your picture is being uploaded",
+        });
 
         const formData = new FormData(form);
         fetch("/uploadimage.json", { method: "post", body: formData })
@@ -142,14 +148,16 @@ class App extends Component {
                 console.log("serverData: ", serverData);
                 this.setState({
                     picture: serverData.fullUrl,
-                    errorMessage: serverData.message,
+                    errorMessageUploader: "",
                 });
                 this.toggleModal();
                 //console.log(this.state.picture);
             })
             .catch((err) => {
-                this.setState.message =
-                    "There has been a problem, please try again";
+                this.setState({
+                    errorMessageUploader:
+                        "There has been a problem, please try again",
+                });
             });
     }
     saveDraftBio(draftBio) {
@@ -213,11 +221,11 @@ class App extends Component {
                             />
                         </Route>
                         <Route exact path="/profile">
-                            {this.state.errorMessage && (
+                            {/* {this.state.errorMessage && (
                                 <p className="error">
                                     {this.state.errorMessage}
                                 </p>
-                            )}
+                            )} */}
                             {/* {this.state.isModalOpen && ( )} */}
                             <>
                                 <Profile
@@ -232,7 +240,9 @@ class App extends Component {
                                 <Uploader
                                     firstName={this.state.firstName}
                                     uploadPicture={this.uploadPicture}
-                                    errorMessage={this.errorMessage}
+                                    errorMessageUploader={
+                                        this.state.errorMessageUploader
+                                    }
                                 />
                             </>
                         </Route>
