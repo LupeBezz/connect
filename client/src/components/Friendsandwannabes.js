@@ -29,23 +29,23 @@ function FriendsAndWannabes() {
         (state) =>
             state.friends && state.friends.filter((friend) => friend.accepted)
     );
-    console.log("friends in state 01, friends", friends);
+    //console.log("friends in state 01, friends", friends);
     const wannabes = useSelector(
         (state) =>
             state.friends && state.friends.filter((friend) => !friend.accepted)
     );
-    console.log("wannabes in state 01, friends", wannabes);
+    //console.log("wannabes in state 01, friends", wannabes);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - USE EFFECT RUNS ONCE TO GET ALL FRIENDS AND WANNABES //
 
     useEffect(() => {
-        console.log("friends inside useEffect: ", friends);
+        //console.log("friends inside useEffect: ", friends);
         // if (!friends) {
         (async () => {
-            console.log("inside async");
+            //console.log("inside async");
             const res = await fetch("/friends-and-wannabes");
             const data = await res.json();
-            console.log("data after getFriendsAndWannabes: ", data);
+            //console.log("data after getFriendsAndWannabes: ", data);
 
             // DISPATCH - this line starts the proccess of adding info to Redux
             // to dispatch we pass an action creator (function that returns an action)
@@ -63,12 +63,12 @@ function FriendsAndWannabes() {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function ACCEPT FRIEND //
 
     const handleAcceptFriend = async (id) => {
-        console.log("acceptFriend, id: ", id);
+        //console.log("acceptFriend, id: ", id);
         const res = await fetch(`/friendship/accept/${id}`, {
             method: "POST",
         });
         const data = await res.json();
-        console.log(`data from /friendship/accept/${id}`, data);
+        //console.log(`data from /friendship/accept/${id}`, data);
 
         if (data) {
             //now we want to update this info to the global state: dispatch > action creator
@@ -80,12 +80,12 @@ function FriendsAndWannabes() {
 
     const handleRejectFriend = async (id) => {
         try {
-            console.log("rejectFriend, id: ", id);
+            //console.log("rejectFriend, id: ", id);
             const res = await fetch(`/friendship/delete/${id}`, {
                 method: "POST",
             });
             const data = await res.json();
-            console.log(`data from /friendship/delete/${id}`, data);
+            //console.log(`data from /friendship/delete/${id}`, data);
 
             if (data) {
                 //now we want to update this info to the global state: dispatch > action creator
@@ -99,12 +99,12 @@ function FriendsAndWannabes() {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function UNFRIEND //
 
     const handleUnfriend = async (id) => {
-        console.log("unfriend, id: ", id);
+        //console.log("unfriend, id: ", id);
         const res = await fetch(`/friendship/delete/${id}`, {
             method: "POST",
         });
         const data = await res.json();
-        console.log(`data from /friendship/delete/${id}`, data);
+        //console.log(`data from /friendship/delete/${id}`, data);
 
         if (data) {
             //now we want to update this info to the global state: dispatch > action creator
@@ -115,15 +115,15 @@ function FriendsAndWannabes() {
     const showFriends = () => {
         setDisplayFriends(true);
         setDisplayWannabes(false);
-        console.log("displayFriends: ", displayFriends);
-        console.log("displayWannabes: ", displayWannabes);
+        //console.log("displayFriends: ", displayFriends);
+        //console.log("displayWannabes: ", displayWannabes);
     };
 
     const showWannabes = () => {
         setDisplayWannabes(true);
         setDisplayFriends(false);
-        console.log("displayFriends: ", displayFriends);
-        console.log("displayWannabes: ", displayWannabes);
+        //console.log("displayFriends: ", displayFriends);
+        //console.log("displayWannabes: ", displayWannabes);
     };
 
     return (

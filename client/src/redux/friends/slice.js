@@ -11,7 +11,7 @@ function friendsAndWannabesReducer(friends = [], action) {
     // TO DO: split up the data depending if friendship is accepted or not
     if (action.type == "friends-and-wannabes/receive") {
         friends = action.payload.friends;
-        console.log("friends in receive:", friends);
+        //console.log("friends in receive:", friends);
     }
 
     //Reducer for ACCEPT
@@ -67,7 +67,7 @@ function friendsAndWannabesReducer(friends = [], action) {
 
 // Action Creator for RECEIVE
 export function receiveFriendsAndWannabes(friends) {
-    console.log("friends in action", friends);
+    //console.log("friends in action", friends);
 
     return {
         type: "friends-and-wannabes/receive",

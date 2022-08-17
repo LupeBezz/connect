@@ -7,14 +7,14 @@ const app = express();
 const compression = require("compression");
 const path = require("path");
 
+const server = require("http").Server(app);
+
 app.use(compression());
 
 const bcrypt = require("bcryptjs");
 
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-
-const cookieSession = require("cookie-session");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); // to unpack JSON in the request body
@@ -36,15 +36,73 @@ app.use(express.static(path.join(__dirname, "uploads")));
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - cookie session
 
+const cookieSession = require("cookie-session");
+
 const SESSION_SECRET =
     process.env.SESSION_SECRET || require("./secrets.json").SESSION_SECRET;
 
-app.use(
-    cookieSession({
-        secret: SESSION_SECRET,
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+const cookieSessionMiddleware = cookieSession({
+    secret: SESSION_SECRET,
+    maxAge: 1000 * 60 * 60 * 24 * 14,
+});
+
+app.use(cookieSessionMiddleware);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - socket io
+
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000")),
+});
+
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
+io.on("connection", (socket) => {
+    // if (!socket.request.session.userId) {
+    //     return socket.disconnect(true);
+    // }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - on connect
+
+    const userId = socket.request.session.userId;
+    console.log(
+        `User with id: ${userId} and socket: ${socket.id} is connected`
+    );
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - on disconnect
+
+    socket.on("disconnect", () => {
+        console.log(
+            `User with id: ${userId} and socket: ${socket.id} has just disconnected`
+        );
+    });
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - emit chatMessages
+
+    // this will be emited to the socket that just connected, with a payload of an array of the last 10 messages
+
+    socket.emit("chatMessages", [
+        {
+            text: "first message",
+            author_id: 25,
+        },
+    ]);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - on chatNewMessage
+
+    // this event handler will be attached to the socket that just connected, two things must be done:
+    // - the new chat message must be stored in the db
+    // - an event must be emitted to ALL connected sockets, including the one sending the message. The payload for this event should include
+    //   the new chat message and its id as well as the id, first name, last name, and profile pic of the user who sent it.
+
+    socket.on("chatNewMessage", ({ message }) => {
+        console.log("message in chatNewMessage", message);
+        // here comes the db.function to save the message
+        io.emit("add-chatNewMessage", message);
+    });
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > register
 
@@ -371,7 +429,7 @@ app.get("/otherusersinfo/:id", function (req, res) {
 app.get("/lastusers", function (req, res) {
     db.getLastUsers(req.session.userId)
         .then((results) => {
-            console.log("results :", results);
+            //console.log("results :", results);
             res.json({
                 results,
             });
@@ -380,10 +438,10 @@ app.get("/lastusers", function (req, res) {
 });
 
 app.post("/lastusersbyname", function (req, res) {
-    console.log("req.body.first: ", req.body.first);
+    //console.log("req.body.first: ", req.body.first);
     db.getUsersByName(req.body.first)
         .then((results) => {
-            console.log("results :", results);
+            //console.log("results :", results);
             res.json({
                 results,
             });
@@ -394,11 +452,11 @@ app.post("/lastusersbyname", function (req, res) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > request friendship
 
 app.post("/friendship/request/:id", (req, res) => {
-    console.log("req.params.id: ", req.params.id);
-    console.log("req.session.userId: ", req.session.userId);
+    //console.log("req.params.id: ", req.params.id);
+    //console.log("req.session.userId: ", req.session.userId);
     db.requestFriendship(req.session.userId, req.params.id)
         .then((results) => {
-            console.log("results :", results);
+            //console.log("results :", results);
             res.json({
                 results,
             });
@@ -409,11 +467,11 @@ app.post("/friendship/request/:id", (req, res) => {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > accept friendship
 
 app.post("/friendship/accept/:id", function (req, res) {
-    console.log("req.params.id: ", req.params.id);
-    console.log("req.session.userId: ", req.session.userId);
+    //console.log("req.params.id: ", req.params.id);
+    //console.log("req.session.userId: ", req.session.userId);
     db.acceptFriendship(req.session.userId, req.params.id)
         .then((results) => {
-            console.log("results :", results);
+            //console.log("results :", results);
             res.json({
                 results,
             });
@@ -424,11 +482,11 @@ app.post("/friendship/accept/:id", function (req, res) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > delete friendship
 
 app.post("/friendship/delete/:id", function (req, res) {
-    console.log("req.params.id: ", req.params.id);
-    console.log("req.session.userId: ", req.session.userId);
+    //console.log("req.params.id: ", req.params.id);
+    //console.log("req.session.userId: ", req.session.userId);
     db.deleteFriendship(req.session.userId, req.params.id)
         .then((results) => {
-            console.log("results :", results);
+            //console.log("results :", results);
             res.json({
                 results,
             });
@@ -439,11 +497,11 @@ app.post("/friendship/delete/:id", function (req, res) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET request > check friendship
 
 app.get("/friendship/check/:id", function (req, res) {
-    console.log("req.params.id: ", req.params.id);
-    console.log("req.session.userId: ", req.session.userId);
+    //console.log("req.params.id: ", req.params.id);
+    //console.log("req.session.userId: ", req.session.userId);
     db.checkFriendship(req.session.userId, req.params.id)
         .then((results) => {
-            console.log("results check friendship :", results);
+            //console.log("results check friendship :", results);
             res.json({
                 results,
             });
@@ -454,13 +512,13 @@ app.get("/friendship/check/:id", function (req, res) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET request > get friends and wannabes
 
 app.get("/friends-and-wannabes", function (req, res) {
-    console.log(
-        "inside /friends-and-wannabes req.session.userId: ",
-        req.session.userId
-    );
+    // console.log(
+    //     "inside /friends-and-wannabes req.session.userId: ",
+    //     req.session.userId
+    // );
     db.getFriendsAndWannabes(req.session.userId)
         .then((results) => {
-            console.log("results getFriendsAndWannabes :", results);
+            //console.log("results getFriendsAndWannabes :", results);
             res.json(results.rows);
         })
         .catch((error) =>
@@ -492,6 +550,6 @@ app.get("*", function (req, res) {
 
 const PORT = 3001;
 
-app.listen(process.env.PORT || PORT, function () {
+server.listen(process.env.PORT || PORT, function () {
     console.log("I'm listening.");
 });

@@ -10,11 +10,16 @@ import * as immutableState from "redux-immutable-state-invariant";
 import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./redux/reducer.js";
 
+// import { io } from "socket.io-client";
+// const socket = io.connect();
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
 //if exported "default" import withouth {}
 
 import Welcome from "./components/Welcome";
 import App from "./components/App";
+
+import { init } from "./socket.js";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ReactDOM.render()
 
@@ -32,6 +37,7 @@ fetch("/users/id.json")
             ReactDOM.render(<Welcome />, document.querySelector("main"));
         } else {
             //visitor is registered, he should be redirected
+            init(store);
             ReactDOM.render(
                 <Provider store={store}>
                     {" "}

@@ -17,6 +17,7 @@ import FindPeople from "./Findpeople";
 import ProfileOthers from "./Profileothers";
 import Logout from "./Logout";
 import FriendsAndWannabes from "./Friendsandwannabes";
+import Chat from "./Chat";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the App component
 
@@ -258,6 +259,9 @@ class App extends Component {
                         <Route path="/friends">
                             <FriendsAndWannabes />
                         </Route>
+                        <Route path="/chat">
+                            <Chat />
+                        </Route>
                     </div>
 
                     <div
@@ -303,7 +307,7 @@ class App extends Component {
                         }
                     >
                         <Link
-                            to="/"
+                            to="/chat"
                             className="tab-text"
                             onClick={this.toggleTabsChat}
                         >

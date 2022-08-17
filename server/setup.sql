@@ -24,3 +24,10 @@ CREATE TABLE friendships (
     receiver_id INTEGER NOT NULL REFERENCES users(id),
     accepted BOOLEAN DEFAULT false
 );
+
+CREATE TABLE chat (
+    id SERIAL primary key,
+    text VARCHAR,
+    author_id INTEGER NOT NULL REFERENCES users(id),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
