@@ -19,14 +19,13 @@ export const init = (store) => {
 
         console.log("inside init");
 
-        socket.on("chatMessages", (messages) => {
-            console.log("inside socket.js > chatMessages");
-            store.dispatch(receiveMessages(messages));
+        socket.on("chatMessages", (lastMessages) => {
+            console.log("socket.js > chatMessages ", lastMessages);
+            store.dispatch(receiveMessages(lastMessages));
         });
 
-        // or should this be add-chatNewMessage?
-        socket.on("chatNewMessage", (message) => {
-            console.log("inside socket.js > add-chatNewMessage");
+        socket.on("add-chatNewMessage", (message) => {
+            console.log("socket.js > add-chatNewMessage: ", message);
             store.dispatch(saveMessage(message));
         });
 

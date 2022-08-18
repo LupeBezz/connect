@@ -511,11 +511,13 @@ body {
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - People search  */
 
 #people-info {
+    padding-left: 0;
     width: 51vw;
-    height: 18vw;
+    height: 35vw;
     list-style-type: none;
     position: absolute;
-    top: 21vw;
+    top: 8vw;
+    left: 2vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -523,13 +525,16 @@ body {
     font-weight: 200;
     font-size: 1.2vw;
     color: black;
+    background-color: rgba(221, 229, 232, 255);
+    border-radius: 1.5vw;
 }
 
 #people-info li {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    margin-bottom: 2vw;
 }
 
 #people-info img {
@@ -537,6 +542,7 @@ body {
     height: 14vw;
     border-radius: 50%;
     object-fit: cover;
+    margin: 1.2vw;
 }
 
 #people-search {
@@ -545,14 +551,14 @@ body {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 7vw;
-    left: 14.5vw;
+    top: 10vw;
+    left: 14vw;
 }
 
 #people-search p {
     font-family: "Comfortaa";
     font-weight: 700;
-    font-size: 1.5vw;
+    font-size: 1.4vw;
     color: black;
 }
 
@@ -573,13 +579,31 @@ body {
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Friends  */
 
-#list-friends {
+#list-background {
+    padding-left: 0;
     width: 51vw;
-    height: 22vw;
+    height: 35vw;
     list-style-type: none;
     position: absolute;
-    top: 22vw;
+    top: 9vw;
     left: 2vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.2vw;
+    color: black;
+    background-color: rgba(221, 229, 232, 255);
+    border-radius: 1.5vw;
+}
+
+#list-friends {
+    width: 51vw;
+    height: 24vw;
+    list-style-type: none;
+    position: absolute;
+    top: 11vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -606,6 +630,7 @@ body {
     height: 14vw;
     border-radius: 50%;
     object-fit: cover;
+    margin: 1.2vw;
 }
 
 #list-friends button {
@@ -622,13 +647,31 @@ body {
     border: black solid 1.5px;
 }
 
-#list-wannabes {
+#list-wannabes-background {
+    padding-left: 0;
     width: 51vw;
-    height: 24vw;
+    height: 38vw;
     list-style-type: none;
     position: absolute;
-    top: 22vw;
+    top: 9vw;
     left: 2vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "Comfortaa";
+    font-weight: 200;
+    font-size: 1.2vw;
+    color: black;
+    background-color: rgba(221, 229, 232, 255);
+    border-radius: 1.5vw;
+}
+
+#list-wannabes {
+    width: 51vw;
+    height: 26vw;
+    list-style-type: none;
+    position: absolute;
+    top: 11vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -641,7 +684,7 @@ body {
 }
 
 #list-wannabes div {
-    height: 20vw;
+    height: 22vw;
     width: 15vw;
     display: flex;
     flex-direction: column;
@@ -655,6 +698,7 @@ body {
     height: 14vw;
     border-radius: 50%;
     object-fit: cover;
+    margin: 1.2vw;
 }
 
 #list-wannabes button {
@@ -669,7 +713,7 @@ body {
     font-family: "Comfortaa";
     font-weight: 700;
     border: black solid 1.5px;
-    margin-bottom: 1vw;
+    margin-bottom: 0.75vw;
 }
 
 #button-friends {
@@ -681,7 +725,7 @@ body {
     text-align: center;
     margin-left: 2vw;
     position: absolute;
-    top: 8vw;
+    top: 8.5vw;
     z-index: 1;
 }
 
@@ -694,7 +738,7 @@ body {
     text-align: center;
     margin-left: 10vw;
     position: absolute;
-    top: 8vw;
+    top: 8.5vw;
     z-index: 1;
 }
 
@@ -716,8 +760,9 @@ body {
     font-size: 1.4vw;
     color: black;
     position: absolute;
-    top: 7.5vw;
-    right: 46vw;
+    top: 10vw;
+    right: 49vw;
+    z-index: 1;
 }
 
 #scroll {
@@ -728,6 +773,98 @@ body {
     font-size: 1.4vw;
     color: rgba(230, 110, 40, 255);
     position: absolute;
-    top: 10vw;
-    right: 46vw;
+    top: 12vw;
+    right: 49vw;
+    z-index: 1;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Chat  */
+
+#chat {
+    background-color: rgba(221, 229, 232, 255);
+    border-radius: 1.5vw;
+    width: 32vw;
+    height: 38vw;
+    position: absolute;
+    left: 30vw;
+    top: 8.5vw;
+    overflow: hidden;
+}
+
+#chat-send {
+    display: flex;
+    flex-direction: row;
+}
+
+#chat textarea {
+    height: 3.2vw;
+    width: 24vw;
+    margin-left: 1vw;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    padding-left: 1vw;
+    padding-top: 1vw;
+}
+
+#chat button {
+    border: black solid 1.5px;
+    box-shadow: 5px 5px black;
+    width: 4.5vw;
+    height: 4.5vw;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    text-align: center;
+    z-index: 1;
+}
+
+#chat-display {
+    height: 30vw;
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 1vw;
+    margin-right: 2vw;
+
+    overflow: scroll;
+}
+
+#chat-display img {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    object-fit: cover;
+    padding-right: 1vw;
+    padding-top: 0.75vw;
+    padding-bottom: 0.75vw;
+}
+
+#chat-message {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 2vw;
+}
+
+#chat-message-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#chat-message-text h4 {
+    color: black;
+    font-family: "Comfortaa";
+    font-weight: 700;
+    font-size: medium;
+    margin-top: 0;
+    margin-bottom: 0.05;
+}
+
+#chat-message-text p {
+    color: black;
+    font-family: "Comfortaa";
+    font-weight: 500;
+    font-size: small;
+    margin-bottom: 0;
+    margin-top: 0;
 }

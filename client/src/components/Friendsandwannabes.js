@@ -157,28 +157,33 @@ function FriendsAndWannabes() {
                     <h2 className="list-title">
                         These people are your current friends
                     </h2>
-                    <div id="list-friends">
-                        {friends.map((friend) => {
-                            return (
-                                <div key={friend.id}>
-                                    <Link to={"/username/" + friend.id}>
-                                        <img height="100px" src={friend.url} />
-                                    </Link>
-                                    <div>
-                                        <p>
-                                            {friend.first} {friend.last}
-                                        </p>
-                                        <button
-                                            onClick={() =>
-                                                handleUnfriend(friend.id)
-                                            }
-                                        >
-                                            Unfriend
-                                        </button>
+                    <div id="list-background">
+                        <div id="list-friends">
+                            {friends.map((friend) => {
+                                return (
+                                    <div key={friend.id}>
+                                        <Link to={"/username/" + friend.id}>
+                                            <img
+                                                height="100px"
+                                                src={friend.url}
+                                            />
+                                        </Link>
+                                        <div>
+                                            <p>
+                                                {friend.first} {friend.last}
+                                            </p>
+                                            <button
+                                                onClick={() =>
+                                                    handleUnfriend(friend.id)
+                                                }
+                                            >
+                                                Unfriend
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             )}
@@ -188,46 +193,48 @@ function FriendsAndWannabes() {
                     <h2 className="list-title">
                         These people sent you a friendship request
                     </h2>
-                    <div id="list-wannabes">
-                        {wannabes.map((wannabe) => {
-                            return (
-                                <div key={wannabe.id}>
-                                    <Link to={"/username/" + wannabe.id}>
-                                        <img
-                                            src={
-                                                wannabe.url ||
-                                                "./images/her.jpg"
-                                            }
-                                        />
-                                    </Link>
-                                    <div>
-                                        <p>
-                                            {wannabe.first} {wannabe.last}
-                                        </p>
-                                        <div id="list-wannabes-buttons">
-                                            <button
-                                                onClick={() =>
-                                                    handleAcceptFriend(
-                                                        wannabe.id
-                                                    )
+                    <div id="list-wannabes-background">
+                        <div id="list-wannabes">
+                            {wannabes.map((wannabe) => {
+                                return (
+                                    <div key={wannabe.id}>
+                                        <Link to={"/username/" + wannabe.id}>
+                                            <img
+                                                src={
+                                                    wannabe.url ||
+                                                    "./images/her.jpg"
                                                 }
-                                            >
-                                                Accept
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleRejectFriend(
-                                                        wannabe.id
-                                                    )
-                                                }
-                                            >
-                                                Reject
-                                            </button>
+                                            />
+                                        </Link>
+                                        <div>
+                                            <p>
+                                                {wannabe.first} {wannabe.last}
+                                            </p>
+                                            <div id="list-wannabes-buttons">
+                                                <button
+                                                    onClick={() =>
+                                                        handleAcceptFriend(
+                                                            wannabe.id
+                                                        )
+                                                    }
+                                                >
+                                                    Accept
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleRejectFriend(
+                                                            wannabe.id
+                                                        )
+                                                    }
+                                                >
+                                                    Reject
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             )}

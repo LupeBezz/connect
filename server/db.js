@@ -161,3 +161,18 @@ module.exports.getFriendsAndWannabes = (id) => {
         [id]
     );
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used to insert messages in the chat
+
+module.exports.insertMessage = (message, id) => {
+    return db.query(
+        `INSERT INTO chat (text, author_id) VALUES ($1, $2) RETURNING *`,
+        [message, id]
+    );
+};
+
+module.exports.getLastMessages = () => {
+    return db.query(
+        `SELECT users.id, first, last, url, text, timestamp FROM chat JOIN users ON author_id=users.id ORDER BY timestamp DESC LIMIT 10`
+    );
+};

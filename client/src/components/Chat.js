@@ -15,41 +15,33 @@ import { receiveMessages, saveMessage } from "../redux/messages/slice.js";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Chat component
 
 function Chat() {
-    const dispatch = useDispatch();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - USE EFFECT RUNS ONCE TO GET ALL MESSAGES //
 
     // here we get the information from redux global state
+
+    const dispatch = useDispatch();
+
     const messages = useSelector((state) => state.messages);
+    console.log("chat.js > messages in state: ", messages);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - USE EFFECT RUNS ONCE TO GET ALL FRIENDS AND WANNABES //
-
-    useEffect(() => {
-        //console.log("messages inside useEffect: ", messages);
-        // (async () => {
-        //     //console.log("inside async");
-        //     const res = await fetch("/chat/last-ten-messages");
-        //     const data = await res.json();
-        //     // DISPATCH - this line starts the proccess of adding info to Redux
-        //     // to dispatch we pass an action creator (function that returns an action)
-        //     // receiveMessages is imported from another file (slice.js) in redux/messages
-        //     dispatch(receiveMessages(data));
-        // })();
-    }, []);
+    // useEffect(() => {
+    //     console.log("chat.js > useEffect: ", messages);
+    //     (async () => {
+    //         const res = await fetch("/chat/last-ten-messages");
+    //         const data = await res.json();
+    //         // DISPATCH - this line starts the proccess of adding info to Redux
+    //         // to dispatch we pass an action creator (function that returns an action)
+    //         // receiveMessages is imported from another file (slice.js) in redux/messages
+    //         dispatch(receiveMessages(data));
+    //     })();
+    // }, []);
 
     // while we wait for the fetch above...
     if (!messages) {
         return null;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function ACCEPT FRIEND //
-
-    const handleSaveMessage = async () => {
-        const message = "test message for now";
-        console.log("handleSaveMessage: ", message);
-        //message comes from state
-        socket.emit("chatNewMessage", { message });
-    };
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function CHAT INPUT //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function SAVE MESSAGE //
 
     // In most chat UIs a newly received message will be added to the bottom of the display area and then automatically scrolled into view.
     // This effect can be achieved in CSS using flex-direction: column-reverse. To do it with Javascript you can set the scrollTop of the element every time you add a new message.
@@ -58,84 +50,86 @@ function Chat() {
     // If you are writing a function component, you can import and use the useRef hook.
     // You can then access the DOM element in your code using the current property of the ref.
     // If you are writing a function component, you would set elemRef.current.scrollTop in a function passed to useEffect.
-    const textareaRef = useRef();
 
     // When the user hits the enter key in this <textarea> or presses a "send" button, a 'chatNewMessage' event should be emitted.
 
-    const sendMessage = () => {
+    const textareaRef = useRef();
+
+    const handleSaveMessage = () => {
         const message = textareaRef.current.value;
-        // or should this be add-chatNewMessage?
-        socket.emit("chatNewMessage", {
-            // username: "username",
-            text: message,
-        });
+        // const message = "test message for now";
+        console.log("chat.js > handleSaveMessage ", message);
+        //message comes from state
+        socket.emit("chatNewMessage", { message });
         textareaRef.current.value = "";
         textareaRef.current.focus();
     };
 
     const onChange = (e) => {
         if (e.keyCode == 13 && !e.shiftKey) {
-            sendMessage();
+            handleSaveMessage();
         }
+    };
+
+    const parseDate = (timestamp) => {
+        let parsedDate =
+            timestamp.slice(8, 10) +
+            "/" +
+            timestamp.slice(5, 7) +
+            "/" +
+            timestamp.slice(0, 4) +
+            ", " +
+            timestamp.slice(11, 16);
+        return parsedDate;
     };
 
     return (
         <>
-            <h1>Chat</h1>
-            <textarea
-                ref={textareaRef}
-                placeholder="write your message here"
-                onKeyUp={onChange}
-            ></textarea>
+            <div id="chat">
+                <div id="chat-display">
+                    {messages.map((message) => {
+                        var parsedTimestamp = parseDate(message.timestamp);
+                        return (
+                            <div id="chat-message" key={Math.random()}>
+                                <Link to={"/username/" + message.id}>
+                                    <img
+                                        src={message.url || "./images/her.jpg"}
+                                    ></img>
+                                </Link>
+                                <div id="chat-message-text">
+                                    <h4>{message.text}</h4>
+                                    <p>
+                                        {message.first || "you"} {message.last}{" "}
+                                        - {parsedTimestamp}
+                                    </p>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div id="chat-send">
+                    <textarea
+                        ref={textareaRef}
+                        placeholder="write your message here"
+                        onKeyUp={onChange}
+                    ></textarea>
 
-            <button
-                id="chat-button"
-                onClick={() => handleSaveMessage()}
-                /* here comes the value of the textarea */
-            >
-                send
-            </button>
+                    <button
+                        id="chat-button"
+                        onClick={() => handleSaveMessage()}
+                    >
+                        send
+                    </button>
+                </div>
+            </div>
+            <img
+                id="main-image-kids"
+                src="/images/440300.jpg"
+                height="400px"
+                alt="kids"
+            />
         </>
     );
-    // return (
-    //     <>
-    //         <h1>Chat</h1>
-
-    //         <div id="chat-display">
-    //             {messages.map((message) => {
-    //                 return (
-    //                     <div key={Math.random()}>
-    //                         <p>{message.text}</p>
-    //                         <p>
-    //                             {/* here comes first name + last name of the author + posting date */}
-    //                         </p>
-    //                     </div>
-    //                 );
-    //             })}
-    //         </div>
-
-    // <textarea
-    //     ref={textareaRef}
-    //     placeholder="write your message here"
-    //     onKeyUp={onChange}
-    // ></textarea>
-
-    // <button
-    //     id="chat-button"
-    //     onClick={() => handleSaveMessage()}
-    //     /* here comes the value of the textarea */
-    // >
-    //     send
-    // </button>
-
-    //         <img
-    //             id="main-image-kids"
-    //             src="/images/440300.jpg"
-    //             height="400px"
-    //             alt="kids"
-    //         />
-    //     </>
-    // );
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports

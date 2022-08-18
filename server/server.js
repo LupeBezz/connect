@@ -60,10 +60,6 @@ io.use(function (socket, next) {
 });
 
 io.on("connection", (socket) => {
-    // if (!socket.request.session.userId) {
-    //     return socket.disconnect(true);
-    // }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - on connect
 
     const userId = socket.request.session.userId;
@@ -83,12 +79,23 @@ io.on("connection", (socket) => {
 
     // this will be emited to the socket that just connected, with a payload of an array of the last 10 messages
 
-    socket.emit("chatMessages", [
-        {
-            text: "first message",
-            author_id: 25,
-        },
-    ]);
+    var lastMessages;
+
+    db.getLastMessages()
+        .then((results) => {
+            console.log("getMessages worked!");
+            console.log("results:", results);
+
+            lastMessages = results.rows;
+            //io.emit("add-chatNewMessage", newMessage);
+            // res.json({});
+
+            socket.emit("chatMessages", lastMessages);
+            console.log("server.js > getLastMessages ", lastMessages);
+        })
+        .catch((err) => {
+            console.log("error in getLastMessages", err);
+        });
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - on chatNewMessage
 
@@ -98,9 +105,19 @@ io.on("connection", (socket) => {
     //   the new chat message and its id as well as the id, first name, last name, and profile pic of the user who sent it.
 
     socket.on("chatNewMessage", ({ message }) => {
-        console.log("message in chatNewMessage", message);
-        // here comes the db.function to save the message
-        io.emit("add-chatNewMessage", message);
+        console.log("server.js > chatNewMessage", message);
+        var newMessage;
+        db.insertMessage(message, userId)
+            .then((results) => {
+                console.log("insertMessage worked!");
+                console.log("results:", results);
+                newMessage = results.rows[0];
+                io.emit("add-chatNewMessage", newMessage);
+                // res.json({});
+            })
+            .catch((err) => {
+                console.log("error in insertMessage", err);
+            });
     });
 });
 
