@@ -19,7 +19,8 @@ Note: This website is not yet optimised for small screens, please take a look on
 
 **register & login page** <br/>
 minimalistic approach with all basic functionalities and error displays
-<img src="client/public/gifs/01_login.gif" width="80vw" style="border: 3px solid red" />
+|<img src="client/public/gifs/01_login.gif" width="80vw"/>|
+-
 
 **profile update** <br/>
 profile picture and bio can be changed anytime
