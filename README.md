@@ -17,13 +17,16 @@ Note: This website is not yet optimised for small screens, please take a look on
 
 ## previews <br/>
 
-**register & login page** &nbsp;
-
+**register & login page** 
 minimalistic approach with all basic functionalities and error displays
+&nbsp;
+
 <kbd><img src="client/public/gifs/01_login.gif" width="80vw"/></kbd>
 
 **profile update** <br/>
 profile picture and bio can be changed anytime
+&nbsp;
+
 <kbd><img src="client/public/gifs/02_update.gif" width="80vw"/></kbd>
 
 **friends search** <br/>
