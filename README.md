@@ -7,6 +7,7 @@ Connect is an easy-to-use intergenerational social platform. The design is simpl
 
 - Registration and Login page with error display
 - Bcrypt for password protection
+- Password update via a code sent by email in case of forgetting
 - Picture upload and bio always updatable in the user profile
 - Friend search tool
 - People can be befriended and unfriended
