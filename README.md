@@ -21,22 +21,18 @@ Note: This website is not yet optimised for small screens, please take a look on
 minimalistic approach with all basic functionalities and error displays
 <img src="client/public/gifs/01_login.gif" width="80vw"/>
 
-**filter through recipes** <br/>
-recipes organised alphabetically, filters, preview of each recipe
-<img src="client/public/gifs/02_search.gif" width="80vw"/>
+**profile update** <br/>
+profile picture and bio can be changed anytime
+<img src="client/public/gifs/02_update.gif" width="80vw"/>
 
-**recipe functionalities** <br/>
-timer function, cross out steps
-<img src="client/public/gifs/03_recipe.gif" width="80vw"/>
+**friends search** <br/>
+acquaintances suggestion and search by name, button changes functionality after sending a request
+<img src="client/public/gifs/03_search.gif" width="80vw"/>
 
-<!--- **menu and groceries list** <br/>
-generate a groceries list with the combined ingredients from all selected recipes
-<img src="client/public/gifs/04_menu.gif" width="80vw"/> --->
+**befriend / unfriend** <br/>
+a place to find all friends and requests
+<img src="client/public/gifs/04_be-unfriend.gif" width="80vw"/>
 
-**new recipe > manual input** <br/>
-manual input and categorisation of recipes <br/>
-<img src="client/public/gifs/05_create_manual.gif" width="80vw"/>
-
-**new recipe > scrape** <br/>
-automatic input with a scraper (recipes in our page are for personal use only)
-<img src="client/public/gifs/06_create_scraper.gif" width="80vw"/>
+**chat** <br/>
+group chat supported by socket-io
+<img src="client/public/gifs/05_chat.gif" width="80vw"/>
