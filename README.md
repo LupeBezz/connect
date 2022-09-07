@@ -23,16 +23,16 @@ minimalistic approach with all basic functionalities and error displays
 
 **profile update** <br/>
 profile picture and bio can be changed anytime
-<img src="client/public/gifs/02_update.gif" width="80vw"/>
+<kbd><img src="client/public/gifs/02_update.gif" width="80vw"/></kbd>
 
 **friends search** <br/>
 acquaintances suggestion and search by name, button changes functionality after sending a request
-<img src="client/public/gifs/03_search.gif" width="80vw"/>
+<kbd><img src="client/public/gifs/03_search.gif" width="80vw"/></kbd>
 
 **befriend / unfriend** <br/>
 a place to find all friends and requests
-<img src="client/public/gifs/04_be-unfriend.gif" width="80vw"/>
+<kbd><img src="client/public/gifs/04_be-unfriend.gif" width="80vw"/></kbd>
 
 **chat** <br/>
 group chat supported by socket-io
-<img src="client/public/gifs/05_chat.jpg"/>
+<kbd><img src="client/public/gifs/05_chat.jpg"/></kbd>
