@@ -17,7 +17,7 @@ Note: This website is not yet optimised for small screens, please take a look on
 
 ## previews <br/>
 
-**register & login page** 
+**register & login page** <br/>
 minimalistic approach with all basic functionalities and error displays
 &nbsp;
 
