@@ -31,12 +31,18 @@ profile picture and bio can be changed anytime
 
 **friends search** <br/>
 acquaintances suggestion and search by name, button changes functionality after sending a request
+&nbsp;
+
 <kbd><img src="client/public/gifs/03_search.gif" width="80vw"/></kbd>
 
 **befriend / unfriend** <br/>
 a place to find all friends and requests
+&nbsp;
+
 <kbd><img src="client/public/gifs/04_be-unfriend.gif" width="80vw"/></kbd>
 
 **chat** <br/>
 group chat supported by socket-io
+&nbsp;
+
 <kbd><img src="client/public/gifs/05_chat.jpg"/></kbd>
