@@ -35,4 +35,4 @@ a place to find all friends and requests
 
 **chat** <br/>
 group chat supported by socket-io
-<img src="client/public/gifs/05_chat.jpg" width="80vw"/>
+<img src="client/public/gifs/05_chat.jpg"/>
