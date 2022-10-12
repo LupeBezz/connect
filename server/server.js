@@ -1,31 +1,51 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Stuff
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - create servers
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - application server (express)
 
 const express = require("express");
 const app = express();
-const compression = require("compression");
-const path = require("path");
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - web server (node)
 
 const server = require("http").Server(app);
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - middleware
+
+// to work with file and directory paths
+const path = require("path");
+
+// to compress response bodies for all requests
+const compression = require("compression");
 app.use(compression());
 
+// to hash passwords
 const bcrypt = require("bcryptjs");
 
+// to parse cookies
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
+// to parse the request bodies in forms and make the info available as req.body
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json()); // to unpack JSON in the request body
 
+// to unpack JSON in the request body
+app.use(express.json());
+
+// to generate a cryptographically strong random string
 const cryptoRandomString = require("crypto-random-string");
 
+// (aws) to send emails
 const ses = require("./ses");
+
+// (aws) to upload files to aws
 const s3 = require("./s3");
+
+// to store files in the local server
 const uploader = require("./middleware").uploader;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - require database
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - require our database
 
 const db = require("./db");
 
@@ -34,7 +54,7 @@ const db = require("./db");
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.static(path.join(__dirname, "uploads")));
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - cookie session
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - cookie session middleware
 
 const cookieSession = require("cookie-session");
 
@@ -48,7 +68,7 @@ const cookieSessionMiddleware = cookieSession({
 
 app.use(cookieSessionMiddleware);
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - socket io
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - socket io middleware
 
 const io = require("socket.io")(server, {
     allowRequest: (req, callback) =>
@@ -77,21 +97,14 @@ io.on("connection", (socket) => {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - emit chatMessages
 
-    // this will be emited to the socket that just connected, with a payload of an array of the last 10 messages
+    // array of the last 10 messages emited to the socket that just connected
 
     var lastMessages;
 
     db.getLastMessages()
         .then((results) => {
-            console.log("getMessages worked!");
-            console.log("results:", results);
-
             lastMessages = results.rows;
-            //io.emit("add-chatNewMessage", newMessage);
-            // res.json({});
-
             socket.emit("chatMessages", lastMessages);
-            console.log("server.js > getLastMessages ", lastMessages);
         })
         .catch((err) => {
             console.log("error in getLastMessages", err);
@@ -99,21 +112,14 @@ io.on("connection", (socket) => {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - on chatNewMessage
 
-    // this event handler will be attached to the socket that just connected, two things must be done:
-    // - the new chat message must be stored in the db
-    // - an event must be emitted to ALL connected sockets, including the one sending the message. The payload for this event should include
-    //   the new chat message and its id as well as the id, first name, last name, and profile pic of the user who sent it.
+    // the new chat message must be stored in the db and sent to all connected sockets
 
     socket.on("chatNewMessage", ({ message }) => {
-        console.log("server.js > chatNewMessage", message);
         var newMessage;
         db.insertMessage(message, userId)
             .then((results) => {
-                console.log("insertMessage worked!");
-                console.log("results:", results);
                 newMessage = results.rows[0];
                 io.emit("add-chatNewMessage", newMessage);
-                // res.json({});
             })
             .catch((err) => {
                 console.log("error in insertMessage", err);
@@ -121,7 +127,27 @@ io.on("connection", (socket) => {
     });
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > register
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - sanitizing functions
+
+const sanitizeEmail = (email) => {
+    return email.toLowerCase();
+};
+
+const sanitizeFirstName = (firstName) => {
+    var sanitizedFirst =
+        firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+    return sanitizedFirst;
+};
+
+const sanitizeLastName = (lastName) => {
+    var sanitizedLast =
+        lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+    return sanitizedLast;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - routes
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - REGISTER
 
 app.post("/registration.json", (req, res) => {
     if (
@@ -132,33 +158,17 @@ app.post("/registration.json", (req, res) => {
     ) {
         res.json({ success: false, message: "All fields are necessary!" });
     } else {
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - sanitize email
-        req.body.email = req.body.email.toLowerCase();
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - sanitize first
-        req.body.firstName =
-            req.body.firstName.charAt(0).toUpperCase() +
-            req.body.firstName.slice(1).toLowerCase();
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - sanitize last
-        req.body.lastName =
-            req.body.lastName.charAt(0).toUpperCase() +
-            req.body.lastName.slice(1).toLowerCase();
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - add User
         db.addUser(
-            req.body.firstName,
-            req.body.lastName,
-            req.body.email,
+            sanitizeFirstName(req.body.firstName),
+            sanitizeLastName(req.body.lastName),
+            sanitizeEmail(req.body.email),
             req.body.password
         )
             .then((results) => {
-                console.log("addUser worked!");
-                //console.log("results.rows[0].id: ", results.rows[0].id); // the user id
-
-                // - - - - - - - - - - - - - - - - - - - - store id in cookie
+                // store id in cookie
                 var userId = results.rows[0].id;
                 req.session = { userId };
                 //res.send(`loginId: ${req.session.loginId}`);
-
-                // - - - - - - - - - - - - - - - - - - - - send back answer
                 res.json({ success: true });
             })
             .catch((err) => {
@@ -168,21 +178,17 @@ app.post("/registration.json", (req, res) => {
                     message: "oops, something went wrong!",
                 });
             });
-        console.log("post request to /register works");
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > login
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - LOGIN
 
 app.post("/login.json", (req, res) => {
     if (!req.body.email || !req.body.password) {
         res.json({ success: false, message: "All fields are necessary!" });
     } else {
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - sanitize email
-        req.body.email = req.body.email.toLowerCase();
-
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - check User
-        db.getUserInfo(req.body.email)
+        // check user
+        db.getUserInfo(sanitizeEmail(req.body.email))
             .then((results) => {
                 if (results.rows.length === 0) {
                     console.log("Error in getUserInfo: email not found");
@@ -191,33 +197,25 @@ app.post("/login.json", (req, res) => {
                         message: "oops, something went wrong!",
                     });
                 } else {
-                    console.log("Success in getUserInfo: email found");
-
-                    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - compare password to the on in the database
+                    // compare password to the on in the database
                     let inputPassword = req.body.password;
                     let databasePassword = results.rows[0].password;
-                    console.log(databasePassword);
-
                     return bcrypt
                         .compare(inputPassword, databasePassword)
                         .then((result) => {
-                            //console.log(result);
                             if (result) {
-                                console.log("Success in Password Comparison");
-
-                                // - - - - - - - - - - - - - - - - - - - - store id in cookie
+                                // store id in cookie
                                 var userId = results.rows[0].id;
-                                //console.log(results.rows[0].id);
                                 req.session = { userId };
                                 //res.send(`loginId: ${req.session.loginId}`);
-                                res.json({
-                                    success: true,
-                                });
+                                res.json({ success: true });
                             } else {
-                                console.log("Error in Password Comparison");
+                                console.log(
+                                    "Error in getUserInfo: Password is not correct"
+                                );
                                 res.json({
                                     success: false,
-                                    message: "oops, something went wrong!",
+                                    message: "please try again!",
                                 });
                             }
                         })
@@ -232,7 +230,7 @@ app.post("/login.json", (req, res) => {
                 }
             })
             .catch((err) => {
-                console.log("error in getUserInfo", err);
+                console.log("Error in getUserInfo", err);
                 res.json({
                     success: false,
                     message: "Something went wrong, please try again",
@@ -241,17 +239,14 @@ app.post("/login.json", (req, res) => {
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > reset password
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - RESET PASSWORD
 
 app.post("/resetpassword/start.json", (req, res) => {
     if (!req.body.email) {
         res.json({ success: false, message: "Please insert a valid email" });
     } else {
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - sanitize email
-        req.body.email = req.body.email.toLowerCase();
-
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - check User
-        db.getUserInfo(req.body.email)
+        // check user
+        db.getUserInfo(sanitizeEmail(req.body.email))
             .then((results) => {
                 if (results.rows.length === 0) {
                     console.log("Error in getUserInfo: email not found");
@@ -260,19 +255,15 @@ app.post("/resetpassword/start.json", (req, res) => {
                         message: "oops, something went wrong!",
                     });
                 } else {
-                    console.log("Success in getUserInfo: email found");
-
-                    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - generate and add secret code to db
+                    // success! > generate and add secret code to db
                     const secretCode = cryptoRandomString({
                         length: 6,
                     });
-                    db.addSecretCode(req.body.email, secretCode)
+                    db.addSecretCode(sanitizeEmail(req.body.email), secretCode)
                         .then((results) => {
-                            console.log("Success in addSecretCode");
-                            //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - send email
+                            // success! > send email
                             ses.sendCodeEmail(secretCode)
                                 .then((result) => {
-                                    console.log("Success in sendCodeEmail");
                                     res.json({
                                         success: true,
                                         message:
@@ -306,25 +297,22 @@ app.post("/resetpassword/start.json", (req, res) => {
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request >  verify password
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - RESET PASSWORD: VERIFY CODE
 
 app.post("/resetpassword/verify.json", (req, res) => {
     if (!req.body.code || !req.body.password) {
         res.json({ success: false, message: "oops, something went wrong!" });
     } else {
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - check Code
+        // check Code
         db.checkSecretCode()
             .then((results) => {
-                //console.log("results from checkSecretCode: ", results);
                 let possibleCodes = results.rows;
-
                 if (
                     possibleCodes[possibleCodes.length - 1].code ===
                     req.body.code
                 ) {
                     db.updatePassword(req.body.password, req.body.email)
                         .then((results) => {
-                            console.log("success in updatePassword");
                             res.json({
                                 success: true,
                                 message:
@@ -355,16 +343,13 @@ app.post("/resetpassword/verify.json", (req, res) => {
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > upload profile picture
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - UPLOAD PROFILE PICTURE
 
 app.post(
     "/uploadimage.json",
     uploader.single("uploadPicture"),
     s3.upload,
     (req, res) => {
-        //console.log("inside post -upload.json");
-        //console.log("req.body inside post-upload: ", req.body);
-        //console.log("req.file inside post-upload:", req.file);
         if (!req.file) {
             res.json({ message: "please select a file!" });
         }
@@ -373,9 +358,7 @@ app.post(
 
         db.insertImage(req.session.userId, fullUrl)
             .then((results) => {
-                console.log("insertImage worked!");
-                console.log("results:", results);
-                res.json({ fullUrl, message: "oops, something went wrong!" });
+                res.json({ fullUrl, message: "image updated successfully!" });
             })
             .catch((err) => {
                 console.log("error in insertImage", err);
@@ -383,15 +366,11 @@ app.post(
     }
 );
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > save bio
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - SAVE BIO
 
 app.post("/insertbio.json", (req, res) => {
-    console.log("arriving to server.js");
-    console.log("req.body.userBio: ", req.body.userBio);
     db.insertBio(req.session.userId, req.body.userBio)
         .then((results) => {
-            console.log("insertBio worked!");
-            console.log("results:", results);
             var userBio = req.body.userBio;
             res.json({
                 userBio,
@@ -403,37 +382,28 @@ app.post("/insertbio.json", (req, res) => {
         });
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > get info from logged-in user
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET INFO FROM LOGGED IN USER
 
 app.get("/userinfo", function (req, res) {
     db.getUserInfoFromId(req.session.userId)
         .then((results) => {
-            //console.log("results.rows[0] :", results.rows[0]);
-            res.json({
-                results,
-            });
+            res.json({ results });
         })
         .catch((error) => console.log("error in getUserInfoFromId: ", error));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > get info from other user
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET INFO FROM ANOTHER USER
 
 app.get("/otherusersinfo/:id", function (req, res) {
-    //console.log("req.params.id: ", req.params.id);
-    //console.log("req.session.userId: ", req.session.userId);
     if (req.params.id == req.session.userId) {
-        //console.log("same user as profile");
+        console.log("same user as profile");
         res.json({
             self: true,
         });
     } else {
         db.getUserInfoFromId(req.params.id)
             .then((results) => {
-                //console.log("results.rows[0] :", results.rows[0]);
-                //console.log("not same user as profile");
-                res.json({
-                    results,
-                });
+                res.json({ results });
             })
             .catch((error) =>
                 console.log("error in getUserInfoFromId (other users): ", error)
@@ -441,101 +411,69 @@ app.get("/otherusersinfo/:id", function (req, res) {
     }
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > get info from last three users
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET INFO FROM LAST USERS
 
 app.get("/lastusers", function (req, res) {
     db.getLastUsers(req.session.userId)
         .then((results) => {
-            //console.log("results :", results);
-            res.json({
-                results,
-            });
+            res.json({ results });
         })
         .catch((error) => console.log("error in getLastUsers: ", error));
 });
 
 app.post("/lastusersbyname", function (req, res) {
-    //console.log("req.body.first: ", req.body.first);
     db.getUsersByName(req.body.first)
         .then((results) => {
-            //console.log("results :", results);
-            res.json({
-                results,
-            });
+            res.json({ results });
         })
         .catch((error) => console.log("error in getUsersByName: ", error));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > request friendship
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - REQUEST FRIENDSHIP
 
 app.post("/friendship/request/:id", (req, res) => {
-    //console.log("req.params.id: ", req.params.id);
-    //console.log("req.session.userId: ", req.session.userId);
     db.requestFriendship(req.session.userId, req.params.id)
         .then((results) => {
-            //console.log("results :", results);
-            res.json({
-                results,
-            });
+            res.json({ results });
         })
         .catch((error) => console.log("error in requestFriendship: ", error));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > accept friendship
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ACCEPT FRIENDSHIP
 
 app.post("/friendship/accept/:id", function (req, res) {
-    //console.log("req.params.id: ", req.params.id);
-    //console.log("req.session.userId: ", req.session.userId);
     db.acceptFriendship(req.session.userId, req.params.id)
         .then((results) => {
-            //console.log("results :", results);
-            res.json({
-                results,
-            });
+            res.json({ results });
         })
         .catch((error) => console.log("error in acceptFriendship: ", error));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - POST request > delete friendship
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - DELETE FRIENDSHIP
 
 app.post("/friendship/delete/:id", function (req, res) {
-    //console.log("req.params.id: ", req.params.id);
-    //console.log("req.session.userId: ", req.session.userId);
     db.deleteFriendship(req.session.userId, req.params.id)
         .then((results) => {
-            //console.log("results :", results);
-            res.json({
-                results,
-            });
+            res.json({ results });
         })
         .catch((error) => console.log("error in deleteFriendship: ", error));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET request > check friendship
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - CHECK FOR FRIENDSHIP
 
 app.get("/friendship/check/:id", function (req, res) {
-    //console.log("req.params.id: ", req.params.id);
-    //console.log("req.session.userId: ", req.session.userId);
     db.checkFriendship(req.session.userId, req.params.id)
         .then((results) => {
-            //console.log("results check friendship :", results);
-            res.json({
-                results,
-            });
+            res.json({ results });
         })
         .catch((error) => console.log("error in checkFriendship: ", error));
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET request > get friends and wannabes
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET FRIENDS AND WANNABES
 
 app.get("/friends-and-wannabes", function (req, res) {
-    // console.log(
-    //     "inside /friends-and-wannabes req.session.userId: ",
-    //     req.session.userId
-    // );
     db.getFriendsAndWannabes(req.session.userId)
         .then((results) => {
-            //console.log("results getFriendsAndWannabes :", results);
             res.json(results.rows);
         })
         .catch((error) =>
@@ -543,21 +481,20 @@ app.get("/friends-and-wannabes", function (req, res) {
         );
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request > check if user is logged in
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - CHECK IF USER IS LOGGED IN
 
 app.get("/users/id.json", function (req, res) {
     res.json({ userId: req.session.userId });
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - post request > logout button
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - LOGOUT
 
 app.get("/logout", (req, res) => {
     req.session.userId = null;
-    // res.json({});
     res.redirect("/");
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - get request * > serve html - always at the end!!!
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - SERVE HTML
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

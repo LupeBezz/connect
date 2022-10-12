@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 
-const aws = require("aws-sdk");
-const fs = require("fs");
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - middleware
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - secrets stuff
+// amazon web services
+const aws = require("aws-sdk");
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - secrets middleware
 
 let secrets;
 if (process.env.NODE_ENV == "production") {
@@ -18,7 +20,10 @@ const ses = new aws.SES({
     region: "eu-west-1",
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function that sends email
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - email middleware
+
+// function used in server.js, the code is randomly generated there and stored in the db, then sent per email
+
 exports.sendCodeEmail = function (code) {
     return ses
         .sendEmail({
@@ -41,43 +46,3 @@ exports.sendCodeEmail = function (code) {
         .then(() => console.log("it worked!"))
         .catch((err) => console.log(err));
 };
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - upload function that talks to AWS
-
-// exports.upload = (req, res, next) => {
-//     if (!req.file) {
-//         return res.sendStatus(500);
-//     }
-
-//     // - - - - - - - - - - - - - - - - - - - - - - - - - - check req.file to understand what it is
-
-//     console.log(req.file);
-
-//     const { filename, mimetype, size, path } = req.file;
-
-//     // - - - - - - - - - - - - - - - - - - - - - - - - - - putObject method > what is returned is stored in the promise
-
-//     const promise = s3
-//         .putObject({
-//             Bucket: "spicedling",
-//             ACL: "public-read",
-//             Key: filename,
-//             Body: fs.createReadStream(path),
-//             ContentType: mimetype,
-//             ContentLength: size,
-//         })
-//         .promise();
-
-//     // - - - - - - - - - - - - - - - - - - - - - - - - - - what returns we store in the promise variable and handle it here:
-
-//     promise
-//         .then(() => {
-//             console.log("amazon upload successful");
-//             next();
-//             //fs.unlink(path, () => {}); - - - - - - - - - this is optional, it means the image will be deleted from the upload folder
-//         })
-//         .catch((err) => {
-//             console.log("error in upload put object: ", err);
-//             res.sendStatus(404);
-//         });
-// };

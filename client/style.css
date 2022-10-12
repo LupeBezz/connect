@@ -5,6 +5,7 @@ body {
     margin: 0;
     width: 100%;
     height: auto;
+    overscroll-behavior: none;
 }
 
 #layout-top-line {

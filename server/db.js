@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-const bcrypt = require("bcryptjs");
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - local / heroku databases
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - database info
 
 let dbUrl;
 
@@ -19,10 +17,16 @@ if (process.env.NODE_ENV === "production") {
     dbUrl = `postgres:${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - middleware
+
+// to hash passwords
+const bcrypt = require("bcryptjs");
+
+// to handle the database
 const spicedPg = require("spiced-pg");
 const db = spicedPg(dbUrl);
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - secrets
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - secrets middleware
 
 let sessionSecret;
 
@@ -32,7 +36,9 @@ if (process.env.NODE_ENV == "production") {
     sessionSecret = require("./secrets.json").SESSION_SECRET;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the registration page
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - database functions
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - REGISTER
 
 function hashPassword(password) {
     return bcrypt
@@ -54,13 +60,13 @@ module.exports.addUser = (first, last, email, password) => {
     });
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the login page
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - LOGIN
 
 module.exports.getUserInfo = (email) => {
     return db.query(`SELECT * FROM users WHERE email = $1`, [email]);
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the reset password page
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - RESET PASSWORD
 
 module.exports.addSecretCode = (email, code) => {
     return db.query(
@@ -84,19 +90,19 @@ module.exports.updatePassword = (password, email) => {
     });
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the app page
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - USER INFO
 
 module.exports.getUserInfoFromId = (id) => {
     return db.query(`SELECT * FROM users WHERE id = $1`, [id]);
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used to upload picture
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - PICTURE
 
 module.exports.insertImage = (id, url) => {
     return db.query(`UPDATE users SET url=$1 WHERE id = $2`, [url, id]);
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used to insert the bio
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - BIO
 
 module.exports.insertBio = (id, bio) => {
     return db.query(`UPDATE users SET bio=$2 WHERE id = $1 RETURNING *`, [
@@ -105,7 +111,7 @@ module.exports.insertBio = (id, bio) => {
     ]);
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used in the findpeople page
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - FIND PEOPLE
 
 module.exports.getLastUsers = (id) => {
     return db.query(
@@ -121,7 +127,7 @@ module.exports.getUsersByName = (val) => {
     );
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - functions used in the friendships table
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - FRIENDSHIPS
 
 //
 module.exports.requestFriendship = (idSender, idReceiver) => {
@@ -152,9 +158,6 @@ module.exports.checkFriendship = (idSender, idReceiver) => {
     );
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used to get friends and wannabes
-
-//
 module.exports.getFriendsAndWannabes = (id) => {
     return db.query(
         `SELECT users.id, first, last, url, accepted FROM users JOIN friendships ON (accepted = true AND receiver_id = $1 AND users.id = friendships.sender_id) OR (accepted = true AND sender_id = $1 AND users.id = friendships.receiver_id) OR (accepted = false AND receiver_id = $1 AND users.id = friendships.sender_id)`,
@@ -162,7 +165,7 @@ module.exports.getFriendsAndWannabes = (id) => {
     );
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function used to insert messages in the chat
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - CHAT
 
 module.exports.insertMessage = (message, id) => {
     return db.query(
