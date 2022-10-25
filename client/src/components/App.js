@@ -1,27 +1,23 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
-//if exported "default" import withouth {}
-
-import Profile from "./Profile";
-import ProfilePic from "./Profilepic";
-import BioEditor from "./Bioeditor";
-import Uploader from "./Uploader";
-import Logo from "./Logo";
-import FindPeople from "./Findpeople";
-import ProfileOthers from "./Profileothers";
-import Logout from "./Logout";
-import FriendsAndWannabes from "./Friendsandwannabes";
-import Chat from "./Chat";
+import { Profile } from "./Profile";
+import { ProfilePic } from "./Profilepic";
+import { Uploader } from "./Uploader";
+import { Logo } from "./Logo";
+import { FindPeople } from "./Findpeople";
+import { ProfileOthers } from "./Profileothers";
+import { Logout } from "./Logout";
+import { FriendsAndWannabes } from "./Friendsandwannabes";
+import { Chat } from "./Chat";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the App component
 
-class App extends Component {
+export class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,14 +44,10 @@ class App extends Component {
         this.closeTabs = this.closeTabs.bind(this);
     }
 
-    //this runs after the render()!
     componentDidMount() {
-        console.log("App Mounted");
         fetch("/userinfo")
             .then((response) => response.json())
             .then((data) => {
-                //console.log("success in fetch after getUserInfoFromId");
-                //console.log("data.results.rows[0]: ", data.results.rows[0]);
                 let userInfo = data.results.rows[0];
                 this.setState({
                     firstName: userInfo.first,
@@ -72,12 +64,10 @@ class App extends Component {
     }
 
     toggleModal() {
-        //if open it closes it, if closed it opens it
         this.setState({ isModalOpen: !this.state.isModalOpen });
     }
 
     toggleTabsPeople() {
-        //if open it closes it, if closed it opens it
         this.setState({
             isFindPeopleOpen: true,
             isMyFriendsOpen: false,
@@ -86,7 +76,6 @@ class App extends Component {
     }
 
     toggleTabsFriends() {
-        //if open it closes it, if closed it opens it
         this.setState({
             isFindPeopleOpen: false,
             isMyFriendsOpen: true,
@@ -95,7 +84,6 @@ class App extends Component {
     }
 
     toggleTabsChat() {
-        //if open it closes it, if closed it opens it
         this.setState({
             isFindPeopleOpen: false,
             isMyFriendsOpen: false,
@@ -112,12 +100,9 @@ class App extends Component {
     }
 
     uploadPicture(e) {
-        //we want to prevent the automatic upload, because we want to do dome checks
         e.preventDefault();
 
-        //console.log("form trying to submit");
-
-        // check if there is a file or not - fileInput.files returns an array with (or without!) files
+        // is there is a file or not? - fileInput.files returns an array with (or without!) files
         const form = e.currentTarget;
         const fileInput = form.querySelector("input[type=file]");
 
@@ -127,7 +112,7 @@ class App extends Component {
             return;
         }
 
-        //is the file too big? (max 10MB = 10.000.000)
+        // is the file too big? (max 10MB = 10.000.000)
 
         if (fileInput.files[0].size > 2000000) {
             this.setState({
@@ -136,7 +121,7 @@ class App extends Component {
             return;
         }
 
-        // now that we know that everything is ok, we submit the form
+        // now we submit the form
         this.setState({
             errorMessageUploader: "your picture is being uploaded",
         });
@@ -146,13 +131,11 @@ class App extends Component {
             .then((res) => res.json())
 
             .then((serverData) => {
-                console.log("serverData: ", serverData);
                 this.setState({
                     picture: serverData.fullUrl,
                     errorMessageUploader: "",
                 });
                 this.toggleModal();
-                //console.log(this.state.picture);
             })
             .catch((err) => {
                 this.setState({
@@ -163,9 +146,6 @@ class App extends Component {
     }
     saveDraftBio(draftBio) {
         this.setState({ bio: draftBio });
-        console.log("saveDraftBio function works");
-        console.log("draftBio: ", draftBio);
-        console.log("this.state.bio: ", this.state.bio);
     }
 
     render() {
@@ -222,12 +202,6 @@ class App extends Component {
                             />
                         </Route>
                         <Route exact path="/profile">
-                            {/* {this.state.errorMessage && (
-                                <p className="error">
-                                    {this.state.errorMessage}
-                                </p>
-                            )} */}
-                            {/* {this.state.isModalOpen && ( )} */}
                             <>
                                 <Profile
                                     firstName={this.state.firstName}
@@ -326,7 +300,3 @@ class App extends Component {
         );
     }
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default App;

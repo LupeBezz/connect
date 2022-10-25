@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 import { io } from "socket.io-client";
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
 
 import { receiveMessages, saveMessage } from "./redux/messages/slice.js";
 
@@ -16,8 +14,6 @@ export let socket;
 export const init = (store) => {
     if (!socket) {
         socket = io.connect();
-
-        console.log("inside init");
 
         socket.on("chatMessages", (lastMessages) => {
             console.log("socket.js > chatMessages ", lastMessages);

@@ -1,25 +1,22 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the FindPeople component
 
-function FindPeople(isFindPeopleOpen) {
+export function FindPeople(isFindPeopleOpen) {
     const [lastUsers, setLastUsers] = useState([]);
     const [usersByName, setUsersByName] = useState([]);
     const [first, setFirst] = useState("");
 
     useEffect(() => {
         isFindPeopleOpen = true;
-        //console.log("useEffect -fetch for last users- is running once");
         fetch("/lastusers")
             .then((response) => response.json())
             .then((data) => {
-                // console.log("success in fetch after getLastUSers");
-                // console.log("data.results.rows: ", data.results.rows);
                 setLastUsers(data.results.rows);
             })
             .catch((error) => {
@@ -29,9 +26,6 @@ function FindPeople(isFindPeopleOpen) {
 
     useEffect(() => {
         let abort;
-        // console.log(
-        //     "useEffect -search people by first name- is running everytime the user does a search"
-        // );
 
         (async () => {
             try {
@@ -99,7 +93,3 @@ function FindPeople(isFindPeopleOpen) {
         </>
     );
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default FindPeople;

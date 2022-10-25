@@ -2,14 +2,10 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Logo component
 
-function Logo() {
+export function Logo() {
     return (
         <>
             <div id="logo">Connect</div>
         </>
     );
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default Logo;

@@ -133,16 +133,10 @@ const sanitizeEmail = (email) => {
     return email.toLowerCase();
 };
 
-const sanitizeFirstName = (firstName) => {
-    var sanitizedFirst =
-        firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
-    return sanitizedFirst;
-};
-
-const sanitizeLastName = (lastName) => {
-    var sanitizedLast =
-        lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
-    return sanitizedLast;
+const sanitizeName = (name) => {
+    var sanitizedName =
+        name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    return sanitizedName;
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - routes
@@ -159,8 +153,8 @@ app.post("/registration.json", (req, res) => {
         res.json({ success: false, message: "All fields are necessary!" });
     } else {
         db.addUser(
-            sanitizeFirstName(req.body.firstName),
-            sanitizeLastName(req.body.lastName),
+            sanitizeName(req.body.firstName),
+            sanitizeName(req.body.lastName),
             sanitizeEmail(req.body.email),
             req.body.password
         )
@@ -494,7 +488,7 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
 });
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - SERVE HTML
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - SERVE HTML (always in the end!)
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

@@ -1,31 +1,25 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import FriendshipButton from "./Friendshipbutton";
+
+import { FriendshipButton } from "./Friendshipbutton";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the ProfileOthers component
 
-function ProfileOthers() {
+export function ProfileOthers() {
     const { id } = useParams();
     const [users, setUsers] = useState([]);
     const [error, setError] = useState([]);
     const history = useHistory();
 
-    //console.log("id: ", id);
-
     useEffect(() => {
-        //console.log("useEffect -profile others- is running once");
         setError([]);
         fetch(`/otherusersinfo/${id}`)
             .then((response) => response.json())
             .then((data) => {
-                //console.log("success in fetch after getUserInfoFromId");
-                //console.log("data: ", data);
-                //console.log("data.results.rows: ", data.results.rows);
-                //console.log("data.self: ", data.self);
                 if (data.self === true) {
                     setError("No results");
                     history.push("/");
@@ -39,7 +33,6 @@ function ProfileOthers() {
             })
             .catch((error) => {
                 console.log("error on fetch after getUserInfoFromId: ", error);
-
                 return;
             });
     }, [id]);
@@ -48,7 +41,6 @@ function ProfileOthers() {
         <>
             {error.length === 0 && (
                 <div id="others">
-                    {/* <h1>profile others</h1> */}
                     <h2>
                         {users.first} {users.last}{" "}
                     </h2>
@@ -64,7 +56,3 @@ function ProfileOthers() {
         </>
     );
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default ProfileOthers;

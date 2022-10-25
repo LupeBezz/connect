@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Registration component
 
-class Login extends Component {
+export class Login extends Component {
     constructor() {
-        super(); //calls the constructor of the parent class. Used to access some variables in the parent
+        super();
 
         this.state = {
             email: "",
@@ -20,14 +20,12 @@ class Login extends Component {
         this.onFormInputChange = this.onFormInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
     }
-    // we see when info is being entered in the input field
+
     onFormInputChange(e) {
         const target = e.currentTarget;
         this.setState({ [target.name]: target.value });
-        console.log("this.setState: ", this.setState);
     }
 
-    // when submitting the form
     onFormSubmit(e) {
         e.preventDefault();
 
@@ -44,7 +42,6 @@ class Login extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("data: ", data);
                 //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
@@ -111,7 +108,3 @@ class Login extends Component {
         );
     }
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default Login;

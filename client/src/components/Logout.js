@@ -1,21 +1,19 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Logout component
 
-function Logout() {
+export function Logout() {
     const { id } = useParams();
     const history = useHistory();
 
     useEffect(() => {
         fetch("/logout")
             .then(() => {
-                //console.log("success in fetch after logout");
-                //console.log("data: ", data);
                 location.href = "/";
             })
             .catch((error) => {
@@ -25,7 +23,3 @@ function Logout() {
 
     return <></>;
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default Logout;

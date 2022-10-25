@@ -1,14 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
-//if exported "default" import withouth {}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
-import ProfilePic from "./Profilepic";
-import BioEditor from "./Bioeditor";
+import { BioEditor } from "./Bioeditor";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Profile component
 
-function Profile({
+export function Profile({
     firstName,
     lastName,
     userId,
@@ -20,7 +18,6 @@ function Profile({
     return (
         <>
             <img
-                // onClick={toggleModal}
                 className="editor-image"
                 src={picture || "./images/her.jpg"}
                 height="300px"
@@ -31,7 +28,3 @@ function Profile({
         </>
     );
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default Profile;

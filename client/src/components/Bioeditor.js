@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the BioEditor component
-class BioEditor extends Component {
+
+export class BioEditor extends Component {
     constructor(props) {
         super(props);
         this.state = { draftBio: "", isEditorOpen: false, bio: "" };
@@ -21,15 +21,12 @@ class BioEditor extends Component {
 
     onBioInputChange(e) {
         this.setState({ draftBio: e.target.value });
-        console.log("this.state.draftBio: ", this.state.draftBio);
-        // console.log("e", e);
     }
 
     fetchNewBioToServer() {
         this.toggleEditor();
         this.props.saveDraftBio(this.state.draftBio);
         const userBio = this.state.draftBio;
-        console.log("userBio: ", userBio);
 
         fetch("/insertbio.json", {
             method: "post",
@@ -40,14 +37,11 @@ class BioEditor extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("data: ", data);
                 //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
                     this.setState.bio = data.userBio;
-                    // this.props.saveDraftBio();
-                    // location.reload();
                 }
             })
             .catch((error) => {
@@ -98,7 +92,3 @@ class BioEditor extends Component {
         );
     }
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default BioEditor;

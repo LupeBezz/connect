@@ -1,13 +1,10 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory, Link } from "react-router-dom";
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
-//if exported "default" import withouth {}
 
 import {
     acceptFriend,
@@ -18,41 +15,35 @@ import {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the FriendsAndWannabes component
 
-function FriendsAndWannabes() {
+export function FriendsAndWannabes() {
     const [displayFriends, setDisplayFriends] = useState(true);
     const [displayWannabes, setDisplayWannabes] = useState(false);
 
     const dispatch = useDispatch();
 
-    // here we get the information from redux global state, depending if the friendships is accepted (friends) or not (only a request: wannabes)
+    // here we get the information from redux global state
     const friends = useSelector(
         (state) =>
             state.friends && state.friends.filter((friend) => friend.accepted)
     );
-    //console.log("friends in state 01, friends", friends);
+
     const wannabes = useSelector(
         (state) =>
             state.friends && state.friends.filter((friend) => !friend.accepted)
     );
-    //console.log("wannabes in state 01, friends", wannabes);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - USE EFFECT RUNS ONCE TO GET ALL FRIENDS AND WANNABES //
+    // USE EFFECT RUNS ONCE TO GET ALL FRIENDS AND WANNABES //
 
     useEffect(() => {
-        //console.log("friends inside useEffect: ", friends);
-        // if (!friends) {
         (async () => {
-            //console.log("inside async");
             const res = await fetch("/friends-and-wannabes");
             const data = await res.json();
-            //console.log("data after getFriendsAndWannabes: ", data);
 
             // DISPATCH - this line starts the proccess of adding info to Redux
             // to dispatch we pass an action creator (function that returns an action)
             // receiveFriendsAndWannabes is imported from another file (slice.js) in redux/friends
             dispatch(receiveFriendsAndWannabes(data));
         })();
-        // }
     }, []);
 
     // while we wait for the fetch above...
@@ -60,15 +51,13 @@ function FriendsAndWannabes() {
         return null;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function ACCEPT FRIEND //
+    // function ACCEPT FRIEND //
 
     const handleAcceptFriend = async (id) => {
-        //console.log("acceptFriend, id: ", id);
         const res = await fetch(`/friendship/accept/${id}`, {
             method: "POST",
         });
         const data = await res.json();
-        //console.log(`data from /friendship/accept/${id}`, data);
 
         if (data) {
             //now we want to update this info to the global state: dispatch > action creator
@@ -76,16 +65,14 @@ function FriendsAndWannabes() {
         }
     };
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function REJECT FRIEND //
+    // function REJECT FRIEND //
 
     const handleRejectFriend = async (id) => {
         try {
-            //console.log("rejectFriend, id: ", id);
             const res = await fetch(`/friendship/delete/${id}`, {
                 method: "POST",
             });
             const data = await res.json();
-            //console.log(`data from /friendship/delete/${id}`, data);
 
             if (data) {
                 //now we want to update this info to the global state: dispatch > action creator
@@ -96,15 +83,13 @@ function FriendsAndWannabes() {
         }
     };
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - function UNFRIEND //
+    // function UNFRIEND //
 
     const handleUnfriend = async (id) => {
-        //console.log("unfriend, id: ", id);
         const res = await fetch(`/friendship/delete/${id}`, {
             method: "POST",
         });
         const data = await res.json();
-        //console.log(`data from /friendship/delete/${id}`, data);
 
         if (data) {
             //now we want to update this info to the global state: dispatch > action creator
@@ -115,15 +100,11 @@ function FriendsAndWannabes() {
     const showFriends = () => {
         setDisplayFriends(true);
         setDisplayWannabes(false);
-        //console.log("displayFriends: ", displayFriends);
-        //console.log("displayWannabes: ", displayWannabes);
     };
 
     const showWannabes = () => {
         setDisplayWannabes(true);
         setDisplayFriends(false);
-        //console.log("displayFriends: ", displayFriends);
-        //console.log("displayWannabes: ", displayWannabes);
     };
 
     return (
@@ -241,7 +222,3 @@ function FriendsAndWannabes() {
         </>
     );
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default FriendsAndWannabes;

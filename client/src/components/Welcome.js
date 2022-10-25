@@ -1,20 +1,17 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component } from "react";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
-//if exported "default" import withouth {}
-
-import Registration from "./Registration";
-import Login from "./Login";
-import ResetPassword from "./Resetpassword";
+import { Registration } from "./Registration";
+import { Login } from "./Login";
+import { ResetPassword } from "./Resetpassword";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Welcome component
 
-class Welcome extends Component {
+export class Welcome extends Component {
     render() {
         return (
             <>
@@ -51,7 +48,3 @@ class Welcome extends Component {
         );
     }
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default Welcome;

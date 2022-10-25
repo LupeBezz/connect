@@ -1,22 +1,16 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component, useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory, Link } from "react-router-dom";
+
 import { socket } from "../socket";
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
-//if exported "default" import withouth {}
-
-import { receiveMessages, saveMessage } from "../redux/messages/slice.js";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Chat component
 
-function Chat() {
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - USE EFFECT RUNS ONCE TO GET ALL MESSAGES //
-
+export function Chat() {
     // here we get the information from redux global state
 
     const dispatch = useDispatch();
@@ -57,8 +51,6 @@ function Chat() {
 
     const handleSaveMessage = () => {
         const message = textareaRef.current.value;
-        // const message = "test message for now";
-        console.log("chat.js > handleSaveMessage ", message);
         //message comes from state
         socket.emit("chatNewMessage", { message });
         textareaRef.current.value = "";
@@ -131,7 +123,3 @@ function Chat() {
         </>
     );
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default Chat;

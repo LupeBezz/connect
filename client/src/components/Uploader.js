@@ -1,23 +1,21 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component } from "react";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Uploader component
-class Uploader extends Component {
+
+export class Uploader extends Component {
     constructor(props) {
         super(props);
         this.state = { errorMessage: "" };
         this.onFormInputChange = this.onFormInputChange.bind(this);
     }
-    componentDidMount() {
-        console.log("Uploader mounted");
-    }
+
     onFormInputChange(e) {
         const target = e.currentTarget;
         this.setState({ [target.name]: target.value });
-        console.log("this.setState: ", this.setState);
     }
     render() {
         return (
@@ -46,7 +44,3 @@ class Uploader extends Component {
         );
     }
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default Uploader;

@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
-import { Component } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Component } from "react";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Registration component
-class ResetPassword extends Component {
+export class ResetPassword extends Component {
     constructor() {
-        super(); //calls the constructor of the parent class. Used to access some variables in the parent
+        super();
 
         this.state = {
             email: "",
@@ -22,14 +22,12 @@ class ResetPassword extends Component {
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.startResetPassword = this.startResetPassword.bind(this);
     }
-    // we see when info is being entered in the input field
+
     onFormInputChange(e) {
         const target = e.currentTarget;
         this.setState({ [target.name]: target.value });
-        //console.log("this.setState: ", this.setState);
     }
 
-    // when submitting the form
     onFormSubmit(e) {
         e.preventDefault();
 
@@ -45,15 +43,12 @@ class ResetPassword extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("data: ", data);
                 //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
                     this.setState({ errorMessage: data.message });
                     this.setState({ view: 2 });
-                    // location.href = "/";
-                    //console.log("view: ", this.view);
                 }
             })
             .catch((error) => {
@@ -78,15 +73,12 @@ class ResetPassword extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("data: ", data);
                 //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
                     this.setState({ errorMessage: data.message });
                     this.setState({ view: 3 });
-                    // location.href = "/";
-                    //console.log("view: ", this.view);
                 }
             })
             .catch((error) => {
@@ -193,6 +185,3 @@ class ResetPassword extends Component {
         );
     }
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default ResetPassword;

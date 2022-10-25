@@ -1,24 +1,16 @@
 /* eslint-disable no-unused-vars */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - general Imports
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import ReactDOM from "react-dom";
-
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import * as immutableState from "redux-immutable-state-invariant";
 import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./redux/reducer.js";
 
-// import { io } from "socket.io-client";
-// const socket = io.connect();
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - our Imports
-//if exported "default" import withouth {}
-
-import Welcome from "./components/Welcome";
-import App from "./components/App";
-
+import { Welcome } from "./components/Welcome";
+import { App } from "./components/App";
 import { init } from "./socket.js";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ReactDOM.render()
@@ -33,10 +25,8 @@ fetch("/users/id.json")
     .then((response) => response.json())
     .then((data) => {
         if (!data.userId) {
-            //visitor is not registered, he should see the registration page
             ReactDOM.render(<Welcome />, document.querySelector("main"));
         } else {
-            //visitor is registered, he should be redirected
             init(store);
             ReactDOM.render(
                 <Provider store={store}>
