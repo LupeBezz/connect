@@ -10,21 +10,11 @@ function messagesReducer(messages = [], action) {
     // Reducer for RECEIVING MESSAGES
     if (action.type == "messages/receive") {
         messages = action.payload;
-        console.log("slice.js > reducer", messages);
     }
 
     // Reducer for SAVING A MESSAGE
     if (action.type === "message/save") {
-        console.log(
-            "slice.js > reducer > messages before new message ",
-            messages
-        );
-        console.log("action-payload: ", action.payload);
         messages = [action.payload, ...messages];
-        console.log(
-            "slice.js > reducer > messages after new message ",
-            messages
-        );
     }
     return messages;
 }
@@ -36,7 +26,6 @@ function messagesReducer(messages = [], action) {
 
 // Action Creator for RECEIVING MESSAGES
 export function receiveMessages(lastMessages) {
-    console.log("slice.js > receiveMessages", lastMessages);
     return {
         type: "messages/receive",
         payload: lastMessages,
@@ -45,7 +34,6 @@ export function receiveMessages(lastMessages) {
 
 // Action Creator for SAVING A MESSAGE
 export function saveMessage(message) {
-    console.log("slice.js > saveMessage:", message);
     return { type: "message/save", payload: message };
 }
 
