@@ -24,23 +24,17 @@ export class App extends Component {
             firstName: "",
             lastName: "",
             userId: "",
-            picture: "",
             email: "",
-            isModalOpen: false,
-            isFindPeopleOpen: false,
-            isMyFriendsOpen: false,
-            isChatOpen: false,
-            message: "",
+            picture: "",
             bio: "",
+            tabOpen: "",
+            message: "",
             errorMessage: "",
-            errorMessageUploader: "",
+            uploaderMessage: "",
         };
-        this.toggleModal = this.toggleModal.bind(this);
         this.uploadPicture = this.uploadPicture.bind(this);
         this.saveDraftBio = this.saveDraftBio.bind(this);
-        this.toggleTabsPeople = this.toggleTabsPeople.bind(this);
-        this.toggleTabsFriends = this.toggleTabsFriends.bind(this);
-        this.toggleTabsChat = this.toggleTabsChat.bind(this);
+        this.toggleTabs = this.toggleTabs.bind(this);
         this.closeTabs = this.closeTabs.bind(this);
     }
 
@@ -63,67 +57,46 @@ export class App extends Component {
             });
     }
 
-    toggleModal() {
-        this.setState({ isModalOpen: !this.state.isModalOpen });
-    }
-
-    toggleTabsPeople() {
+    toggleTabs(e) {
+        console.log(e.target.id);
         this.setState({
-            isFindPeopleOpen: true,
-            isMyFriendsOpen: false,
-            isChatOpen: false,
-        });
-    }
-
-    toggleTabsFriends() {
-        this.setState({
-            isFindPeopleOpen: false,
-            isMyFriendsOpen: true,
-            isChatOpen: false,
-        });
-    }
-
-    toggleTabsChat() {
-        this.setState({
-            isFindPeopleOpen: false,
-            isMyFriendsOpen: false,
-            isChatOpen: true,
+            tabOpen: e.target.id,
         });
     }
 
     closeTabs() {
         this.setState({
-            isFindPeopleOpen: false,
-            isMyFriendsOpen: false,
-            isChatOpen: false,
+            tabOpen: "",
         });
+    }
+
+    saveDraftBio(draftBio) {
+        this.setState({ bio: draftBio });
     }
 
     uploadPicture(e) {
         e.preventDefault();
 
-        // is there is a file or not? - fileInput.files returns an array with (or without!) files
+        // is there is a file or not?
         const form = e.currentTarget;
         const fileInput = form.querySelector("input[type=file]");
 
         if (fileInput.files.length < 1) {
-            this.setState({ errorMessageUploader: "please select a file!" });
-            console.log("error in uploader: no file");
+            this.setState({ uploaderMessage: "please select a file!" });
             return;
         }
 
-        // is the file too big? (max 10MB = 10.000.000)
-
+        // is the file too big?
         if (fileInput.files[0].size > 2000000) {
             this.setState({
-                errorMessageUploader: "your picture cannot be bigger than 2MB",
+                uploaderMessage: "your picture cannot be bigger than 2MB",
             });
             return;
         }
 
         // now we submit the form
         this.setState({
-            errorMessageUploader: "your picture is being uploaded",
+            uploaderMessage: "your picture is being uploaded",
         });
 
         const formData = new FormData(form);
@@ -133,19 +106,15 @@ export class App extends Component {
             .then((serverData) => {
                 this.setState({
                     picture: serverData.fullUrl,
-                    errorMessageUploader: "",
+                    uploaderMessage: "",
                 });
-                this.toggleModal();
             })
             .catch((err) => {
                 this.setState({
-                    errorMessageUploader:
+                    uploaderMessage:
                         "There has been a problem, please try again",
                 });
             });
-    }
-    saveDraftBio(draftBio) {
-        this.setState({ bio: draftBio });
     }
 
     render() {
@@ -158,17 +127,14 @@ export class App extends Component {
                         <ProfilePic
                             firstName={this.state.firstName}
                             lastName={this.state.lastName}
-                            userId={this.state.userId}
                             picture={this.state.picture}
-                            bio={this.state.bio}
-                            toggleModal={this.toggleModal}
-                            saveDraftBio={this.saveDraftBio}
-                            onClick={this.state.toggleModal}
                         />
                     </Link>
+
                     <Link to="/" id="link-main" onClick={this.closeTabs}>
                         Main page
                     </Link>
+
                     <Link
                         to="/profile"
                         id="link-profile"
@@ -176,24 +142,21 @@ export class App extends Component {
                     >
                         Profile
                     </Link>
-                    <Link id="link-logout" to="/logoutuser">
+
+                    <Link to="/logoutuser" id="link-logout">
                         Logout
                     </Link>
+
                     <div>
                         <Route exact path="/">
-                            <div className="greeting">
-                                <p>Welcome</p>
-                            </div>
-                            <div id="how-it-works">
-                                <p>
-                                    {" "}
-                                    Connect allows you to stay in touch with
-                                    your loved ones! You can update you
-                                    information on the right corner or connect
-                                    with other people by clicking the orange
-                                    tabs!
-                                </p>
-                            </div>
+                            <h1 id="main-greeting">Welcome</h1>
+                            <p id="main-introduction">
+                                {" "}
+                                Connect allows you to stay in touch with your
+                                loved ones! You can update you information on
+                                the right corner or connect with other people by
+                                clicking the orange tabs!
+                            </p>
                             <img
                                 id="main-image-kids"
                                 src="/images/440300.jpg"
@@ -206,18 +169,13 @@ export class App extends Component {
                                 <Profile
                                     firstName={this.state.firstName}
                                     lastName={this.state.lastName}
-                                    userId={this.state.userId}
                                     picture={this.state.picture}
                                     bio={this.state.bio}
-                                    toggleModal={this.toggleModal}
                                     saveDraftBio={this.saveDraftBio}
                                 />
                                 <Uploader
-                                    firstName={this.state.firstName}
                                     uploadPicture={this.uploadPicture}
-                                    errorMessageUploader={
-                                        this.state.errorMessageUploader
-                                    }
+                                    uploaderMessage={this.state.uploaderMessage}
                                 />
                             </>
                         </Route>
@@ -238,52 +196,42 @@ export class App extends Component {
                         </Route>
                     </div>
 
-                    <div
-                        id="tab-people"
-                        className={
-                            this.state.isFindPeopleOpen === true
-                                ? "tab-active"
-                                : "tab-inactive"
-                        }
-                    >
+                    <div>
                         <Link
                             to="/people"
-                            className="tab-text"
-                            onClick={this.toggleTabsPeople}
+                            id="tab-people"
+                            className={
+                                this.state.tabOpen === "tab-people"
+                                    ? "tab tab-active"
+                                    : "tab tab-inactive"
+                            }
+                            onClick={this.toggleTabs}
                         >
                             Find people
                         </Link>
-                    </div>
 
-                    <div
-                        id="tab-friends"
-                        className={
-                            this.state.isMyFriendsOpen === true
-                                ? "tab-active"
-                                : "tab-inactive"
-                        }
-                    >
                         <Link
                             to="/friends"
-                            className="tab-text"
-                            onClick={this.toggleTabsFriends}
+                            id="tab-friends"
+                            className={
+                                this.state.tabOpen === "tab-friends"
+                                    ? "tab tab-active"
+                                    : "tab tab-inactive"
+                            }
+                            onClick={this.toggleTabs}
                         >
                             My friends
                         </Link>
-                    </div>
 
-                    <div
-                        id="tab-chat"
-                        className={
-                            this.state.isChatOpen === true
-                                ? "tab-active"
-                                : "tab-inactive"
-                        }
-                    >
                         <Link
                             to="/chat"
-                            className="tab-text"
-                            onClick={this.toggleTabsChat}
+                            id="tab-chat"
+                            className={
+                                this.state.tabOpen === "tab-chat"
+                                    ? "tab tab-active"
+                                    : "tab tab-inactive"
+                            }
+                            onClick={this.toggleTabs}
                         >
                             Chat
                         </Link>

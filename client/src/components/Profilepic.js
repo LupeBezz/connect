@@ -2,13 +2,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Profile Pic component
 
-export function ProfilePic({
-    firstName,
-    lastName,
-    userId,
-    picture,
-    toggleModal,
-}) {
+export function ProfilePic({ firstName, lastName, picture }) {
     return (
         <>
             <div id="profile-pic">

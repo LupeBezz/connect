@@ -6,15 +6,7 @@ import { BioEditor } from "./Bioeditor";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Profile component
 
-export function Profile({
-    firstName,
-    lastName,
-    userId,
-    picture,
-    bio,
-    toggleModal,
-    saveDraftBio,
-}) {
+export function Profile({ firstName, lastName, picture, bio, saveDraftBio }) {
     return (
         <>
             <img

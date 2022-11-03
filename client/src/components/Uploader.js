@@ -35,9 +35,9 @@ export class Uploader extends Component {
                         id="editor-upload-submit"
                     />
                 </form>
-                {this.props.errorMessageUploader && (
+                {this.props.uploaderMessage && (
                     <p className="uploader-error">
-                        {this.props.errorMessageUploader}
+                        {this.props.uploaderMessage}
                     </p>
                 )}
             </div>

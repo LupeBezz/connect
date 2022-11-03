@@ -34,7 +34,7 @@ body {
     padding-top: 1vw;
 }
 
-#tab-people {
+.tab {
     width: 15vw;
     border-left: black solid 1.5px;
     border-top: black solid 1.5px;
@@ -43,39 +43,8 @@ body {
     font-family: "Comfortaa";
     font-weight: 700;
     text-align: center;
-    margin-left: 2vw;
-    position: absolute;
-    bottom: 0px;
-    padding-top: 1.5vw;
-    z-index: 1;
-}
-
-#tab-friends {
-    width: 15vw;
-    border-left: black solid 1.5px;
-    border-top: black solid 1.5px;
-    border-right: black solid 1.5px;
-    box-shadow: 5px 5px black;
-    font-family: "Comfortaa";
-    font-weight: 700;
-    text-align: center;
-    margin-left: 20vw;
-    position: absolute;
-    bottom: 0px;
-    padding-top: 1.5vw;
-    z-index: 1;
-}
-
-#tab-chat {
-    width: 15vw;
-    border-left: black solid 1.5px;
-    border-top: black solid 1.5px;
-    border-right: black solid 1.5px;
-    box-shadow: 5px 5px black;
-    font-family: "Comfortaa";
-    font-weight: 700;
-    text-align: center;
-    margin-left: 38vw;
+    text-decoration: none;
+    color: black;
     position: absolute;
     bottom: 0px;
     padding-top: 1.5vw;
@@ -92,11 +61,16 @@ body {
     background-color: rgba(230, 110, 40, 255);
 }
 
-.tab-text {
-    text-decoration: none;
-    color: black;
-    font-family: "Comfortaa";
-    font-weight: 700;
+#tab-people {
+    margin-left: 2vw;
+}
+
+#tab-friends {
+    margin-left: 20vw;
+}
+
+#tab-chat {
+    margin-left: 38vw;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Welcome page  */
@@ -108,7 +82,7 @@ body {
     align-items: center;
 }
 
-#welcome-title {
+#welcome-page > div {
     width: 50vw;
     height: 85vh;
     padding-left: 5vw;
@@ -122,7 +96,7 @@ body {
     font-size: 1vw;
 }
 
-#welcome-title h1 {
+#welcome-page > div > h1 {
     font-size: 5vw;
 }
 
@@ -321,7 +295,7 @@ body {
     right: 15vw;
 }
 
-.greeting {
+#main-greeting {
     width: 30vw;
     margin-left: 32vw;
     margin-top: 9vw;
@@ -333,7 +307,7 @@ body {
     color: rgba(43, 70, 139, 255);
 }
 
-#how-it-works {
+#main-introduction {
     height: 15vw;
     width: 33vw;
     margin-left: 31vw;
