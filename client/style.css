@@ -528,6 +528,7 @@ body {
     position: absolute;
     top: 10vw;
     left: 14vw;
+    z-index: 10;
 }
 
 #people-search p {

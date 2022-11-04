@@ -3,10 +3,19 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { BioEditor } from "./Bioeditor";
+import { Uploader } from "./Uploader";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Profile component
 
-export function Profile({ firstName, lastName, picture, bio, saveDraftBio }) {
+export function Profile({
+    firstName,
+    lastName,
+    picture,
+    bio,
+    saveDraftBio,
+    uploadPicture,
+    uploaderMessage,
+}) {
     return (
         <>
             <img
@@ -16,6 +25,10 @@ export function Profile({ firstName, lastName, picture, bio, saveDraftBio }) {
                 alt={firstName + " " + lastName}
             ></img>
 
+            <Uploader
+                uploadPicture={uploadPicture}
+                uploaderMessage={uploaderMessage}
+            />
             <BioEditor saveDraftBio={saveDraftBio} bio={bio} />
         </>
     );

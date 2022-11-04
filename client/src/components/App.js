@@ -7,7 +7,6 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 
 import { Profile } from "./Profile";
 import { ProfilePic } from "./Profilepic";
-import { Uploader } from "./Uploader";
 import { Logo } from "./Logo";
 import { FindPeople } from "./Findpeople";
 import { ProfileOthers } from "./Profileothers";
@@ -58,7 +57,6 @@ export class App extends Component {
     }
 
     toggleTabs(e) {
-        console.log(e.target.id);
         this.setState({
             tabOpen: e.target.id,
         });
@@ -172,8 +170,6 @@ export class App extends Component {
                                     picture={this.state.picture}
                                     bio={this.state.bio}
                                     saveDraftBio={this.saveDraftBio}
-                                />
-                                <Uploader
                                     uploadPicture={this.uploadPicture}
                                     uploaderMessage={this.state.uploaderMessage}
                                 />

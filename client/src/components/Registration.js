@@ -3,9 +3,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Registration component
+// on a function component we could use onFormInputChange and onForm Submit as reusable Hooks
+// but I will keep it a class component for practice
 
 export class Registration extends Component {
     constructor() {
@@ -46,7 +48,6 @@ export class Registration extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
@@ -70,7 +71,6 @@ export class Registration extends Component {
                         type="text"
                         name="firstName"
                         placeholder="First Name"
-                        value={this.state.firstName}
                         onChange={this.onFormInputChange}
                     ></input>
 
@@ -78,7 +78,6 @@ export class Registration extends Component {
                         type="text"
                         name="lastName"
                         placeholder="Last Name"
-                        value={this.state.lastName}
                         onChange={this.onFormInputChange}
                     ></input>
 
@@ -86,7 +85,6 @@ export class Registration extends Component {
                         type="email"
                         name="email"
                         placeholder="Email"
-                        value={this.state.email}
                         onChange={this.onFormInputChange}
                     ></input>
 
@@ -94,7 +92,6 @@ export class Registration extends Component {
                         type="password"
                         name="password"
                         placeholder="Password"
-                        value={this.state.password}
                         onChange={this.onFormInputChange}
                     ></input>
 

@@ -11,9 +11,8 @@ export function ProfilePic({ firstName, lastName, picture }) {
                     height="100px"
                     alt={firstName + " " + lastName}
                 ></img>
-                <div>
-                    <h2>{firstName}</h2>
-                </div>
+
+                <h2>{firstName}</h2>
             </div>
         </>
     );

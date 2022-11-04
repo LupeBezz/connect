@@ -2,10 +2,13 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Component } from "react";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Registration component
+// on a function component we could use onFormInputChange and onForm Submit as reusable Hooks
+// but I will keep it a class component for practice
+
 export class ResetPassword extends Component {
     constructor() {
         super();
@@ -43,7 +46,6 @@ export class ResetPassword extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
@@ -73,7 +75,6 @@ export class ResetPassword extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
@@ -117,12 +118,10 @@ export class ResetPassword extends Component {
                             <Link to="/login" id="link">
                                 login
                             </Link>
-                            {this.state.errorMessage && (
-                                <p className="error">
-                                    {this.state.errorMessage}
-                                </p>
-                            )}
                         </p>
+                        {this.state.errorMessage && (
+                            <p className="error">{this.state.errorMessage}</p>
+                        )}
                     </div>
                 </>
             );
@@ -177,6 +176,7 @@ export class ResetPassword extends Component {
             );
         }
     }
+
     render() {
         return (
             <div className="reg-login-form">

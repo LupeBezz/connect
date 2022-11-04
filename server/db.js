@@ -111,6 +111,10 @@ module.exports.insertBio = (id, bio) => {
     ]);
 };
 
+module.exports.deleteBio = (id) => {
+    return db.query(`UPDATE users SET bio = NULL WHERE id = $1`, [id]);
+};
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - FIND PEOPLE
 
 module.exports.getLastUsers = (id) => {

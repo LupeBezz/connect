@@ -10,13 +10,8 @@ export class Uploader extends Component {
     constructor(props) {
         super(props);
         this.state = { errorMessage: "" };
-        this.onFormInputChange = this.onFormInputChange.bind(this);
     }
 
-    onFormInputChange(e) {
-        const target = e.currentTarget;
-        this.setState({ [target.name]: target.value });
-    }
     render() {
         return (
             <div id="editor-upload">
@@ -35,6 +30,7 @@ export class Uploader extends Component {
                         id="editor-upload-submit"
                     />
                 </form>
+
                 {this.props.uploaderMessage && (
                     <p className="uploader-error">
                         {this.props.uploaderMessage}

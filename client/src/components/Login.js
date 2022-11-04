@@ -3,9 +3,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - imports
 
 import { Component } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - the Registration component
+// on a function component we could use onFormInputChange and onForm Submit as reusable Hooks
+// but I will keep it a class component for practice
 
 export class Login extends Component {
     constructor() {
@@ -42,7 +44,6 @@ export class Login extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
@@ -66,7 +67,6 @@ export class Login extends Component {
                         type="email"
                         name="email"
                         placeholder="Email"
-                        value={this.state.email}
                         onChange={this.onFormInputChange}
                     ></input>
 
@@ -74,7 +74,6 @@ export class Login extends Component {
                         type="password"
                         name="password"
                         placeholder="Password"
-                        value={this.state.password}
                         onChange={this.onFormInputChange}
                     ></input>
 

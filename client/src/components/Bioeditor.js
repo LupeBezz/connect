@@ -24,71 +24,82 @@ export class BioEditor extends Component {
     }
 
     fetchNewBioToServer() {
-        this.toggleEditor();
-        this.props.saveDraftBio(this.state.draftBio);
-        const userBio = this.state.draftBio;
+        if (this.state.draftBio) {
+            this.toggleEditor();
+            this.props.saveDraftBio(this.state.draftBio);
+            const userBio = this.state.draftBio;
 
-        fetch("/insertbio.json", {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userBio }),
-        })
+            fetch("/insertbio.json", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userBio }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (!data.success && data.message) {
+                        this.setState({ errorMessage: data.message });
+                    } else {
+                        this.setState({ bio: data.userBio, draftBio: "" });
+                    }
+                })
+                .catch((error) => {
+                    console.log("error on fetch after onFormSubmit: ", error);
+                });
+        } else {
+            this.toggleEditor();
+        }
+    }
+
+    deleteBio = () => {
+        fetch("/deletebio")
             .then((response) => response.json())
             .then((data) => {
-                //render error conditionally
                 if (!data.success && data.message) {
                     this.setState({ errorMessage: data.message });
                 } else {
-                    this.setState.bio = data.userBio;
+                    this.setState({ bio: "", draftBio: "" });
+                    this.props.saveDraftBio("");
                 }
+                this.toggleEditor();
             })
             .catch((error) => {
-                console.log("error on fetch after onFormSubmit: ", error);
+                console.log("error on fetch after deleteBio: ", error);
             });
-    }
+    };
 
     render() {
         return (
-            <>
-                <div id="editor-bio">
-                    <h2>Your bio</h2>
-                    {this.state.isEditorOpen ? (
-                        <>
-                            <textarea
-                                name="bio"
-                                cols="30"
-                                rows="10"
-                                onChange={this.onBioInputChange}
-                            >
-                                {this.props.bio}
-                            </textarea>
-                            <button
-                                onClick={
-                                    (this.toggleEditor,
-                                    this.fetchNewBioToServer)
-                                }
-                            >
-                                Save
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            {this.props.bio ? (
-                                <>
-                                    <p>{this.props.bio}</p>
-                                    <button onClick={this.toggleEditor}>
-                                        edit
-                                    </button>
-                                </>
-                            ) : (
-                                <button onClick={this.toggleEditor}>Add</button>
-                            )}
-                        </>
-                    )}
-                </div>
-            </>
+            <div id="editor-bio">
+                <h2>Your bio</h2>
+                {this.state.isEditorOpen ? (
+                    <>
+                        <textarea
+                            name="bio"
+                            cols="30"
+                            rows="10"
+                            onChange={this.onBioInputChange}
+                            defaultValue={this.props.bio}
+                        ></textarea>
+                        <button onClick={this.fetchNewBioToServer}>Save</button>
+                        <button onClick={this.deleteBio}>Delete</button>
+                    </>
+                ) : (
+                    <>
+                        {this.props.bio ? (
+                            <>
+                                <p>{this.props.bio}</p>
+                                <button onClick={this.toggleEditor}>
+                                    edit
+                                </button>
+                            </>
+                        ) : (
+                            <button onClick={this.toggleEditor}>Add</button>
+                        )}
+                    </>
+                )}
+            </div>
         );
     }
 }

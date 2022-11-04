@@ -376,6 +376,22 @@ app.post("/insertbio.json", (req, res) => {
         });
 });
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - DELETE BIO
+
+app.get("/deletebio", (req, res) => {
+    console.log("arriving");
+    db.deleteBio(req.session.userId)
+        .then((results) => {
+            console.log("erased!");
+            res.json({
+                success: true,
+            });
+        })
+        .catch((err) => {
+            console.log("error in deleteBio", err);
+        });
+});
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GET INFO FROM LOGGED IN USER
 
 app.get("/userinfo", function (req, res) {
