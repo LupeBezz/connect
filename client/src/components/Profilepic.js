@@ -7,7 +7,7 @@ export function ProfilePic({ firstName, lastName, picture }) {
         <>
             <div id="profile-pic">
                 <img
-                    src={picture || "./images/her.jpg"}
+                    src={picture || "../images/her.jpg"}
                     height="100px"
                     alt={firstName + " " + lastName}
                 ></img>

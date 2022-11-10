@@ -21,8 +21,6 @@ export function FriendshipButton() {
     function checkData(info) {
         if (info.length == 0) {
             setHasRequest(false);
-            setAccepted(false);
-            setIsMyRequest(false);
         } else {
             setHasRequest(true);
             if (info[0].accepted == true) {

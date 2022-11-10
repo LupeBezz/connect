@@ -1,18 +1,14 @@
 /* eslint-disable no-unused-vars */
 
-// this is our mini-reducer that is specific to "messages"
-// when the action-creators underneath run, they will talk to this reducer automatically
-// there is one if-statement for each action-creator
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - MINI REDUCER
+// there is one reducer for each action-creator below
+// reducer exported only for reducer.js
 
-function messagesReducer(messages = [], action) {
-    // Reducer for RECEIVING MESSAGES
+export function messagesReducer(messages = [], action) {
     if (action.type == "messages/receive") {
         messages = action.payload;
     }
 
-    // Reducer for SAVING A MESSAGE
     if (action.type === "message/save") {
         messages = [action.payload, ...messages];
     }
@@ -20,9 +16,7 @@ function messagesReducer(messages = [], action) {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ACTION CREATORS
-
-// we pass messages as a parameter (coming from the server via chat.js)
-// functions are exported to be used in chat.js
+// functions are exported to be used in socket.js (via Chat.js)
 
 // Action Creator for RECEIVING MESSAGES
 export function receiveMessages(lastMessages) {
@@ -36,7 +30,3 @@ export function receiveMessages(lastMessages) {
 export function saveMessage(message) {
     return { type: "message/save", payload: message };
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default messagesReducer;

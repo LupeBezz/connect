@@ -115,10 +115,15 @@ io.on("connection", (socket) => {
     // the new chat message must be stored in the db and sent to all connected sockets
 
     socket.on("chatNewMessage", ({ message }) => {
-        var newMessage;
+        var messagePicture;
+        db.getUserInfoFromId(userId).then((results) => {
+            messagePicture = results.rows[0].url;
+        });
+        var messageText;
         db.insertMessage(message, userId)
             .then((results) => {
-                newMessage = results.rows[0];
+                messageText = results.rows[0];
+                var newMessage = { ...messageText, messagePicture };
                 io.emit("add-chatNewMessage", newMessage);
             })
             .catch((err) => {

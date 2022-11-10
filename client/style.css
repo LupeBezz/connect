@@ -555,17 +555,14 @@ body {
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Friends  */
 
-#list-background {
+.list-background {
     padding-left: 0;
     width: 51vw;
-    height: 35vw;
+    height: 38vw;
     list-style-type: none;
     position: absolute;
     top: 9vw;
     left: 2vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     font-family: "Comfortaa";
     font-weight: 200;
     font-size: 1.2vw;
@@ -577,7 +574,6 @@ body {
 #list-friends {
     width: 51vw;
     height: 24vw;
-    list-style-type: none;
     position: absolute;
     top: 11vw;
     display: flex;
@@ -585,14 +581,10 @@ body {
     justify-content: space-between;
     flex-wrap: wrap;
     overflow: scroll;
-    font-family: "Comfortaa";
-    font-weight: 200;
-    font-size: 1.2vw;
-    color: black;
 }
 
 #list-friends div {
-    height: 18vw;
+    height: 25vw;
     width: 15vw;
     display: flex;
     flex-direction: column;
@@ -623,29 +615,9 @@ body {
     border: black solid 1.5px;
 }
 
-#list-wannabes-background {
-    padding-left: 0;
-    width: 51vw;
-    height: 38vw;
-    list-style-type: none;
-    position: absolute;
-    top: 9vw;
-    left: 2vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-family: "Comfortaa";
-    font-weight: 200;
-    font-size: 1.2vw;
-    color: black;
-    background-color: rgba(221, 229, 232, 255);
-    border-radius: 1.5vw;
-}
-
 #list-wannabes {
     width: 51vw;
     height: 26vw;
-    list-style-type: none;
     position: absolute;
     top: 11vw;
     display: flex;
@@ -653,14 +625,10 @@ body {
     justify-content: space-between;
     flex-wrap: wrap;
     overflow: scroll;
-    font-family: "Comfortaa";
-    font-weight: 200;
-    font-size: 1.2vw;
-    color: black;
 }
 
 #list-wannabes div {
-    height: 22vw;
+    height: 28vw;
     width: 15vw;
     display: flex;
     flex-direction: column;
@@ -692,7 +660,7 @@ body {
     margin-bottom: 0.75vw;
 }
 
-#button-friends {
+#subtab-friends {
     border: black solid 1.5px;
     box-shadow: 5px 5px black;
     width: 7vw;
@@ -705,7 +673,7 @@ body {
     z-index: 1;
 }
 
-#button-requests {
+#subtab-requests {
     border: black solid 1.5px;
     box-shadow: 5px 5px black;
     width: 7vw;
@@ -718,12 +686,12 @@ body {
     z-index: 1;
 }
 
-.button-active {
+.subtab-active {
     height: 5vw;
     background-color: rgba(230, 110, 40, 255);
 }
 
-.button-inactive {
+.subtab-inactive {
     height: 3vw;
     background-color: rgba(260, 160, 50, 255);
 }

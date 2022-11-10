@@ -26,6 +26,7 @@ export function ProfileOthers() {
                 } else {
                     if (data.results.rows.length > 0) {
                         setUsers(data.results.rows[0]);
+                        //console.log(data.results.rows[0]);
                     } else {
                         setError("No results");
                     }
@@ -46,7 +47,7 @@ export function ProfileOthers() {
                     </h2>
                     <img
                         height="100px"
-                        src={users.url || "./images/strawberry-user.jpg"}
+                        src={users.url || "../images/her.jpg"}
                     />
                     <p className="others-bio">{users.bio}</p>
                 </div>

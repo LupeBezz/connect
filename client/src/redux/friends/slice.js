@@ -1,23 +1,17 @@
 /* eslint-disable no-unused-vars */
 
-// this is our mini-reducer that is specific to "friends"
-// when the action-creators underneath run, they will talk to this reducer automatically
-// there is one if-statement for each action-creator
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - MINI REDUCER
+// there is one reducer for each action-creator below
+// reducer exported only for reducer.js
 
-function friendsAndWannabesReducer(friends = [], action) {
+export function friendsAndWannabesReducer(friends = [], action) {
     // Reducer for RECEIVE
-    // TO DO: split up the data depending if friendship is accepted or not
     if (action.type == "friends-and-wannabes/receive") {
         friends = action.payload.friends;
-        //console.log("friends in receive:", friends);
     }
 
-    //Reducer for ACCEPT
-    // we have an array of friends in global state
-    // we want to loop through it, find the one with the same id, then accept friendship (set accepted to true)
-    // we need to do all of this INMUTABLY - no direct mutation! - use MAP
+    // Reducer for ACCEPT
+    // we have an array of friends in global state. We want to loop through it, find the one with the same id, then accept friendship (accepted: true)
 
     if (action.type === "friends-and-wannabes/accept") {
         friends = friends.map((friend) => {
@@ -29,19 +23,15 @@ function friendsAndWannabesReducer(friends = [], action) {
         });
     }
 
-    //Reducer for REJECT
-    // we have an array of friends in global state
-    // we want to loop through it, find the one with the same id, then reject friendship (erase line)
-    // we need to do all of this INMUTABLY - no direct mutation! - use MAP
+    // Reducer for REJECT
+    // we have an array of friends in global state. We want to loop through it, find the one with the same id, then reject friendship (erase line)
 
     if (action.type === "friends-and-wannabes/reject") {
         friends = friends.filter((friend) => friend.id !== action.payload.id);
     }
 
-    //Reducer for UNFRIEND
-    // we have an array of friends in global state
-    // we want to loop through it, find the one with the same id, then unfriend (set accepted to false)
-    // we need to do all of this INMUTABLY - no direct mutation! - use MAP
+    // Reducer for UNFRIEND
+    // we have an array of friends in global state. We want to loop through it, find the one with the same id, then unfriend (accepted: false)
 
     if (action.type === "friends-and-wannabes/unfriend") {
         friends = friends.map((friend) => {
@@ -53,22 +43,15 @@ function friendsAndWannabesReducer(friends = [], action) {
         });
     }
 
-    // if (friends.length === 0) {
-    //     return (friends = null);
-    // }
-
+    // For all reducers above
     return friends;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ACTION CREATORS
-
-// we pass friends as a parameter (coming from the server via FriendsAndWannabes.js)
-// functions are exported to be used in FriendsAndWannabes.js
+// functions are exported to be used in FriendsAndWannabes.js > the payload comes from there
 
 // Action Creator for RECEIVE
 export function receiveFriendsAndWannabes(friends) {
-    //console.log("friends in action", friends);
-
     return {
         type: "friends-and-wannabes/receive",
         payload: { friends },
@@ -89,7 +72,3 @@ export function rejectFriend(id) {
 export function unfriend(id) {
     return { type: "friends-and-wannabes/unfriend", payload: { id } };
 }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Exports
-
-export default friendsAndWannabesReducer;

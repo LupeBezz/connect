@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import * as immutableState from "redux-immutable-state-invariant";
 import { composeWithDevTools } from "redux-devtools-extension";
-import rootReducer from "./redux/reducer.js";
+import { rootReducer } from "./redux/reducer.js";
 
 import { Welcome } from "./components/Welcome";
 import { App } from "./components/App";
